@@ -1,10 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#080f1c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23e51a1a%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27system-ui,Arial%27 font-size=%2720%27 font-weight=%27800%27 text-anchor=%27middle%27 fill=%27white%27%3EW%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <title>Objeciones ONG · Wesser</title>
 <style>
 /* ============================================
@@ -24,17 +28,16 @@
   /* Ink */
   --ink:#eaf1fb;
   --ink-2:#9fb3cc;
-  --ink-3:#5c728f;
-  --ink-4:#3a4d68;
+  --ink-3:#7b99b8;
+  --ink-4:#506882;
 
   /* Brand */
-  --brand:#f5a623;
-  --brand-soft:rgba(245,166,35,.12);
-  --brand-line:rgba(245,166,35,.35);
-  --red:#e8312a;
+  --brand:#e51a1a;
+  --brand-soft:rgba(229,26,26,.12);
+  --brand-line:rgba(229,26,26,.35);
 
   /* Signal */
-  --ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;
+  --ok:#22c55e;--warn:#d97706;--bad:#ef4444;
 
   /* Elevation */
   --sh-1:0 1px 2px rgba(0,0,0,.4),0 1px 1px rgba(0,0,0,.3);
@@ -42,11 +45,11 @@
   --sh-3:0 12px 40px rgba(0,0,0,.55);
   --glow:0 0 0 3px var(--brand-soft);
 
-  /* Type scale (1.18 ratio, 14px base) */
-  --t-2xs:.62rem;--t-xs:.7rem;--t-sm:.8rem;--t-base:.875rem;--t-md:.95rem;--t-lg:1.05rem;--t-xl:1.2rem;
+  /* Type scale (16px base) */
+  --t-2xs:.62rem;--t-xs:.7rem;--t-sm:.8rem;--t-base:1rem;--t-md:1.05rem;--t-lg:1.125rem;--t-xl:1.25rem;--t-2xl:1.5rem;--t-3xl:1.875rem;
 
   /* Space scale */
-  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-4:1rem;--s-5:1.35rem;--s-6:1.75rem;
+  --s-1:.25rem;--s-2:.5rem;--s-3:.75rem;--s-3h:.875rem;--s-4:1rem;--s-5:1.35rem;--s-6:1.75rem;
 
   /* Radii */
   --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-pill:999px;
@@ -54,6 +57,19 @@
   /* Motion */
   --ease:cubic-bezier(.4,0,.2,1);
   --ease-out:cubic-bezier(.16,1,.3,1);
+
+  /* Layout */
+  --max-w:700px;
+  --max-w-modal:560px;
+
+  /* Tooltip — siempre oscuro independientemente del tema */
+  --tooltip-bg:#1e293b;
+  --tooltip-ink:#e2e8f0;
+  --tooltip-line:#334155;
+}
+@media(min-width:960px){
+  :root{--max-w:960px;--max-w-modal:680px}
+  .rzone{gap:var(--s-5)}
 }
 body.light{
   --bg:#eef2f7;
@@ -64,9 +80,9 @@ body.light{
   --line-2:#c6d2e0;
   --ink:#0d1a2e;
   --ink-2:#42546c;
-  --ink-3:#7589a3;
-  --ink-4:#aab8cc;
-  --brand-soft:rgba(245,166,35,.1);
+  --ink-3:#536881;
+  --ink-4:#6b7f98;
+  --brand-soft:rgba(229,26,26,.1);
   --sh-1:0 1px 2px rgba(15,30,60,.07);
   --sh-2:0 4px 16px rgba(15,30,60,.1);
   --sh-3:0 12px 36px rgba(15,30,60,.14);
@@ -77,7 +93,7 @@ body.light{
 html{-webkit-text-size-adjust:100%}
 body{
   background:var(--bg);color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter','Segoe UI',system-ui,sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',system-ui,sans-serif;
   min-height:100vh;
   overflow-wrap:break-word;word-break:break-word;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
@@ -86,21 +102,26 @@ body{
   letter-spacing:-.006em;
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(max-width:375px){
+  .ibtn:not(.ibtn--labeled){width:40px;height:40px}
+  .hdr-logo .credit{display:none}
+}
 
 /* ---- Ambient backdrop ---- */
 body::before{
   content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(900px 500px at 80% -8%,rgba(245,166,35,.07),transparent 60%),
-    radial-gradient(700px 500px at -10% 0%,rgba(232,49,42,.05),transparent 55%);
+    radial-gradient(900px 500px at 80% -8%,rgba(229,26,26,.12),transparent 60%),
+    radial-gradient(700px 500px at -10% 0%,rgba(232,49,42,.08),transparent 55%);
 }
 body.light::before{
   background:
-    radial-gradient(900px 500px at 80% -8%,rgba(245,166,35,.09),transparent 60%),
-    radial-gradient(700px 500px at -10% 0%,rgba(232,49,42,.04),transparent 55%);
+    radial-gradient(900px 500px at 80% -8%,rgba(229,26,26,.06),transparent 55%),
+    radial-gradient(700px 500px at -10% 0%,rgba(232,49,42,.04),transparent 50%);
 }
+@media(max-width:680px){body::before{display:none}}
 
-#zone,.wrap{max-width:700px;margin:0 auto}
+#zone,.wrap{max-width:var(--max-w);margin:0 auto}
 
 /* ============================================
    HEADER
@@ -113,39 +134,44 @@ body.light::before{
   padding:var(--s-3) var(--s-4);
   padding-top:max(var(--s-3),env(safe-area-inset-top));
 }
-.hdr-top{display:flex;align-items:center;justify-content:space-between;max-width:700px;margin:0 auto}
+.hdr-top{display:flex;align-items:center;justify-content:space-between}
 .hdr-logo{display:flex;flex-direction:column;justify-content:center}
 .hdr-logo img{height:28px;width:auto;max-width:120px;object-fit:contain;align-self:flex-start;margin-bottom:2px}
 .hdr-logo .sub{color:var(--ink-2);font-size:var(--t-2xs);font-weight:600;letter-spacing:.01em}
-.hdr-logo .credit{color:var(--ink-4);font-size:.5rem;letter-spacing:.02em;margin-top:1px}
+.hdr-logo .credit{color:var(--ink-4);font-size:var(--t-2xs);letter-spacing:.02em;margin-top:1px}
 .ibtn{
   display:inline-flex;align-items:center;justify-content:center;
-  width:36px;height:36px;
+  width:44px;height:44px;
   background:var(--surface-2);border:1px solid var(--line-2);color:var(--ink-2);
-  border-radius:var(--r-md);cursor:pointer;font-size:.95rem;line-height:1;
+  border-radius:var(--r-md);cursor:pointer;font-size:var(--t-md);line-height:1;
   transition:transform .18s var(--ease-out),border-color .18s,background .18s,color .18s;
 }
 .ibtn:hover{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft);transform:translateY(-1px)}
 .ibtn:active{transform:translateY(0) scale(.94)}
+.ibtn--labeled{flex-direction:column;gap:2px;width:auto;min-width:44px;height:auto;min-height:44px;padding:.3rem .55rem;font-size:var(--t-md)}
+.ibtn--labeled .ibtn-lbl{font-size:.58rem;font-weight:700;letter-spacing:.03em;line-height:1;color:var(--ink-3);transition:color .18s}
+.ibtn--labeled:hover .ibtn-lbl{color:var(--brand)}
 
 /* ============================================
    SEARCH
    ============================================ */
-.sbar{padding:var(--s-3) var(--s-4) var(--s-2);background:transparent}
-.sinput-wrap{position:relative;max-width:700px;margin:0 auto}
+.sbar{padding:var(--s-4) var(--s-4) var(--s-3);background:transparent}
+.sinput-wrap{position:relative;max-width:var(--max-w);margin:0 auto}
 .sinput{
   width:100%;
-  background:var(--surface);border:1.5px solid var(--line);
-  border-radius:var(--r-md);
-  padding:.66rem 1rem .66rem 2.4rem;
-  font-size:var(--t-base);color:var(--ink);font-family:inherit;
+  background:var(--surface);border:1.5px solid var(--line-2);
+  border-radius:var(--r-xl);
+  padding:.85rem 1rem .85rem 2.8rem;
+  font-size:var(--t-md);color:var(--ink);font-family:inherit;
   outline:none;letter-spacing:-.01em;
+  box-shadow:var(--sh-1);
   transition:border-color .18s,box-shadow .18s,background .18s;
 }
 .sinput:focus{border-color:var(--brand-line);box-shadow:var(--glow)}
 .sinput::placeholder{color:var(--ink-3)}
-.sicon{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);font-size:.92rem;pointer-events:none;color:var(--ink-3);opacity:.8}
-.sclr{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:var(--surface-hi);border:none;width:22px;height:22px;border-radius:50%;color:var(--ink-3);cursor:pointer;font-size:.7rem;display:none;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.sicon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1.1rem;pointer-events:none;color:var(--ink-3);opacity:.9}
+.sclr{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:transparent;border:none;width:44px;height:44px;border-radius:50%;color:var(--ink-3);cursor:pointer;font-size:.7rem;display:none;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.sinput::-webkit-search-cancel-button{-webkit-appearance:none}
 .sclr:hover{background:var(--line-2);color:var(--ink)}
 .sinput:not(:placeholder-shown)~.sclr{display:flex}
 
@@ -154,32 +180,38 @@ body.light::before{
    ============================================ */
 .cfilt{
   display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
-  padding:var(--s-2) var(--s-4);max-width:700px;margin:0 auto;
+  padding:var(--s-2) var(--s-4);padding-right:3rem;max-width:var(--max-w);margin:0 auto;
   -webkit-overflow-scrolling:touch;
 }
 .cfilt::-webkit-scrollbar{display:none}
+@media(min-width:768px){
+  .cfilt{flex-wrap:wrap;overflow-x:visible;padding-right:var(--s-4);row-gap:var(--s-1)}
+  :root{--max-w:740px}
+}
 .ctag{
   flex-shrink:0;
-  padding:.4rem .85rem;border-radius:var(--r-pill);
+  padding:.6rem .85rem;border-radius:var(--r-pill);
   border:1.5px solid var(--line-2);background:var(--surface);color:var(--ink-3);
   font-size:var(--t-xs);font-weight:700;letter-spacing:.01em;
   cursor:pointer;font-family:inherit;white-space:nowrap;
+  min-height:44px;display:inline-flex;align-items:center;
   transition:transform .18s var(--ease-out),border-color .18s,color .18s,background .18s;
 }
 .ctag:hover{border-color:var(--ink-3);color:var(--ink-2);transform:translateY(-1px)}
 .ctag:active{transform:translateY(0) scale(.96)}
-.ctag-sel{border-color:var(--tag-color,var(--brand-line));color:var(--tag-color,var(--brand));background:color-mix(in srgb,var(--tag-color,var(--brand)) 12%,transparent);transform:none}
+.ctag-sel{border-color:var(--tag-color,var(--brand-line));color:var(--tag-color,var(--brand));background:color-mix(in srgb,var(--tag-color,var(--brand)) 18%,transparent);transform:none}
 .ctag-sel:hover{transform:none}
-.ctag-fav{font-weight:800}
+.ctag-fav{font-weight:700}
+.ctag-count{font-size:var(--t-2xs);font-weight:600;opacity:.55;margin-left:.3rem}
 
 /* ============================================
    RESULTS
    ============================================ */
 .rzone{
-  padding:var(--s-3) var(--s-4) 6rem;max-width:700px;margin:0 auto;
-  display:flex;flex-direction:column;gap:var(--s-3);
+  padding:var(--s-2) var(--s-4) 6rem;max-width:var(--max-w);margin:0 auto;
+  display:flex;flex-direction:column;gap:var(--s-2);
 }
-.statsbar{font-size:var(--t-2xs);color:var(--ink-3);padding:var(--s-1) 0 var(--s-2);letter-spacing:.02em;font-weight:600}
+.statsbar{font-size:var(--t-xs);color:var(--ink-3);padding:var(--s-1) 0 var(--s-2);letter-spacing:.02em;font-weight:600}
 
 /* ---- Card ---- */
 .ocard{
@@ -199,41 +231,48 @@ body.light::before{
 .ocard:hover{border-color:var(--line-2);box-shadow:var(--sh-2);transform:translateY(-1px)}
 .ocard.open{box-shadow:var(--sh-3);border-color:var(--card-color,var(--brand-line))}
 .ocard.open::before{opacity:1}
+.ocard.visited:not(.open)::before{opacity:.25}
 
 .ocard-head{
   display:flex;align-items:flex-start;gap:var(--s-3);
-  padding:var(--s-4) var(--s-4);
+  padding:var(--s-3h) var(--s-4);
   cursor:pointer;user-select:none;
 }
+.ocard-head:focus-visible{outline:2px solid var(--brand);outline-offset:-2px;border-radius:var(--r-lg);
+}
 .ocard-left{flex:1;min-width:0}
-.ocard-meta{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-2);flex-wrap:wrap}
+.ocard-meta{display:flex;align-items:center;gap:var(--s-2);margin-top:var(--s-2);flex-wrap:wrap}
 .ocard-badge{
   display:inline-flex;align-items:center;gap:.25rem;
   font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.07em;
   padding:.2rem .55rem;border-radius:var(--r-sm);color:#fff;
   box-shadow:0 1px 3px rgba(0,0,0,.25);
 }
-.freq-badge{font-size:.72rem;line-height:1;filter:saturate(1.1)}
+.freq-badge{font-size:var(--t-xs);line-height:1;filter:saturate(1.1)}
 .diff-dots{display:flex;gap:3px;align-items:center}
-.diff-dot{width:5px;height:5px;border-radius:50%;background:var(--line-2);transition:background .2s}
-.diff-dot.on-1{background:var(--ok)}
-.diff-dot.on-2{background:var(--warn)}
-.diff-dot.on-3{background:var(--bad)}
+.diff-dot{width:6px;height:6px;border-radius:50%;background:var(--line-2);transition:background .2s,width .2s,height .2s}
+.diff-dot.on-1{background:var(--ok);width:6px;height:6px}
+.diff-dot.on-2{background:var(--warn);width:7px;height:7px}
+.diff-dot.on-3{background:var(--bad);width:8px;height:8px}
 .ocard-q{
-  font-size:var(--t-md);font-weight:600;color:var(--ink);
-  line-height:1.5;letter-spacing:-.014em;
+  font-size:var(--t-xl);font-weight:800;color:var(--ink);
+  line-height:1.35;letter-spacing:-.025em;
 }
+.ocard-ongs{display:flex;gap:3px;align-items:center;margin-left:var(--s-1)}
+.ocard-ong-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
 
-.ocard-actions{display:flex;align-items:center;gap:var(--s-2);flex-shrink:0;margin-top:2px}
+.ocard-actions{display:flex;align-items:center;gap:var(--s-2);flex-shrink:0}
 .ocard-fav{
   background:transparent;border:none;color:var(--ink-4);
-  font-size:1.15rem;line-height:1;cursor:pointer;padding:.1rem;
+  font-size:1.15rem;line-height:1;cursor:pointer;
+  min-width:44px;min-height:44px;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;
   transition:color .2s,transform .2s var(--ease-out);font-family:inherit;
 }
 .ocard-fav:hover{transform:scale(1.25)}
 .ocard-fav.on{color:var(--brand)}
 .ocard-arr{
-  color:var(--ink-4);font-size:.65rem;flex-shrink:0;margin-top:4px;
+  color:var(--ink-4);flex-shrink:0;margin-top:3px;
   transition:transform .3s var(--ease-out),color .2s;
 }
 .ocard.open .ocard-arr{transform:rotate(180deg);color:var(--brand)}
@@ -254,9 +293,16 @@ body.light::before{
 .ans-tbtn:hover{border-color:var(--ink-3);color:var(--ink-2)}
 .ans-tbtn.active{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft)}
 
-.ans-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
-.ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.8;letter-spacing:-.006em}
-.ans-txt strong{color:var(--ink);font-weight:600}
+.ans-label{display:none}
+.ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em}
+.ans-txt.ans-short{
+  font-size:var(--t-lg);font-weight:600;color:var(--ink);
+  line-height:1.55;letter-spacing:-.012em;
+  background:var(--brand-soft);
+  border-left:3px solid var(--brand);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+}
 
 .ans-tip{
   position:relative;
@@ -267,17 +313,17 @@ body.light::before{
   font-size:var(--t-sm);color:var(--ink);line-height:1.65;
 }
 .ans-tip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
-.ans-tip-lbl{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.25rem;display:flex;align-items:center;gap:.25rem}
+.ans-tip-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.25rem;display:flex;align-items:center;gap:.25rem}
 
 /* ---- Empty ---- */
 .empty{text-align:center;padding:4rem 2rem;color:var(--ink-3)}
 .empty-icon{font-size:3rem;margin-bottom:var(--s-3);opacity:.6}
-.empty-t{font-size:var(--t-md);font-weight:800;color:var(--ink-2);margin-bottom:var(--s-1)}
+.empty-t{font-size:var(--t-md);font-weight:700;color:var(--ink-2);margin-bottom:var(--s-1)}
 .empty-s{font-size:var(--t-sm);line-height:1.7;max-width:280px;margin:0 auto}
 
 
 /* === MODO ENSAYO === */
-#ensayo{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto}
+#ensayo{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
 .fc-hdr{
   background:color-mix(in srgb,var(--bg) 82%,transparent);
   backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);
@@ -288,7 +334,7 @@ body.light::before{
 .fc-hdr-title{font-size:var(--t-sm);font-weight:800;color:var(--ink-2);letter-spacing:.04em}
 .fc-exit{width:auto;padding:.32rem .75rem;font-size:var(--t-xs);font-weight:700;letter-spacing:.02em}
 .fc-body{flex:1;display:flex;justify-content:center;padding:var(--s-4) var(--s-4) 5rem}
-.fc-wrap{width:100%;max-width:560px}
+.fc-wrap{width:100%;max-width:var(--max-w-modal)}
 
 /* Progress */
 .fc-progress-bar{height:3px;background:var(--surface-hi);border-radius:var(--r-pill);margin-bottom:var(--s-2);overflow:hidden}
@@ -302,7 +348,7 @@ body.light::before{
 .fc-diff{display:flex;gap:3px;align-items:center}
 
 /* Question */
-.fc-q{font-size:var(--t-lg);font-weight:700;color:var(--ink);line-height:1.5;letter-spacing:-.018em;margin-bottom:var(--s-6)}
+.fc-q{font-size:var(--t-2xl);font-weight:700;color:var(--ink);line-height:1.35;letter-spacing:-.025em;margin-bottom:var(--s-6)}
 
 /* Show button */
 .fc-show-btn{
@@ -323,16 +369,18 @@ body.light::before{
   position:relative;
 }
 .fc-a-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
-.fc-a-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:var(--s-2);opacity:.85}
+.fc-a-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:var(--s-2);opacity:.85}
 .fc-a-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.005em}
 
 /* Eval buttons */
-.fc-eval{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s-2);margin-bottom:var(--s-3)}
+.fc-eval{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s-2);margin-bottom:var(--s-2)}
+.fc-eval-hint{font-size:var(--t-2xs);color:var(--ink-4);text-align:center;margin-bottom:var(--s-3);letter-spacing:.02em}
+@media(hover:none){.fc-eval-hint{display:none}}
 .fc-eval-btn{
   display:flex;flex-direction:column;align-items:center;gap:.3rem;
   padding:.75rem .25rem;border-radius:var(--r-lg);border:1.5px solid;
   background:transparent;cursor:pointer;font-family:inherit;
-  font-size:1.15rem;font-weight:800;
+  font-size:var(--t-xl);font-weight:800;min-height:56px;
   transition:background .12s,transform .18s var(--ease-out);
   -webkit-tap-highlight-color:transparent;
 }
@@ -341,15 +389,15 @@ body.light::before{
 .fc-eval-btn:active{transform:scale(.95)}
 .fc-bad{color:var(--bad);border-color:rgba(239,68,68,.3)}
 .fc-bad:hover{background:rgba(239,68,68,.08)}
-.fc-mid{color:var(--warn);border-color:rgba(245,158,11,.3)}
-.fc-mid:hover{background:rgba(245,158,11,.08)}
+.fc-mid{color:var(--warn);border-color:rgba(217,119,6,.35)}
+.fc-mid:hover{background:rgba(217,119,6,.1)}
 .fc-ok{color:var(--ok);border-color:rgba(34,197,94,.3)}
 .fc-ok:hover{background:rgba(34,197,94,.08)}
 
 /* End screen */
 .fc-end{text-align:center;padding:var(--s-6) 0}
 .fc-end-icon{font-size:3rem;margin-bottom:var(--s-3)}
-.fc-end-title{font-size:var(--t-lg);font-weight:800;color:var(--ink);margin-bottom:var(--s-1)}
+.fc-end-title{font-size:var(--t-3xl);font-weight:800;color:var(--ink);margin-bottom:var(--s-1);letter-spacing:-.03em}
 .fc-end-sub{font-size:var(--t-sm);color:var(--ink-3);margin-bottom:var(--s-6);font-weight:500}
 .fc-end-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s-2);margin-bottom:var(--s-5)}
 .fc-stat{
@@ -358,13 +406,13 @@ body.light::before{
   display:flex;flex-direction:column;align-items:center;gap:var(--s-1);
   border:1px solid var(--line);box-shadow:var(--sh-1);
 }
-.fc-stat-n{font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.03em}
-.fc-stat-l{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3)}
+.fc-stat-n{font-size:var(--t-2xl);font-weight:800;line-height:1;letter-spacing:-.03em}
+.fc-stat-l{font-size:var(--t-2xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
 .fc-stat-ok .fc-stat-n{color:var(--ok)}
 .fc-stat-mid .fc-stat-n{color:var(--warn)}
 .fc-stat-bad .fc-stat-n{color:var(--bad)}
 .fc-retry-btn,.fc-restart-btn{
-  width:100%;padding:.82rem;border-radius:var(--r-lg);
+  width:100%;padding:var(--s-3h);border-radius:var(--r-lg);
   font-size:var(--t-sm);font-weight:700;cursor:pointer;font-family:inherit;
   transition:transform .18s var(--ease-out),opacity .15s;
   margin-bottom:var(--s-2);display:block;letter-spacing:-.005em;
@@ -375,26 +423,27 @@ body.light::before{
 .fc-restart-btn:hover{border-color:var(--ink-3);transform:translateY(-1px)}
 .fc-empty{text-align:center;padding:var(--s-6) var(--s-4);color:var(--ink-3)}
 .fc-empty-icon{font-size:2.5rem;margin-bottom:var(--s-3);opacity:.6}
-.fc-empty-t{font-size:var(--t-md);font-weight:800;color:var(--ink-2);margin-bottom:var(--s-1)}
+.fc-empty-t{font-size:var(--t-md);font-weight:700;color:var(--ink-2);margin-bottom:var(--s-1)}
 .fc-empty-s{font-size:var(--t-sm);line-height:1.7}
 
 /* ensayo config screen */
-.fc-cfg{padding:var(--s-4) var(--s-4) 4rem;max-width:560px;margin:0 auto;width:100%}
-.fc-cfg-title{font-size:var(--t-xl);font-weight:800;color:var(--ink);margin-bottom:var(--s-1);letter-spacing:-.025em}
+.fc-cfg{padding:var(--s-4) var(--s-4) 4rem;max-width:var(--max-w-modal);margin:0 auto;width:100%}
+.fc-cfg-title{font-size:var(--t-2xl);font-weight:800;color:var(--ink);margin-bottom:var(--s-1);letter-spacing:-.03em}
 .fc-cfg-sub{font-size:var(--t-sm);color:var(--ink-3);margin-bottom:var(--s-5);line-height:1.5}
 .fc-cfg-section{margin-bottom:var(--s-5)}
-.fc-cfg-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-2)}
+.fc-cfg-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-2)}
 .fc-cfg-pills{display:flex;flex-wrap:wrap;gap:var(--s-2)}
 .fc-cfg-pill{
   padding:.38rem .8rem;border-radius:var(--r-pill);border:1.5px solid var(--line-2);
   background:transparent;font-size:var(--t-xs);font-weight:700;cursor:pointer;
   font-family:inherit;color:var(--ink-3);
+  min-height:44px;display:inline-flex;align-items:center;
   transition:transform .18s var(--ease-out),border-color .15s,color .15s,background .15s;
   -webkit-tap-highlight-color:transparent;line-height:1.4;letter-spacing:.01em;
 }
 .fc-cfg-pill:hover{transform:translateY(-1px);border-color:var(--ink-3);color:var(--ink-2)}
 .fc-cfg-pill:active{transform:scale(.96)}
-.fc-cfg-pill.sel{color:#fff;box-shadow:var(--sh-1)}
+.fc-cfg-pill.sel{color:var(--pill-c,var(--brand));border-color:var(--pill-c,var(--brand));background:color-mix(in srgb,var(--pill-c,var(--brand)) 18%,transparent);box-shadow:none}
 .fc-cfg-count{
   text-align:center;font-size:var(--t-sm);color:var(--ink-3);
   margin:var(--s-5) 0 var(--s-3);font-weight:500;
@@ -405,13 +454,13 @@ body.light::before{
   border-radius:var(--r-lg);color:#fff;font-size:var(--t-base);font-weight:800;
   cursor:pointer;font-family:inherit;letter-spacing:-.005em;
   transition:opacity .15s,transform .18s var(--ease-out),box-shadow .18s;
-  box-shadow:0 2px 12px rgba(245,166,35,.35);
+  box-shadow:0 2px 12px rgba(229,26,26,.35);
 }
-.fc-start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(245,166,35,.45)}
+.fc-start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(229,26,26,.45)}
 .fc-start-btn:active{transform:scale(.97)}
 .fc-start-btn:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
 .fc-fav-btn{
-  width:100%;padding:.82rem;background:transparent;
+  width:100%;padding:var(--s-3h);background:transparent;
   border:1.5px solid var(--brand-line);border-radius:var(--r-lg);
   color:var(--brand);font-size:var(--t-sm);font-weight:700;
   cursor:pointer;font-family:inherit;margin-bottom:var(--s-2);letter-spacing:-.005em;
@@ -427,40 +476,36 @@ body.light::before{
   position:absolute;
   top:calc(100% + 7px);
   right:0;
-  background:#1e293b;
-  color:#e2e8f0;
-  font-size:.63rem;
+  background:var(--tooltip-bg);
+  color:var(--tooltip-ink);
+  font-size:var(--t-2xs);
   font-weight:600;
   white-space:nowrap;
   padding:.28rem .52rem;
-  border-radius:6px;
+  border-radius:var(--r-sm);
   pointer-events:none;
   z-index:400;
-  border:1px solid #334155;
+  border:1px solid var(--tooltip-line);
   box-shadow:0 2px 8px rgba(0,0,0,.35);
-}
-body.light .ibtn[data-tooltip]:hover::after{
-  background:#1e293b;
-  color:#f1f5f9;
 }
 
 /* === NUEVA REBATIDA === */
-#nueva-rebatida{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto}
+#nueva-rebatida{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
 #nueva-rebatida.open{animation:slideUp .28s var(--ease-out)}
 @keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .nr-hdr{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);padding:.75rem var(--s-4);padding-top:max(.75rem,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
 .nr-hdr-left{display:flex;align-items:center;gap:.45rem}
 .nr-hdr-icon{font-size:1rem;line-height:1}
 .nr-hdr-title{font-size:var(--t-sm);font-weight:800;color:var(--ink-2);letter-spacing:.04em}
-.nr-body{flex:1;padding:var(--s-5) var(--s-4) 5rem;max-width:560px;margin:0 auto;width:100%}
+.nr-body{flex:1;padding:var(--s-5) var(--s-4) 5rem;max-width:var(--max-w-modal);margin:0 auto;width:100%}
 .nr-hero{margin-bottom:var(--s-5)}
-.nr-hero-title{font-size:var(--t-xl);font-weight:800;color:var(--ink);letter-spacing:-.025em;margin-bottom:var(--s-1)}
+.nr-hero-title{font-size:var(--t-2xl);font-weight:800;color:var(--ink);letter-spacing:-.03em;margin-bottom:var(--s-1)}
 .nr-hero-sub{font-size:var(--t-sm);color:var(--ink-3);line-height:1.5}
 .nr-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-2);margin-bottom:var(--s-3)}
 .nr-section{padding:var(--s-4)}
 .nr-section-last{padding-top:var(--s-3)}
 .nr-divider{height:1px;background:var(--line);margin:0 var(--s-4)}
-.nr-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-3);display:block}
+.nr-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-3);display:block}
 .nr-pills{display:flex;flex-wrap:wrap;gap:var(--s-2)}
 .nr-pill{padding:.38rem .82rem;border-radius:var(--r-pill);border:1.5px solid var(--line-2);background:transparent;font-size:var(--t-xs);font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink-3);letter-spacing:.01em;transition:transform .18s var(--ease-out),border-color .15s,color .15s,background .15s;-webkit-tap-highlight-color:transparent}
 .nr-pill:hover{transform:translateY(-1px);border-color:var(--ink-2);color:var(--ink-2)}
@@ -471,12 +516,51 @@ body.light .ibtn[data-tooltip]:hover::after{
 .nr-textarea::placeholder{color:var(--ink-4);font-style:italic}
 .nr-error{font-size:var(--t-xs);color:var(--bad);display:none;align-items:center;gap:.3rem;margin-bottom:var(--s-3);font-weight:600}
 .nr-error.visible{display:flex}
-.nr-send{width:100%;padding:.95rem;background:var(--brand);border:none;border-radius:var(--r-lg);color:#fff;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:var(--t-base);font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-.005em;box-shadow:0 2px 16px rgba(245,166,35,.4);transition:transform .2s var(--ease-out),box-shadow .2s;margin-bottom:var(--s-3)}
-.nr-send-icon{font-size:1.05rem;line-height:1}
-.nr-send:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(245,166,35,.45)}
+.nr-send{width:100%;padding:.95rem;background:var(--brand);border:none;border-radius:var(--r-lg);color:#fff;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:var(--t-base);font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-.005em;box-shadow:0 2px 16px rgba(229,26,26,.4);transition:transform .2s var(--ease-out),box-shadow .2s;margin-bottom:var(--s-3)}
+.nr-send-icon{font-size:var(--t-lg);line-height:1}
+.nr-send:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(229,26,26,.45)}
 .nr-send:active{transform:scale(.97)}
 .nr-footer{text-align:center;font-size:var(--t-2xs);color:var(--ink-4);line-height:1.5}
 .nr-footer strong{color:var(--ink-3);font-weight:700}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:calc(1.25rem + env(safe-area-inset-bottom));left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--tooltip-bg);color:var(--tooltip-ink);
+  font-size:var(--t-sm);font-weight:600;
+  padding:.6rem 1.1rem;border-radius:var(--r-pill);
+  box-shadow:var(--sh-3);pointer-events:none;
+  opacity:0;transition:opacity .2s var(--ease),transform .2s var(--ease-out);
+  z-index:500;white-space:nowrap;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* === SIDEBAR NAVEGACIÓN ONGS === */
+.rb-layout{display:flex;align-items:flex-start}
+.rb-sidebar{display:none}
+.rb-content{flex:1;min-width:0}
+.rb-sb-btn{width:100%;text-align:left;background:transparent;border:none;border-radius:var(--r-sm);padding:.5rem .7rem;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.5rem;transition:background .12s,color .12s}
+.rb-sb-btn:hover{background:var(--surface-hi);color:var(--ink)}
+.rb-sb-btn.rb-sb-active{background:var(--sb-color,var(--brand));color:#fff;font-weight:700}
+.rb-sb-btn.rb-sb-active:hover{background:var(--sb-color,var(--brand))}
+@media(min-width:960px){
+  .rb-sidebar{display:flex;flex-direction:column;flex-shrink:0;width:200px;position:sticky;top:var(--hdr-h,68px);height:calc(100vh - var(--hdr-h,68px));overflow-y:auto;overflow-x:hidden;border-right:1px solid var(--line);background:var(--surface);padding:.65rem .5rem;gap:.2rem}
+  .rb-sidebar::before{content:'ENTIDADES';display:block;font-size:.6rem;font-weight:800;letter-spacing:.12em;color:var(--ink-3);padding:.2rem .2rem .5rem;flex-shrink:0}
+  #ongFilt{display:none}
+  .ong-toggle-wrap{display:none}
+}
+/* ONG filter toggle — mobile */
+.ong-toggle-wrap{display:none}
+@media(max-width:959px){
+  .ong-toggle-wrap{display:flex;gap:var(--s-2);padding:var(--s-2) var(--s-4) 0;max-width:var(--max-w);margin:0 auto}
+  #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
+  #ongFilt.ong-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
+  #catFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
+  #catFilt.cat-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
+}
+.ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
+#ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
+#cat-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -489,25 +573,31 @@ body.light .ibtn[data-tooltip]:hover::after{
       <div class="credit">Programado por Daniel Marrero</div>
     </div>
     <div style="display:flex;align-items:center;gap:.35rem">
-      <button class="ibtn" id="thbtn" onclick="toggleTheme()" aria-label="Cambiar tema claro/oscuro" aria-pressed="false" data-tooltip="Cambiar tema">🌙</button>
-      <button class="ibtn" id="ensayobtn" aria-label="Modo ensayo" data-tooltip="Modo ensayo">🎯</button>
-      <button class="ibtn" id="fab-nueva" aria-label="Añadir rebatida" data-tooltip="Añadir rebatida">✍️</button>
+      <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="false"><span id="thbtn-icon">🌙</span><span class="ibtn-lbl">Tema</span></button>
+      <button class="ibtn ibtn--labeled" id="ensayobtn" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
+      <button class="ibtn ibtn--labeled" id="fab-nueva" aria-label="Añadir rebatida">✍️<span class="ibtn-lbl">Añadir</span></button>
     </div>
   </div>
 </div>
 
+<div class="rb-layout"><nav class="rb-sidebar" id="rbSidebar" aria-label="Filtro por ONG"></nav><div class="rb-content">
 <div class="sbar">
   <div class="sinput-wrap">
     <span class="sicon">🔍</span>
-    <input class="sinput" id="qinput" type="search" placeholder="Buscar objeción..." autocomplete="off" spellcheck="false" aria-label="Buscar objeción">
-    <button class="sclr" onclick="clearSearch()" aria-label="Limpiar búsqueda">✕</button>
+    <input class="sinput" id="qinput" type="search" placeholder="Buscar por objeción, argumento o consejo..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="Buscar objeción">
+    <button class="sclr" id="sclr-btn" aria-label="Limpiar búsqueda">✕</button>
   </div>
 </div>
-
 <div class="cfilt" id="ongFilt" role="group" aria-label="Filtro por ONG"></div>
+<div class="ong-toggle-wrap" id="ong-toggle-wrap">
+  <button class="ctag" id="ong-toggle-btn" aria-expanded="false" aria-controls="ongFilt"><span id="ong-toggle-label">Entidad</span><span class="ong-arrow">▾</span></button>
+  <button class="ctag" id="cat-toggle-btn" aria-expanded="false" aria-controls="catFilt"><span id="cat-toggle-label">Tipo</span><span class="ong-arrow">▾</span></button>
+</div>
 <div class="cfilt" id="catFilt" role="group" aria-label="Filtro por categoría"></div>
 <div class="rzone" id="results" aria-live="polite"></div>
+</div></div>
 
+<!-- VARS: última revisión 2025 — verificar fuentes y actualizar semestralmente -->
 <script type="application/json" id="obj-vars">
 {
   "{{aecc_socios}}": "764.745",
@@ -578,7 +668,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "¿Qué porcentaje del dinero va realmente a investigación?",
     "a": "La mayor parte del gasto va a la misión, repartido así: 59% a apoyo directo a pacientes, 25% a investigación y 16% a prevención. Como toda organización, hay costes de captación y administración, públicos y auditados. Y dentro de la investigación, la Fundación Científica destina el 94% directamente a proyectos: uno de los ratios más altos del sector. Gracias a eso, la supervivencia del cáncer de mama pasó del 60% al {{aecc_supervivencia_mama}} en cuarenta años.",
-    "tip": "Da el desglose exacto con confianza — los datos reales son más creíbles que un porcentaje vago. Si el donante pide el informe completo, cierra el alta primero.",
+    "tip": "Da el desglose exacto con confianza — los datos reales son más creíbles que un porcentaje vago. Si el donante pide el informe completo, indícale cómo consultarlo (memoria anual en aecc.es) y continúa la conversación — no supedites la información a la firma.",
     "freq": 3,
     "diff": 1,
     "short": "59% a pacientes, 25% a investigación, 16% a prevención. El 94% de la Fundación Científica va directo a proyectos. Auditado por Ernst & Young."
@@ -592,8 +682,8 @@ body.light .ibtn[data-tooltip]:hover::after{
       "AECC"
     ],
     "q": "Esto lo debería hacer el Gobierno",
-    "a": "Tienes razón, y el Estado tiene esa responsabilidad. Pero hay cosas que no cubre: el acompañamiento psicológico gratuito, la investigación más arriesgada sin retorno inmediato, o acompañar a quien acaba de salir del tratamiento y no sabe cómo seguir. Y hay un punto donde el Estado directamente falla: a las 3 de la madrugada, la AECC tiene el único servicio de atención oncológica 24 horas de Europa. Mientras el Estado llega donde llega, la AECC cubre el resto. ¿Quién lo haría si no existiera?",
-    "tip": "La pregunta final es poderosa porque no tiene respuesta cómoda. No ataca al Estado — reconoce sus límites y posiciona a la AECC como complemento necesario, no como alternativa ideológica.",
+    "a": "Tienes razón, y el Estado tiene esa responsabilidad. Pero hay cosas que no llega a cubrir: el acompañamiento psicológico gratuito, la investigación más arriesgada sin retorno inmediato, o acompañar a quien acaba de salir del tratamiento y no sabe cómo seguir. Y hay un punto donde el Estado directamente falla: a las 3 de la madrugada, la AECC tiene el único servicio de atención oncológica 24 horas de Europa. Mientras el Estado llega donde llega, la AECC cubre lo que viene después.",
+    "tip": "No ataca al Estado — reconoce sus límites y posiciona a la AECC como complemento necesario, no como alternativa ideológica. Evita el debate político sobre si el Estado debería hacer más; el argumento es lo que hace la AECC en el espacio que el Estado no cubre, independientemente de quién debería cubrirlo.",
     "freq": 3,
     "diff": 2,
     "short": "Tienes razón en que debería. Pero a las 3 de la mañana, la AECC tiene el único servicio de atención oncológica 24h de Europa."
@@ -607,11 +697,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "AECC"
     ],
     "q": "No creo que una cuota mensual cambie nada real",
-    "a": "Es normal sentirlo así — casi todos los socios pensaron lo mismo al principio. Lo que cambia cuando miles de personas hacen una pequeña aportación es que se financian proyectos que ninguna persona podría sostener sola: {{aecc_ayudas}} ayudas de investigación activas, más de {{aecc_psicooncologos}} psicooncólogos gratuitos, atención a {{aecc_personas}} personas en 2025. La AECC tiene {{aecc_socios}} socios. Ninguno de ellos solo. ¿Crees que eso existiría si cada uno hubiera pensado lo mismo?",
-    "tip": "La pregunta final activa la reflexión sin presionar. La estructura 'casi todos pensaron lo mismo' normaliza la duda y redirige hacia el impacto colectivo. No argumentes contra la persona — argumenta con la suma.",
+    "a": "Es normal sentirlo así — casi todos los socios pensaron lo mismo al principio. Lo que cambia cuando miles de personas hacen una pequeña aportación es que se financian proyectos que ninguna persona podría sostener sola: {{aecc_ayudas}} ayudas de investigación activas, más de {{aecc_psicooncologos}} psicooncólogos gratuitos, atención a {{aecc_personas}} personas en 2025. La AECC tiene {{aecc_socios}} socios. Ninguno de ellos solo — y juntos hacen posible lo que ninguno podría por separado.",
+    "tip": "La estructura 'casi todos pensaron lo mismo' normaliza la duda y redirige hacia el impacto colectivo. No argumentes contra la persona — argumenta con la suma. Evita terminar con pregunta retórica que ponga al donante en una posición sin salida cómoda.",
     "freq": 3,
     "diff": 2,
-    "short": "Casi todos pensaron lo mismo al principio. La AECC tiene 764.745 socios — ninguno solo. ¿Existiría eso si cada uno pensara que su aportación no cuenta?"
+    "short": "Casi todos pensaron lo mismo al principio. La AECC tiene {{aecc_socios}} socios — ninguno solo, y juntos hacen posible lo que ninguno podría por separado."
   },
   {
     "id": "aecc13",
@@ -637,8 +727,8 @@ body.light .ibtn[data-tooltip]:hover::after{
       "AECC"
     ],
     "q": "La cura del cáncer ya existe pero no interesa sacarla",
-    "a": "Hay algo de verdad en el fondo: las farmacéuticas priorizan líneas con viabilidad comercial. Pero hay un hecho científico que cambia el argumento: el cáncer no es una enfermedad — son más de 200, cada una con sus mecanismos. No puede existir 'una cura' como existe un antibiótico. Lo que sí existen son avances reales: el cáncer de mama pasó del 60% al 85% de supervivencia, y eso no se oculta porque no se puede. Los 3.000 investigadores que financia la AECC publican 354 resultados al año — en abierto. ¿Cómo se ocultan 354 publicaciones científicas disponibles para cualquiera?",
-    "tip": "Valida el fondo real (incentivos farmacéuticos) antes de desmontar la premisa. El hecho científico de las 200 enfermedades es el argumento más sólido. La pregunta final invita a reflexionar sin confrontar.",
+    "a": "Hay un hecho científico que desmonta la premisa: el cáncer no es una enfermedad — son más de 200, cada una con sus mecanismos propios. No puede existir 'una cura' como existe un antibiótico, por la misma razón que no hay una sola medicina para todas las infecciones. Lo que sí existe es la presión comercial real: las farmacéuticas priorizan lo que tiene mercado, y ahí la investigación independiente marca la diferencia. Los {{aecc_investigadores}} investigadores que financia la AECC publican {{aecc_publicaciones}} resultados al año — en abierto, disponibles para cualquier persona o institución. Eso no es compatible con una conspiración de ocultación.",
+    "tip": "No valides la premisa de que 'algo de verdad hay' en la teoría del ocultamiento — eso da credibilidad a la conspiración. El enfoque correcto es ir directo al hecho científico: 200 enfermedades distintas hacen imposible una única cura. La presión comercial en la industria es un dato real y distinto — menciónalo como justificación de la investigación independiente, no como confirmación de la teoría.",
     "freq": 3,
     "diff": 3,
     "short": "El cáncer son más de 200 enfermedades distintas. No puede existir 'una cura'. Los 3.000 investigadores financiados publican 354 resultados al año — en abierto."
@@ -667,11 +757,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "AECC"
     ],
     "q": "He perdido a alguien por cáncer y no puedo con este tema",
-    "a": "Lo siento mucho, de verdad. No tenemos que seguir hablando de esto si no quieres, y lo respeto completamente. Si en algún momento más adelante sientes que quieres que esa pérdida sirva para algo — que ayude a otra familia a no pasar por lo mismo — aquí va a estar la puerta abierta. Pero hoy no hace falta nada más. Cuídate.",
+    "a": "Lo siento mucho, de verdad. No tenemos que seguir hablando de esto si no quieres, y lo respeto completamente. Si en algún momento más adelante quieres hacer algo en memoria de esa persona — para que otras familias no pasen por lo mismo — aquí va a estar la puerta abierta. Pero hoy no hace falta nada más. Cuídate.",
     "tip": "Esta es la objeción más delicada de todas. Nunca argumentes, nunca presiones, nunca uses datos. Escucha, valida, y cierra con muchísima delicadeza. Si el donante llora o se emociona, para completamente y acompaña. Un alta en este contexto nunca debe ser el objetivo inmediato.",
     "freq": 3,
     "diff": 3,
-    "short": "No hace falta que hablemos más si no quieres. Si algún día quieres hacer algo con lo que viviste, la AECC está aquí."
+    "short": "No hace falta que hablemos más si no quieres. Si algún día quieres hacer algo en memoria de esa persona, la AECC está aquí."
   },
   {
     "id": "aecc12",
@@ -727,11 +817,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "AECC"
     ],
     "q": "El cáncer ya tiene mucha financiación pública, ¿para qué más?",
-    "a": "La financiación pública cubre los tratamientos, pero hay cosas que el Estado no financia: los estudios de prevención, el acompañamiento psicológico gratuito a pacientes y familias, o la investigación más arriesgada sin retorno inmediato. Y hay un punto donde el Estado directamente falla: cuando el paciente necesita apoyo a las 3 de la madrugada, la AECC tiene el único servicio de atención oncológica 24 horas de Europa. La pública cubre el tratamiento — la AECC cubre lo que viene antes y lo que viene después. ¿Quién acompaña al paciente cuando el tratamiento termina y la vida tiene que seguir?",
-    "tip": "Valida que la financiación pública existe y tiene su función. El argumento es lo que no cubre: acompañamiento emocional, investigación sin retorno inmediato, y el único servicio 24h de Europa. La pregunta de cierre activa la conversación humana.",
+    "a": "La financiación pública cubre los tratamientos aprobados, pero no financia todo lo que hace falta. La investigación más arriesgada — la que estudia tumores con mercado pequeño o mecanismos sin retorno comercial inmediato — no entra en la lógica pública ni en la de las farmacéuticas. El acompañamiento psicológico gratuito a pacientes y familias tampoco está cubierto por el sistema: los {{aecc_psicooncologos}} psicooncólogos de la AECC no son del sistema público, son de la AECC. Y los {{aecc_investigadores}} investigadores que financian publican {{aecc_publicaciones}} resultados al año que después el sistema sí puede adoptar. La pública llega hasta donde llega — la AECC financia lo que viene antes y lo que el sistema todavía no puede dar.",
+    "tip": "Valida que la financiación pública existe y tiene su función — el donante tiene razón en que existe. El argumento diferencial es la investigación básica sin retorno comercial y el acompañamiento emocional gratuito, que el sistema público no cubre. No uses el argumento del servicio 24h aquí — reservarlo para la objeción 'Esto lo debería hacer el Gobierno' (aecc11), donde tiene más fuerza.",
     "freq": 2,
     "diff": 2,
-    "short": "La financiación pública cubre tratamientos. La AECC financia lo que el Estado no llega: acompañamiento psicológico, investigación arriesgada y el único servicio oncológico 24h de Europa."
+    "short": "La financiación pública cubre tratamientos aprobados. La AECC financia la investigación arriesgada que las farmacéuticas no quieren y el acompañamiento psicológico gratuito que el sistema no da."
   },
   {
     "id": "aecc5",
@@ -758,7 +848,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "He visto en las noticias casos de malversación de fondos en ONGs",
     "a": "Ha habido casos en el sector, y es normal que generen desconfianza. Lo que diferencia a una organización seria de una que no lo es es la transparencia verificable: cuentas auditadas por Ernst & Young cada año, acreditación de la Fundación Lealtad, y 70 años operando con presencia en las 52 provincias. Ningún escándalo de malversación ha afectado a la AECC. Los mecanismos de control son los que tienen que existir, y están activos. ¿No es eso exactamente lo que deberías poder exigir a cualquier ONG?",
-    "tip": "No derivas a ningún canal externo — cierra el alta aquí. Si el donante sigue escéptico después de los argumentos, el problema no es información: es desconfianza profunda que no vas a resolver en calle. Acepta el no con respeto.",
+    "tip": "Si el donante quiere consultar las cuentas antes de comprometerse, indícale la memoria anual en aecc.es — es un derecho legítimo y no debes bloquearlo. Si tras los argumentos sigue escéptico, el problema no es información: es desconfianza profunda que no vas a resolver en calle. Acepta el no con respeto.",
     "freq": 2,
     "diff": 2,
     "short": "Ha habido casos en el sector. La AECC tiene 70 años, cuentas auditadas por Ernst & Young y acreditación Fundación Lealtad."
@@ -836,7 +926,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     "tip": "Este perfil quiere números reales y los merece — dáselos con confianza y sin defensividad. Quien hace esta pregunta ya está interesado: solo necesita evidencia. No improvises datos que no conoces con certeza — los verificados son más que suficientes.",
     "freq": 1,
     "diff": 1,
-    "short": "177.577 personas atendidas en 2025, 157M€ en investigación, supervivencia del mama del 60% al {{aecc_supervivencia_mama}} en 40 años. Datos auditados."
+    "short": "{{aecc_personas}} personas atendidas en 2025, {{aecc_investigacion_m}}M€ en investigación activa. El cáncer de mama pasó del 60% al {{aecc_supervivencia_mama}} de supervivencia en cuarenta años."
   },
   {
     "id": "aecc39",
@@ -953,7 +1043,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "He leído que la AECC tuvo algo que ver con el escándalo de corrupción del CNIO",
     "a": "Es importante separar las cosas. La AECC formaba parte del patronato del CNIO, que es el Centro Nacional de Investigaciones Oncológicas, junto al Gobierno central, el CSIC y varias comunidades autónomas. Cuando salió a la luz una investigación de la Fiscalía por presunta corrupción interna en ese centro, la AECC tomó una decisión muy clara: salir del patronato, precisamente para no contaminar su relación con pacientes, socios e investigadores. No hubo ninguna implicación de la AECC en la corrupción. Lo que hubo fue una decisión rápida para proteger su independencia. Los proyectos de investigación que la AECC financiaba en el CNIO siguen activos.",
-    "tip": "No entres en detalles del escándalo del CNIO ni de Barbacid — el captador no es portavoz judicial. El mensaje clave es: la AECC detectó el problema, se desvinculó rápido y protegió su imagen ante pacientes y socios. Eso es exactamente lo que hace una organización seria.",
+    "tip": "⚠ Usar solo si el donante menciona explícitamente este tema. No introducirlo proactivamente. No entres en detalles del escándalo del CNIO ni de Barbacid — el captador no es portavoz judicial. El mensaje clave es: la AECC detectó el problema, se desvinculó rápido y protegió su imagen ante pacientes y socios. Eso es exactamente lo que hace una organización seria.",
     "freq": 1,
     "diff": 3,
     "short": "La AECC salió del patronato del CNIO para proteger su independencia. No hubo implicación. Sus proyectos de investigación en el CNIO siguen activos."
@@ -968,7 +1058,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "¿Por qué la AECC no dijo nada cuando el escándalo de los cribados en Andalucía?",
     "a": "El escándalo de los cribados de mama en Andalucía fue muy grave: miles de mujeres no fueron llamadas a tiempo, con consecuencias reales. La responsabilidad es de la Junta de Andalucía, que incumplió sus propios compromisos de cribado. La AECC lleva años insistiendo públicamente en que la detección precoz salva vidas, y así lo hizo también aquí. Lo que no hace es entrar en confrontación política directa: trabaja desde la evidencia. Y algo importante: el dinero de los socios no tiene nada que ver con un fallo de gestión pública del que la AECC no es responsable.",
-    "tip": "Esta es una objeción con carga política real. No defiendas a la Junta de Andalucía ni ataques a nadie. El eje correcto es: la responsabilidad era del sistema público, la AECC señaló el problema desde su rol, y el dinero de los socios no tiene nada que ver con fallos de gestión pública. Si el donante está muy activado políticamente, escucha más de lo que hablas.",
+    "tip": "⚠ Usar solo si el donante menciona explícitamente este tema. No introducirlo proactivamente. Esta objeción tiene carga política real. No defiendas a la Junta de Andalucía ni ataques a nadie. El eje correcto es: la responsabilidad era del sistema público, la AECC señaló el problema desde su rol, y el dinero de los socios no tiene nada que ver con fallos de gestión pública. Si el donante está muy activado políticamente, escucha más de lo que hablas.",
     "freq": 1,
     "diff": 3,
     "short": "La responsabilidad fue de la Junta de Andalucía. La AECC trabaja desde la evidencia — el dinero de los socios no tiene nada que ver."
@@ -983,7 +1073,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "¿No se retiró el estudio ese de la cura del cáncer de páncreas? ¿Qué pasó con el dinero?",
     "a": "Eso no fue un proyecto de la AECC. Fue una investigación del CNIO liderada por Mariano Barbacid y financiada por otra fundación, CRIS Contra el Cáncer. Publicaron resultados prometedores, se recaudaron más de 3 millones, y después la revista retiró el estudio — no porque los datos fueran falsos, sino porque los investigadores tenían participación en una empresa privada y no lo declararon. El dinero lo gestiona CRIS, no la AECC. Son organizaciones distintas. La AECC publica cuentas auditadas y su Fundación Científica destina el 94% a investigación directa.",
-    "tip": "Este es un malentendido frecuente porque salió mucho en prensa y la gente mezcla ONGs. Sé claro y sin dramatismo: organización distinta, investigador distinto, dinero distinto. No critiques a CRIS ni a Barbacid más de lo necesario — el punto es simplemente separar los casos. Si el donante sigue escéptico, recuérdales que la AECC publica cuentas auditadas por Ernst & Young y que su Fundación Científica destina el 94% a proyectos de investigación directa.",
+    "tip": "⚠ Usar solo si el donante menciona explícitamente este tema. No introducirlo proactivamente. Es un malentendido frecuente porque salió mucho en prensa. Sé claro y sin dramatismo: organización distinta, investigador distinto, dinero distinto. No critiques a CRIS ni a Barbacid más de lo necesario. Si el donante sigue escéptico, recuérdales que la AECC publica cuentas auditadas por Ernst & Young y que su Fundación Científica destina el 94% a proyectos de investigación directa.",
     "freq": 1,
     "diff": 3,
     "short": "Eso fue CRIS Contra el Cáncer y el CNIO — no la AECC. Organizaciones distintas, financiación distinta."
@@ -998,7 +1088,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "¿Por qué no ayudan primero a los niños españoles que también lo necesitan?",
     "a": "Aldeas trabaja principalmente con niños de aquí. En 2025 atendió a {{ai_ninos}} niños y jóvenes en España — la inmensa mayoría viven en este país. Más de {{ai_ninos_riesgo}} de niños están en riesgo de pobreza o exclusión en España, más de un tercio de la población infantil. Su trabajo es sobre todo nacional: {{ai_aldeas}} aldeas, {{ai_centros_dia}} centros de día, programas en toda España. La cooperación internacional existe pero tiene financiación propia y separada. ¿No te parece justo empezar por casa, que es lo que hacen?",
-    "tip": "Esta objeción nace de una suposición falsa: que Aldeas trabaja 'fuera'. Desmóntala con el dato: la mayoría del trabajo es en España, con niños de aquí. El dato de 2,7 millones de niños en riesgo en España es contundente.",
+    "tip": "Esta objeción nace de una suposición falsa: que Aldeas trabaja 'fuera'. Desmóntala con el dato: la mayoría del trabajo es en España, con niños de aquí. El dato de {{ai_ninos_riesgo}} niños en riesgo en España es contundente. Evita entrar en el debate de si los niños de fuera merecen menos ayuda — es un terreno de valores donde polarizas sin ganar.",
     "freq": 3,
     "diff": 2,
     "short": "Aldeas trabaja principalmente en España — {{ai_ninos}} niños atendidos aquí en 2025. La cooperación internacional tiene financiación propia y separada."
@@ -1013,7 +1103,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "No me parece bien que los niños crezcan en una aldea en vez de una familia real",
     "a": "Lo mejor para un niño es su familia — y Aldeas piensa igual. Por eso dedica la mayor parte de su trabajo a evitar que el niño tenga que salir de la suya. Cuando no es posible, busca acogimiento familiar. Y solo cuando no hay otra opción existe la aldea: no un edificio impersonal, sino casas donde conviven 5 o 6 niños — siempre que es posible, los hermanos juntos — con un educador estable de referencia. ¿No es eso lo más parecido a un hogar cuando no queda otra?",
-    "tip": "Nunca discutas la premisa — todos preferimos una familia. El argumento es la jerarquía: Aldeas primero evita la separación, luego busca acogimiento familiar, y la aldea es el último recurso. El dato de que los hermanos no se separan es muy poderoso emocionalmente.",
+    "tip": "Nunca discutas la premisa — todos preferimos una familia, y Aldeas también. El argumento es la jerarquía: Aldeas primero evita la separación, luego busca acogimiento familiar, y la aldea es el último recurso. El dato de que los hermanos no se separan es muy poderoso emocionalmente. Evita usar el término 'institución' — puede reforzar la imagen que el donante tiene en la cabeza.",
     "freq": 3,
     "diff": 2,
     "short": "5-6 niños por casa, hermanos juntos, educador estable — no turnos. La aldea es lo más parecido a un hogar cuando no hay familia posible."
@@ -1028,7 +1118,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "Para eso ya están los servicios sociales / el Estado debería encargarse",
     "a": "El Estado tiene esa responsabilidad, y Aldeas trabaja con él: muchos niños llegan derivados por los servicios de protección. Pero hay un punto donde el sistema falla, y es el más grave: cuando un joven cumple 18 años, el Estado lo desampara de un día para otro. Sin familia, sin apoyo, con un colchón y una maleta. Aldeas sigue acompañándole — en 2025 apoyó a {{ai_jovenes}} jóvenes con vivienda, formación y empleo. El Estado llega hasta los 18; Aldeas no se va ahí. ¿Quién acompaña a ese chaval si no?",
-    "tip": "Valida que el Estado tiene la responsabilidad — genera confianza. El argumento más potente es el 'precipicio de los 18 años': el momento donde el sistema público abandona y Aldeas continúa. Es concreto, real y emocionalmente fuerte.",
+    "tip": "Valida que el Estado tiene la responsabilidad — genera confianza. El argumento más potente es el 'precipicio de los 18 años': el momento donde el sistema público abandona y Aldeas continúa. Es concreto, real y emocionalmente fuerte. Evita atacar a los servicios sociales o a la Administración — Aldeas trabaja con ellos, no en su contra.",
     "freq": 3,
     "diff": 2,
     "short": "El Estado falla en el momento más crítico: a los 18 años lo abandona. Aldeas sigue acompañando a {{ai_jovenes}} jóvenes hacia la autonomía."
@@ -1991,7 +2081,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     "tip": "Antes de argumentar, pregunta de dónde viene la percepción — muchas veces es una noticia puntual, una confusión con otra entidad o una experiencia de terceros. Si hay una crítica concreta y fundada, escúchala sin defensividad. El caso de la DANA es el argumento más sólido y reciente: datos concretos, escala excepcional y reconocimiento público.",
     "freq": 2,
     "diff": 2,
-    "short": "¿De dónde viene esa percepción? En la DANA: 6.019 personas movilizadas, 323.063 asistencias. Cruz Roja es la referencia del Plan Estatal de Protección Civil."
+    "short": "En la DANA movilizaron 6.019 personas en pocas horas. Son la referencia del Plan Estatal de Protección Civil — eso no se improvisa."
   },
   {
     "id": "cr11",
@@ -2077,11 +2167,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "CR"
     ],
     "q": "Hay organizaciones más especializadas para cada causa específica",
-    "a": "Es verdad, y para causas muy específicas puede tener sentido elegir una organización especializada. Lo que hace Cruz Roja es diferente: es la red que cubre el ciclo completo de la vulnerabilidad — emergencia, recuperación, inclusión, prevención — con presencia en toda España y en 41 países. No compite con las especializadas, cubre lo que ninguna especializada puede cubrir sola: la intersección entre todas esas necesidades en el mismo territorio y a la vez.",
-    "tip": "No compitas con organizaciones especializadas. El argumento es la amplitud y la intersección: Cruz Roja es la única red que puede atender a la misma persona en una emergencia, en su recuperación económica y en su soledad, todo en el mismo lugar.",
+    "a": "Es verdad, y para una causa muy concreta una organización especializada puede ir muy al fondo. Pero hay algo que solo Cruz Roja puede hacer: acompañar a la misma persona en momentos distintos y necesidades distintas. Una persona mayor que vive sola puede necesitar teleasistencia hoy, apoyo alimentario mañana y orientación laboral para su hijo. Ninguna organización especializada en uno solo de esos ámbitos puede cubrir los tres. Cruz Roja es la única red que trabaja emergencia, exclusión, soledad, empleo e infancia a la vez, en el mismo territorio.",
+    "tip": "El argumento diferencial frente a las especializadas es la intersección de necesidades en la misma persona: Cruz Roja atiende la complejidad real de la vulnerabilidad, no solo una dimensión de ella. No compites con las especializadas — ocupas un espacio que ellas no pueden cubrir.",
     "freq": 1,
     "diff": 1,
-    "short": "Las especializadas cubren su causa. Cruz Roja acompaña a la misma persona en emergencia, exclusión y soledad — a la vez."
+    "short": "Las especializadas cubren una dimensión. Cruz Roja acompaña a la misma persona en emergencia, empleo, soledad e infancia — todo a la vez."
   },
   {
     "id": "cr16",
@@ -2092,11 +2182,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "CR"
     ],
     "q": "¿Tenéis transparencia total en vuestras cuentas?",
-    "a": "Sí. Cruz Roja publica memorias anuales auditadas externamente con el desglose por programa, accesibles a cualquier persona. Es una de las organizaciones con mayor nivel de rendición de cuentas del sector en España. Las cuentas incluyen el desglose por área de actuación, los ingresos por fuente y los gastos por naturaleza. Cualquier socio puede consultarlas.",
-    "tip": "Responde con seguridad y brevedad. Si el donante quiere ver las cuentas antes de comprometerse, no lo bloquees — pero no derivas el alta a otro momento. Las cuentas son públicas y puede consultarlas cuando quiera, incluso después de apuntarse.",
+    "a": "Sí. Cruz Roja publica memorias anuales auditadas por una firma independiente con el desglose por programa, accesibles a cualquier persona. El nombre de la auditora aparece en la propia memoria. Es una de las organizaciones con mayor nivel de rendición de cuentas del sector en España. Las cuentas incluyen el desglose por área de actuación, los ingresos por fuente y los gastos por naturaleza.",
+    "tip": "Responde con seguridad y brevedad. Si el donante quiere ver las cuentas antes de comprometerse, no lo bloquees — las cuentas son públicas y puede consultarlas en cualquier momento en cruzroja.es.",
     "freq": 1,
     "diff": 1,
-    "short": "Sí. Cuentas auditadas externamente, publicadas cada año. Cualquier socio puede consultarlas."
+    "short": "Sí. Cuentas auditadas por firma independiente, publicadas cada año en cruzroja.es. Cualquier persona puede consultarlas."
   },
   {
     "id": "cr24",
@@ -2108,7 +2198,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "Con lo que cobran los directivos de Cruz Roja algo no cuadra",
     "a": "Los salarios de Cruz Roja son públicos y están en sus cuentas anuales. Son retribuciones de mercado para una organización con {{cr_presupuesto}} millones de presupuesto, {{cr_voluntarios}} voluntarios y presencia en 41 países — comparable a cualquier organización pública o privada de ese tamaño. Lo que no es cierto es que esos salarios vacíen los programas: en 2024 Cruz Roja atendió a {{cr_personas_espana}} de personas en España y a más de 11 millones en total. Esos resultados no se explican si el dinero se va en sueldos.",
-    "tip": "No entres a defender sueldos concretos que no conoces. El argumento correcto es: son públicos, son de mercado para el tamaño de la organización, y los resultados de impacto hablan por sí solos.",
+    "tip": "No entres a defender sueldos concretos que no conoces. El argumento correcto es: son públicos (en la memoria anual en cruzroja.es), son de mercado para el tamaño de la organización, y los resultados de impacto hablan por sí solos.",
     "freq": 1,
     "diff": 1,
     "short": "Salarios públicos y de mercado para una organización de 979M€. Los resultados hablan: 2,7M personas atendidas en 2024."
@@ -2167,7 +2257,7 @@ body.light .ibtn[data-tooltip]:hover::after{
       "CR"
     ],
     "q": "Me han dicho que hay muchos gastos internos antes de que llegue la ayuda",
-    "a": "Es una percepción que existe sobre las grandes organizaciones, y en algunos casos del sector ha tenido fundamento. En Cruz Roja, las cuentas son públicas y auditadas externamente. Lo que sí es cierto es que cualquier organización de esta escala tiene costes de estructura: logística, personal, tecnología. Esos costes son los que permiten que en una catástrofe puedan estar sobre el terreno en horas, no en semanas. La alternativa a no tener estructura no es que llegue más dinero a los beneficiarios — es que no llegue nada a tiempo.",
+    "a": "Es una duda razonable, y entiendo que venga de ahí. En algunos casos del sector ha tenido fundamento — no lo voy a negar. En Cruz Roja, las cuentas son públicas y auditadas por una firma independiente. Lo que sí es cierto es que cualquier organización de esta escala tiene costes de estructura: logística, personal, tecnología. Esos costes son los que permiten que en una catástrofe puedan estar sobre el terreno en horas, no en semanas. La alternativa a no tener estructura no es que llegue más dinero a los beneficiarios — es que no llegue nada a tiempo.",
     "tip": "No niegues que hay costes de estructura. El argumento honesto y sólido es que esos costes son los que permiten la capacidad de respuesta. El ejemplo de la DANA — en el terreno el día 1 — es la mejor demostración.",
     "freq": 1,
     "diff": 2,
@@ -2182,7 +2272,7 @@ body.light .ibtn[data-tooltip]:hover::after{
       "CR"
     ],
     "q": "He oído que Cruz Roja cobra por algunos servicios que debería dar gratis",
-    "a": "Es cierto que algunos servicios de Cruz Roja tienen coste para quien puede pagarlo — y eso, lejos de ser un problema, es lo que permite que el mismo servicio sea gratuito para quien no puede. El modelo se basa en aportar según la capacidad económica de cada persona, y varía según el servicio y el convenio con cada administración. El dinero de los socios financia precisamente la brecha: lo que cubre a quienes no pueden pagar. No es que cobren por todo — es que quienes pueden permitírselo ayudan a sostener a quienes no.",
+    "a": "Entiendo que eso choca — si se asocia Cruz Roja con ayuda, parece contradictorio. La explicación es esta: algunos servicios tienen coste para quien puede pagarlo, y eso es exactamente lo que permite que el mismo servicio sea gratuito para quien no puede. El modelo se basa en aportar según la capacidad económica de cada persona, y varía según el servicio y el convenio con cada administración. El dinero de los socios financia precisamente la brecha: lo que cubre a quienes no pueden pagar. No es que cobren por todo — es que quienes pueden permitírselo ayudan a sostener a quienes no.",
     "tip": "No niegues que algunos servicios tienen coste — sería poco creíble. El argumento honesto es el modelo de cofinanciación: tarifas para quien puede, gratuito para quien no puede. Los socios financian esa diferencia.",
     "freq": 1,
     "diff": 2,
@@ -2287,11 +2377,11 @@ body.light .ibtn[data-tooltip]:hover::after{
       "FJC"
     ],
     "q": "¿Josep Carreras sigue vivo? Pensaba que había fallecido",
-    "a": "Sigue vivo, afortunadamente. Josep Carreras sobrevivió a una leucemia en 1987-1988 gracias a un trasplante de médula ósea. Ese año creó la Fundación para que ningún paciente tuviera que pasar lo que él pasó sin tener acceso a un donante. En junio de 2026 participó en la conmemoración de los 50 años del primer trasplante alogénico realizado en España, en el Hospital Clínic de Barcelona — el mismo procedimiento que le salvó la vida. La Fundación lleva más de 35 años trabajando y tiene estructura y equipo propio para funcionar con independencia del estado de salud de su fundador.",
-    "tip": "Esta es una confusión frecuente, no una mala intención. Responde con naturalidad y sin extrañeza. El dato de su propia supervivencia es el argumento más humano y poderoso para explicar el origen de la Fundación.",
+    "a": "Sigue vivo, afortunadamente. Josep Carreras sobrevivió a una leucemia en 1987-1988 gracias a un trasplante de médula ósea. Ese año creó la Fundación para que ningún paciente tuviera que pasar lo que él pasó sin tener acceso a un donante. Lleva más de 35 años activo en la Fundación y sigue implicado públicamente. La organización tiene estructura y equipo propio para funcionar con independencia del estado de salud de su fundador.",
+    "tip": "Nota: esta no es una objeción a donar — es una confusión factual que abre la conversación. Resuélvela con naturalidad y sin extrañeza, y úsala como punto de entrada para contar la historia de la Fundación. El relato de supervivencia de Carreras es el origen más humano y auténtico de cualquier ONG del sector. No añadas datos de eventos recientes que no puedas verificar en el momento.",
     "freq": 3,
     "diff": 1,
-    "short": "Sigue vivo. Sobrevivió a una leucemia en 1987-1988. En junio de 2026 participó en la conmemoración de los 50 años del primer trasplante alogénico en España."
+    "short": "Sigue vivo. Sobrevivió a una leucemia en 1987-1988 gracias a un trasplante de médula. Ese año creó la Fundación — lleva más de 35 años activo en ella."
   },
   {
     "id": "fjc2",
@@ -2306,7 +2396,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     "tip": "El desconocimiento de la FJC es frecuente fuera del entorno oncológico. No te pongas a la defensiva. El dato del mandato del Ministerio y la acreditación Severo Ochoa son los argumentos más sólidos de credibilidad institucional.",
     "freq": 3,
     "diff": 1,
-    "short": "Mandato del Ministerio de Sanidad. 35 años de trayectoria. Instituto con acreditación Severo Ochoa — el máximo reconocimiento científico en España."
+    "short": "El Ministerio de Sanidad les encargó gestionar el único registro de donantes de médula en España. 35 años. Cuentas auditadas y publicadas."
   },
   {
     "id": "fjc4",
@@ -2362,7 +2452,7 @@ body.light .ibtn[data-tooltip]:hover::after{
       "FJC"
     ],
     "q": "¿En qué se diferencia de la AECC u otras organizaciones oncológicas?",
-    "a": "La AECC trabaja todos los tipos de cáncer con enfoque en prevención, acompañamiento a pacientes y financiación de investigación general. La Fundación Josep Carreras está especializada exclusivamente en leucemia y hemopatías malignas, y tiene algo que ninguna otra ONG oncológica tiene: gestiona por mandato oficial del Ministerio de Sanidad el REDMO, el único registro español de donantes de médula. Cuando un médico necesita un donante para su paciente, pasa obligatoriamente por aquí. También sostiene el Instituto de Investigación contra la Leucemia, el mayor centro europeo de investigación exclusiva en esta enfermedad. No compiten: se complementan. ¿No tiene sentido que exista alguien especializado solo en esto?",
+    "a": "La AECC trabaja todos los tipos de cáncer con enfoque en prevención, acompañamiento a pacientes y financiación de investigación general. La Fundación Josep Carreras está especializada exclusivamente en leucemia y hemopatías malignas, y tiene algo que ninguna otra ONG oncológica tiene: gestiona por mandato oficial del Ministerio de Sanidad el REDMO, el único registro español de donantes de médula. Cuando un médico necesita un donante para su paciente, pasa obligatoriamente por aquí. También sostiene el Instituto de Investigación contra la Leucemia, uno de los principales centros europeos de investigación exclusiva en leucemia. No compiten: se complementan. ¿No tiene sentido que exista alguien especializado solo en esto?",
     "tip": "No critiques a la AECC ni a ninguna otra organización. El diferenciador de la FJC es claro e irrebatible: el mandato oficial del Ministerio y la especialización exclusiva en leucemia. Ese 'paso obligatorio' es el argumento más sólido.",
     "freq": 2,
     "diff": 1,
@@ -2377,8 +2467,8 @@ body.light .ibtn[data-tooltip]:hover::after{
       "FJC"
     ],
     "q": "¿La cuota va a investigación o también a pagar sueldos de la fundación?",
-    "a": "La Fundación publica su desglose de gasto anual: el 38% va a búsqueda de donante y trasplante, el 35% a investigación en el Instituto, el 10% a estructura y gestión del REDMO, el 10% a administración y captación de fondos, y el 7% a sensibilización. Es decir, el 90% va a misión directa. Las cuentas están auditadas y son públicas. Los sueldos del equipo están dentro de esas partidas — son lo que permite que el sistema funcione. ¿Te cuadra que 9 de cada 10 euros vayan directos a la misión?",
-    "tip": "La FJC sí publica este desglose y es uno de los más eficientes del sector. A diferencia de otras ONGs, puedes dar el desglose exacto con confianza. El 90% a misión es el dato clave.",
+    "a": "La Fundación publica sus cuentas auditadas con el desglose completo por partida. El dato clave: el 90% va a misión directa — búsqueda de donante, trasplante e investigación. El 10% restante son los costes de estructura que permiten que el sistema funcione: sin ellos no habría REDMO ni Instituto. Los sueldos están dentro de esas partidas, son públicos y están en la memoria anual.",
+    "tip": "El 90% a misión es el dato que funciona en calle — no hace falta el desglose exacto. Si el donante quiere profundizar: 38% búsqueda y trasplante, 35% investigación, 10% estructura REDMO, 10% administración, 7% sensibilización. Puedes dar el desglose si lo preguntan, pero no lo uses como apertura — es demasiado técnico para una conversación de calle.",
     "freq": 2,
     "diff": 1,
     "short": "El 90% va a misión: 38% búsqueda de donante, 35% investigación. Cuentas auditadas y públicas."
@@ -2411,7 +2501,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     "tip": "Valida que la probabilidad de ser llamado es baja — sería falso negarlo. Pero gira hacia el impacto colectivo: cuantos más donantes hay, más pacientes encuentran su match. Y el dato del 81% sin cirugía desmonta el miedo al proceso.",
     "freq": 2,
     "diff": 1,
-    "short": "La probabilidad de ser llamado es baja, sí. Pero el 81% de las donaciones son sin cirugía — y 794 trasplantes coordinados en 2025 demuestran que el sistema funciona."
+    "short": "La probabilidad de ser llamado como donante de médula es baja, sí. Pero el 81% de las donaciones son sin cirugía — y {{fjc_trasplantes}} trasplantes coordinados en 2025 demuestran que el sistema funciona."
   },
   {
     "id": "fjc23",
@@ -2423,7 +2513,7 @@ body.light .ibtn[data-tooltip]:hover::after{
     ],
     "q": "Prefiero donar sangre que dinero, ¿cómo puedo hacerlo?",
     "a": "Donar sangre es estupendo y siempre hace falta. Pero son dos cosas distintas: la sangre va a transfusiones, mientras que la médula ósea es lo que necesita un paciente de leucemia para el trasplante. Inscribirse en el registro de donantes de médula es gratuito, sin cirugía en el 81% de los casos, y puede hacerse en los centros de donación de sangre. Pero el dinero de los socios es lo que financia el registro, la búsqueda internacional del donante compatible y la investigación. Los dos aportes son necesarios y se complementan.",
-    "tip": "Valida el impulso solidario. Explica la diferencia entre sangre y médula sin tecnicismos. Si el donante quiere inscribirse en el registro, facilítalo — pero introduce la cuota como el complemento que hace posible que el sistema funcione.",
+    "tip": "Valida el impulso solidario. Explica la diferencia entre sangre y médula sin tecnicismos. Si la persona quiere inscribirse como donante de médula, facilítalo — pero introduce la cuota de socio como el complemento que hace posible que el registro funcione. Distingue siempre 'donante de médula' (voluntario del REDMO) de 'socio' (aportación económica) — son dos formas de contribuir distintas.",
     "freq": 2,
     "diff": 1,
     "short": "Donar sangre va a transfusiones. Un paciente de leucemia necesita médula ósea — y la Fundación es quien hace posible encontrar al donante compatible."
@@ -2452,7 +2542,7 @@ body.light .ibtn[data-tooltip]:hover::after{
       "FJC"
     ],
     "q": "El cáncer ya tiene mucha financiación, ¿qué aporta una fundación más?",
-    "a": "La leucemia es un mundo muy específico dentro del cáncer, y la investigación general no llega de la misma forma. La Fundación Josep Carreras gestiona por mandato oficial del Ministerio de Sanidad el único registro nacional de donantes de médula — el REDMO —, con 520.850 donantes activos, quinto de Europa. Eso no lo hace ninguna otra organización. Además sostiene el Instituto de Investigación, el centro más grande de Europa dedicado en exclusiva a esta enfermedad. No es una fundación más: es la infraestructura que hace posible encontrar donante en 26 días de mediana. ¿Conoces otra organización que sostenga algo así?",
+    "a": "La leucemia es un mundo muy específico dentro del cáncer, y la investigación general no llega de la misma forma. La Fundación Josep Carreras gestiona por mandato oficial del Ministerio de Sanidad el único registro nacional de donantes de médula — el REDMO —, con 520.850 donantes activos, quinto de Europa. Eso no lo hace ninguna otra organización. Además sostiene el Instituto de Investigación, uno de los principales centros europeos dedicados en exclusiva a esta enfermedad. No es una fundación más: es la infraestructura que hace posible encontrar donante en 26 días de mediana. ¿Conoces otra organización que sostenga algo así?",
     "tip": "El argumento clave es el mandato oficial: el Ministerio de Sanidad les encargó el REDMO. No son una ONG más actuando por iniciativa propia — gestionan el único registro nacional. Ese dato transforma completamente la percepción.",
     "freq": 2,
     "diff": 2,
@@ -2602,7 +2692,7 @@ body.light .ibtn[data-tooltip]:hover::after{
       "FJC"
     ],
     "q": "Ya colaboro con la investigación del cáncer a través de otra organización",
-    "a": "Eso dice mucho de ti. La Fundación Josep Carreras hace algo que probablemente ninguna otra organización en la que estés cubre: gestiona el único registro oficial de donantes de médula de España y financia el mayor centro europeo de investigación exclusiva en leucemia. Si la organización que apoyas trabaja el cáncer en general, la FJC cubre el hueco específico de la leucemia y las enfermedades de la sangre. No se pisan: cubren huecos distintos.",
+    "a": "Eso dice mucho de ti. La Fundación Josep Carreras hace algo que probablemente ninguna otra organización en la que estés cubre: gestiona el único registro oficial de donantes de médula de España y financia uno de los principales centros europeos de investigación exclusiva en leucemia. Si la organización que apoyas trabaja el cáncer en general, la FJC cubre el hueco específico de la leucemia y las enfermedades de la sangre. No se pisan: cubren huecos distintos.",
     "tip": "Valida el compromiso existente. El argumento es la complementariedad específica: el REDMO y la investigación en leucemia son un hueco distinto que probablemente ninguna organización general cubre.",
     "freq": 1,
     "diff": 1,
@@ -3134,6 +3224,19 @@ body.light .ibtn[data-tooltip]:hover::after{
     "short": "No te pido que te hagas el test. Te pido que quien quiera hacerlo — y cambiar lo que le pasa después — tenga esa posibilidad."
   },
   {
+    "id": "fpm_farmaco",
+    "cat": "utilidad",
+    "catLabel": "❓ Impacto",
+    "catColor": "#dc2626",
+    "ongs": ["FPM"],
+    "q": "¿Si ya hay fármacos para el Alzheimer, para qué seguir investigando?",
+    "a": "Es una noticia importante y real: hay nuevos tratamientos que enlentecen el avance de la enfermedad en fases muy tempranas. Pero hay dos cosas que todavía no existen: una cura, y acceso universal a esos tratamientos. Los fármacos disponibles requieren un diagnóstico muy precoz — en una fase en que la mayoría de las personas todavía no saben que tienen la enfermedad. Eso solo es posible con biomarcadores y pruebas de detección que la Fundación Pascual Maragall está desarrollando. Y los tratamientos actuales, por ahora, solo están disponibles en algunos países y a un coste elevado. La investigación de la Fundación trabaja exactamente en eso: diagnóstico precoz para que los fármacos lleguen a tiempo, e investigación en etapas más avanzadas donde esos tratamientos todavía no funcionan.",
+    "tip": "No niegues que hay avances farmacológicos — son reales y es buena noticia. El argumento tiene dos ejes: (1) los nuevos fármacos requieren diagnóstico precoz, que es exactamente lo que investiga la Fundación; (2) solo funcionan en fases muy tempranas y queda mucho por resolver en fases moderadas y avanzadas. Si el donante pregunta por nombres concretos de fármacos, no improvises — redirige al eje del diagnóstico precoz.",
+    "freq": 2,
+    "diff": 2,
+    "short": "Los nuevos fármacos enlentecen la enfermedad, sí. Pero solo funcionan si el diagnóstico llega muy pronto — y eso es exactamente lo que investiga la Fundación."
+  },
+  {
     "id": "fpm11",
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
@@ -3614,6 +3717,19 @@ body.light .ibtn[data-tooltip]:hover::after{
     "short": "El panda es la cara — en España: lince de {{wwf_lince_inicio}} a {{wwf_lince}} ejemplares, Doñana ante la UE, lobo en 4 CCAA, océanos, clima, crimen ambiental."
   },
   {
+    "id": "wwf_nuclear",
+    "cat": "confianza",
+    "catLabel": "🤔 Desconfianza",
+    "catColor": "#7c3aed",
+    "ongs": ["WWF"],
+    "q": "WWF se opone a la nuclear y yo creo que es la mejor solución para el clima, ¿cómo lo justificáis?",
+    "a": "Es un debate real y legítimo, y hay personas con buena fe en los dos lados. La posición de WWF es que la energía nuclear presenta riesgos de seguridad, genera residuos radioactivos sin solución definitiva y tiene tiempos de construcción demasiado largos para los plazos de la crisis climática. Pero lo más importante: WWF no trabaja a favor o en contra de tecnologías concretas por capricho — trabaja desde la evidencia científica disponible. Puedes no estar de acuerdo con esa posición. Y tu cuota no implica que endoses cada postura de la organización: implica que apoyas el trabajo en biodiversidad, lince, Doñana, océanos y lucha contra el crimen ambiental.",
+    "tip": "No entres en un debate técnico sobre la nuclear — no vas a ganar ese debate en calle y no es necesario. El eje correcto es: las posiciones de política energética son debatibles, pero el trabajo de conservación en el que va la cuota no lo es. Separa la posición política de la misión. Si el donante insiste en que no puede apoyar a una organización que se opone a la nuclear, acepta el no con respeto.",
+    "freq": 2,
+    "diff": 3,
+    "short": "Es un debate legítimo. Tu cuota financia el lince, Doñana, los océanos y el crimen ambiental — no implica endosar cada posición de política energética."
+  },
+  {
     "id": "wwf1",
     "cat": "utilidad",
     "catLabel": "❓ Impacto",
@@ -3987,224 +4103,464 @@ body.light .ibtn[data-tooltip]:hover::after{
     "freq": 1,
     "diff": 3,
     "short": "Ha habido denuncias documentadas en África. WWF reconoció los problemas, encargó una investigación independiente e implementó una política global de derechos humanos."
+  },
+
+  {
+    "id": "gen_iban",
+    "cat": "confianza",
+    "catLabel": "🤔 Desconfianza",
+    "catColor": "#7c3aed",
+    "ongs": ["General"],
+    "q": "¿Es seguro daros mi IBAN en la calle?",
+    "a": "Es una pregunta muy razonable. El IBAN solo permite realizar cargos autorizados — no extracciones ni transferencias desde tu cuenta. Lo que autorizas es una domiciliación SEPA, que tiene una protección específica: tienes 8 semanas para reclamar cualquier cargo no autorizado directamente a tu banco, y el banco está obligado a devolverlo sin necesidad de justificación. Además, el IBAN no es un dato secreto — aparece en cualquier factura o transferencia que hayas hecho.",
+    "tip": "No minimices la pregunta ni la trates como desconfianza hacia ti personalmente. La protección SEPA es un argumento real y sólido. Si el donante quiere consultarlo antes de firmar, dale espacio — no hay ninguna urgencia que justifique presionar en este punto.",
+    "freq": 3,
+    "diff": 1,
+    "short": "El IBAN solo permite cargos autorizados. Si aparece algo que no reconoces, tu banco te devuelve el importe en hasta 8 semanas sin necesidad de justificación."
+  },
+  {
+    "id": "gen_cancelar",
+    "cat": "confianza",
+    "catLabel": "🤔 Desconfianza",
+    "catColor": "#7c3aed",
+    "ongs": ["General"],
+    "q": "¿Cómo cancelo si cambio de opinión?",
+    "a": "Cancelar es sencillo y sin coste: puedes llamar o escribir directamente a la organización para darte de baja, o cancelar la domiciliación desde tu propio banco en cualquier momento. No hay permanencia mínima ni penalización. La cuota solo se cobra mientras eres socio activo.",
+    "tip": "Esta pregunta no es señal de que el donante vaya a cancelar — es señal de que está considerando comprometerse y quiere saber que tiene salida. Cuanto más fácil parece cancelar, más fácil resulta comprometerse. Respóndela con total naturalidad y sin defensividad.",
+    "freq": 3,
+    "diff": 1,
+    "short": "Cancelas cuando quieras: desde tu banco o llamando a la organización. Sin permanencia ni penalización."
+  },
+  {
+    "id": "gen_plazo",
+    "cat": "confianza",
+    "catLabel": "🤔 Desconfianza",
+    "catColor": "#7c3aed",
+    "ongs": ["General"],
+    "q": "¿Cuánto tiempo me comprometo? ¿Hay permanencia mínima?",
+    "a": "No hay permanencia mínima. Puedes darte de baja cuando quieras, sin penalización ni preaviso obligatorio. La cuota se carga mensualmente mientras eres socio. Muchos socios llevan años porque quieren — no porque estén obligados.",
+    "tip": "Respuesta directa y breve. No añadas condicionantes ni matices que puedan sonar a letra pequeña. Cuanto más simple y clara, más confianza genera.",
+    "freq": 3,
+    "diff": 1,
+    "short": "Sin permanencia mínima. Sin penalización. Cancelas cuando quieras."
+  },
+  {
+    "id": "gen_cambiar_importe",
+    "cat": "economica",
+    "catLabel": "💸 Económica",
+    "catColor": "#16a34a",
+    "ongs": ["General"],
+    "q": "¿Puedo cambiar el importe de la cuota más adelante?",
+    "a": "Sí, puedes ajustar tu cuota en cualquier momento contactando con la organización — tanto para aumentarla como para reducirla. No hay importe mínimo fijo más allá del acordado al darte de alta. Muchas personas empiezan con una cantidad cómoda y la ajustan con el tiempo según sus posibilidades.",
+    "tip": "Si el donante dice que ahora no puede comprometerse a más, propón empezar con una cuota pequeña — mejor un compromiso real y sostenible que uno mayor que no se mantenga.",
+    "freq": 2,
+    "diff": 1,
+    "short": "Sí. Puedes subir o bajar el importe cuando quieras contactando con la organización."
+  },
+  {
+    "id": "gen_donativo_unico",
+    "cat": "economica",
+    "catLabel": "💸 Económica",
+    "catColor": "#16a34a",
+    "ongs": ["General"],
+    "q": "Prefiero hacer una donación única en vez de cuota mensual",
+    "a": "Una donación única es bienvenida y tiene valor real. La diferencia es que las organizaciones solo pueden planificar investigadores, programas y servicios de atención con ingresos predecibles. Una cuota de 10 euros al mes permite sostener cosas que ninguna donación puntual puede financiar sola: un investigador trabaja durante años, no días. Dicho esto, si prefiries empezar con una cuota pequeña y ver cómo te sientes, también es una opción perfectamente válida.",
+    "tip": "No hagas sentir al donante que su propuesta no vale. Si insiste en el donativo único, facilítalo — es mejor que nada y puede ser el primer paso hacia una relación más larga. El argumento de la previsibilidad es honesto y concreto.",
+    "freq": 2,
+    "diff": 1,
+    "short": "Una donación puntual ayuda. Pero solo los ingresos predecibles permiten sostener investigadores y programas que duran años."
+  },
+  {
+    "id": "gen_gdpr",
+    "cat": "confianza",
+    "catLabel": "🤔 Desconfianza",
+    "catColor": "#7c3aed",
+    "ongs": ["General"],
+    "q": "¿Qué hacéis con mis datos personales?",
+    "a": "Los datos que facilitas — nombre, IBAN y dirección — se usan exclusivamente para gestionar tu cuota de socio y enviarte información sobre la organización. No se venden ni ceden a terceros. La base legal es la relación contractual contigo como socio. Tienes derecho a acceder, rectificar o cancelar tus datos en cualquier momento contactando directamente con la organización. La política de privacidad completa está en la web de la ONG.",
+    "tip": "Esta pregunta es legítima y frecuente — respóndela con naturalidad y sin defensividad. Si el donante quiere leer la política de privacidad antes de firmar, indícale la web de la organización. No cierres el alta sin que el donante haya tenido acceso suficiente a esta información.",
+    "freq": 2,
+    "diff": 1,
+    "short": "Tus datos se usan solo para gestionar tu cuota. No se ceden a terceros. Tienes derecho a cancelarlos cuando quieras."
   }
 ]
 </script>
 
 <script>
+// ============================================================
+//  OBJECIONES ONG · WESSER — Lógica principal
+// ============================================================
+
+// --- Datos: variables de plantilla y banco de objeciones ---
 var VARS = JSON.parse(document.getElementById('obj-vars').textContent);
 var DATA = JSON.parse(document.getElementById('obj-data').textContent);
 
+// Sustituye {{clave}} por su valor en cualquier texto del dataset
 function interpolate(text) {
   if (!text) return text;
-  return text.replace(/\{\{([^}]+)\}\}/g, function(match, key) {
-    return VARS['{{' + key + '}}'] || match;
+  return text.replace(/\{\{([^}]+)\}\}/g, function(_, key) {
+    return VARS['{{' + key + '}}'] || '';
   });
 }
 
-// Interpolate all data fields on load
-DATA.forEach(function(d) {
-  d.a = interpolate(d.a);
-  d.short = interpolate(d.short);
-  if (d.tip) d.tip = interpolate(d.tip);
+DATA.forEach(function(obj) {
+  obj.a     = interpolate(obj.a);
+  obj.short = interpolate(obj.short);
+  if (obj.tip) obj.tip = interpolate(obj.tip);
 });
 
+// --- Catálogos de ONGs y categorías ---
 var ONGS = [
-  {id:'all',  label:'General', color:'#e51a1a'},
-  {id:'AECC', label:'AECC',    color:'#24C347'},
-  {id:'AI',   label:'AI',      color:'#f59e0b'},
-  {id:'CR',   label:'CR',      color:'#dc2626'},
-  {id:'FEC',  label:'FEC',     color:'#ef4444'},
-  {id:'FJC',  label:'FJC',     color:'#7c3aed'},
-  {id:'FPM',  label:'FPM',     color:'#0ea5e9'},
-  {id:'WWF',  label:'WWF',     color:'#16a34a'}
+  {id:'all',     label:'Todas',   color:'#64748b'},
+  {id:'General', label:'General', color:'#e51a1a'},
+  {id:'AECC',    label:'AECC',    color:'#24C347'},
+  {id:'AI',      label:'AI',      color:'#f59e0b'},
+  {id:'CR',      label:'CR',      color:'#dc2626'},
+  {id:'FEC',     label:'FEC',     color:'#ef4444'},
+  {id:'FJC',     label:'FJC',     color:'#7c3aed'},
+  {id:'FPM',     label:'FPM',     color:'#0ea5e9'},
+  {id:'WWF',     label:'WWF',     color:'#16a34a'}
 ];
-
-var currentOng = 'all';
 
 var CATS = [
-  {id:'all',        label:'Todas',           color:'#64748b'},
-  {id:'economica',  label:'💸 Económica',    color:'#16a34a'},
-  {id:'confianza',  label:'🤔 Desconfianza', color:'#7c3aed'},
-  {id:'ya-colaboro',label:'🤝 Ya colaboro',  color:'#0ea5e9'},
-  {id:'tiempo',     label:'⏱️ Sin tiempo',   color:'#f59e0b'},
-  {id:'utilidad',   label:'❓ Impacto',      color:'#dc2626'},
-  {id:'personal',   label:'🙅 Personal',     color:'#475569'}
+  {id:'all',         label:'Todas',           color:'#64748b'},
+  {id:'economica',   label:'💸 Económica',    color:'#16a34a'},
+  {id:'confianza',   label:'🤔 Desconfianza', color:'#7c3aed'},
+  {id:'ya-colaboro', label:'🤝 Ya colaboro',  color:'#0ea5e9'},
+  {id:'tiempo',      label:'⏱️ Sin tiempo',   color:'#f59e0b'},
+  {id:'utilidad',    label:'❓ Impacto',      color:'#dc2626'},
+  {id:'personal',    label:'🙅 Personal',     color:'#475569'}
 ];
 
+
+var ONG_EMOJI = {all:'🏢',General:'📋',AECC:'<svg width="1em" height="1em" viewBox="0 0 100 100" style="vertical-align:-0.15em" xmlns="http://www.w3.org/2000/svg"> <path d="M 62 14 A 36 36 0 1 0 72 60 A 36 36 0 0 1 62 14 Z" fill="none" stroke="none"/> <path d="M70 16 C 50 8, 20 18, 14 44 C 8 68, 28 90, 54 88 C 78 86, 92 66, 80 50 C 70 38, 50 42, 48 56 C 47 64, 54 70, 62 64" fill="none" stroke="#24C347" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/> </svg>',AI:'🏠',CR:'<svg width="1em" height="1em" viewBox="0 0 24 24" style="vertical-align:-0.15em;margin-right:.2em" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="2" width="6" height="20" rx="1.5" fill="#dc2626"/><rect x="2" y="9" width="20" height="6" rx="1.5" fill="#dc2626"/></svg>',FEC:'❤️',FJC:'🩸',FPM:'🧠',WWF:'🐼'};
+// --- Estado de la aplicación ---
+var currentOng = 'all';
 var currentCat = 'all';
 var currentQ   = '';
-var openCards  = {};
+var openCards    = {};  // { id: true } — tarjetas actualmente desplegadas
+var visitedCards = {};  // { id: true } — tarjetas que se han abierto alguna vez
 var favOnly    = false;
 var favs       = {};
-try{ favs = JSON.parse(localStorage.getItem('wob_favs')||'{}'); }catch(e){ favs = {}; }
+try { favs = JSON.parse(localStorage.getItem('wob_favs') || '{}'); } catch(e) { favs = {}; }
 
-function saveFavs(){ try{ localStorage.setItem('wob_favs', JSON.stringify(favs)); }catch(e){} }
-function favCount(){ return Object.keys(favs).filter(function(k){ return favs[k]; }).length; }
-function toggleFav(id){
+// ============================================================
+//  UTILIDADES
+// ============================================================
+
+function el(id) { return document.getElementById(id); }
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+var toastTimer;
+function showToast(msg) {
+  var t = el('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// Construye los puntos de dificultad accesibles (reutilizado en tarjetas y Ensayo)
+function buildDiffDots(diff) {
+  var label = diff === 1 ? 'Fácil' : diff === 2 ? 'Media' : 'Difícil';
+  var dots  = '';
+  for (var i = 1; i <= 3; i++) {
+    dots += '<span class="diff-dot' + (i <= diff ? ' on-' + diff : '') + '" aria-hidden="true"></span>';
+  }
+  return '<div class="diff-dots" role="img" aria-label="Dificultad: ' + label + '">' + dots + '</div>';
+}
+
+// ============================================================
+//  FAVORITOS
+// ============================================================
+
+function saveFavs() {
+  try { localStorage.setItem('wob_favs', JSON.stringify(favs)); }
+  catch(e) { showToast('⚠️ No se pudo guardar el favorito — almacenamiento lleno'); }
+}
+function favCount() {
+  return Object.keys(favs).filter(function(k) { return favs[k]; }).length;
+}
+function toggleFav(id) {
   favs[id] = !favs[id];
-  if(!favs[id]) delete favs[id];
+  if (!favs[id]) delete favs[id];
   saveFavs();
 }
 
-function el(id){ return document.getElementById(id); }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// ============================================================
+//  TEMA
+// ============================================================
 
-function toggleTheme(){
-  var l = document.body.classList.toggle('light');
-  el('thbtn').textContent = l ? '☀️' : '🌙';
-  el('thbtn').setAttribute('aria-pressed', l ? 'true' : 'false');
-  try{ localStorage.setItem('wob_t', l ? '1' : '0'); }catch(e){}
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  el('thbtn-icon').textContent = isLight ? '☀️' : '🌙';
+  el('thbtn').setAttribute('aria-pressed', isLight ? 'true' : 'false');
+  try { localStorage.setItem('wob_t', isLight ? '1' : '0'); } catch(e) {}
 }
 
-function clearSearch(){
+// ============================================================
+//  FILTROS
+// ============================================================
+
+function clearSearch() {
   el('qinput').value = '';
   currentQ = '';
-  render();
+  render(false);
   el('qinput').focus();
 }
 
 function renderOngFilter(){
   var activeOngs = {};
-  DATA.forEach(function(d){
-    d.ongs.forEach(function(o){ activeOngs[o] = true; });
+  var ongCounts  = {};
+  DATA.forEach(function(obj) {
+    obj.ongs.forEach(function(ong) {
+      activeOngs[ong] = true;
+      ongCounts[ong]  = (ongCounts[ong] || 0) + 1;
+    });
   });
-  var h = '';
-  var fc = favCount();
-  var favStyle = favOnly ? 'border-color:#f59e0b;color:#f59e0b;background:#f59e0b22' : '';
-  h += '<button class="ctag ctag-fav" data-fav="1" style="'+favStyle+'" aria-pressed="'+(favOnly?'true':'false')+'">⭐ Favoritos'+(fc?' ('+fc+')':'')+'</button>';
-  ONGS.forEach(function(o){
-    if(o.id !== 'all' && !activeOngs[o.id] && !activeOngs['all']) return;
-    var sel = o.id === currentOng && !favOnly;
-    var style = sel ? '--tag-color:'+o.color : '';
-    h += '<button class="ctag'+(sel?' ctag-sel':'')+'" data-oid="'+o.id+'" style="'+style+'">'+esc(o.label)+'</button>';
+
+  var fc      = favCount();
+  var favSt   = favOnly ? 'border-color:#e51a1a;color:#e51a1a;background:rgba(229,26,26,.18)' : '';
+  var html    = '<button class="ctag ctag-fav" data-fav="1" style="' + favSt + '" aria-pressed="' + (favOnly ? 'true' : 'false') + '">⭐ Favoritos' + (fc ? ' (' + fc + ')' : '') + '</button>';
+
+  ONGS.forEach(function(ong) {
+    if (ong.id !== 'all' && !activeOngs[ong.id]) return;
+    var sel   = ong.id === currentOng && !favOnly;
+    var style = sel ? '--tag-color:' + ong.color : '';
+    var count = ong.id === 'all' ? DATA.length : (ongCounts[ong.id] || 0);
+    var countStr = count ? '<span class="ctag-count">' + count + '</span>' : '';
+    html += '<button class="ctag' + (sel ? ' ctag-sel' : '') + '" data-oid="' + ong.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(ong.label) + countStr + '</button>';
   });
-  el('ongFilt').innerHTML = h;
-  el('ongFilt').querySelector('.ctag-fav').addEventListener('click', function(){
-    favOnly = !favOnly;
+
+  el('ongFilt').innerHTML = html;
+
+  // Sincronizar label del toggle (móvil)
+  var _tl = document.getElementById('ong-toggle-label');
+  var _tb = document.getElementById('ong-toggle-btn');
+  if (_tb && _tl) {
+    var _ao = ONGS.find(function(o){ return o.id === currentOng; });
+    var _hasF = currentOng !== 'all' && !favOnly;
+    _tl.textContent = (_hasF && _ao) ? _ao.label : 'Entidad';
+    _tb.className = 'ctag' + (_hasF ? ' ctag-sel' : '');
+    _tb.style.cssText = (_hasF && _ao) ? '--tag-color:' + _ao.color : '';
+  }
+
+  el('ongFilt').querySelector('.ctag-fav').addEventListener('click', function() {
+    favOnly    = !favOnly;
     currentCat = 'all';
+    el('ongFilt').classList.remove('ong-open');
+    var _otb = document.getElementById('ong-toggle-btn');
+    if (_otb) _otb.setAttribute('aria-expanded', 'false');
     render();
+    window.scrollTo({top: 0, behavior: 'smooth'});
   });
-  el('ongFilt').querySelectorAll('.ctag[data-oid]').forEach(function(b){
-    b.addEventListener('click', function(){
+
+  el('ongFilt').querySelectorAll('.ctag[data-oid]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
       currentOng = this.getAttribute('data-oid');
       currentCat = 'all';
-      favOnly = false;
+      favOnly    = false;
+      try { sessionStorage.setItem('wob_ong', currentOng); sessionStorage.setItem('wob_cat', 'all'); } catch(e) {}
+      el('ongFilt').classList.remove('ong-open');
+      var _otb = document.getElementById('ong-toggle-btn');
+      if (_otb) _otb.setAttribute('aria-expanded', 'false');
       render();
+      window.scrollTo({top: 0, behavior: 'smooth'});
     });
   });
 }
 
-function renderCatFilter(){
+
+function renderSidebar(){
+  var sb=document.getElementById('rbSidebar');
+  if(!sb)return;
+  var h='';
+  ONGS.forEach(function(ong){
+    var sel=ong.id===currentOng&&!favOnly;
+    var emoji=ONG_EMOJI[ong.id]||'';
+    h+='<button class="rb-sb-btn'+(sel?' rb-sb-active':'')+'" data-oid="'+ong.id+'" style="--sb-color:'+ong.color+'" aria-pressed="'+(sel?'true':'false')+'">'+(emoji?emoji+' ':'')+ong.label+'</button>';
+  });
+  sb.innerHTML=h;
+  sb.querySelectorAll('.rb-sb-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      currentOng=this.getAttribute('data-oid');
+      currentCat='all';favOnly=false;
+      try{sessionStorage.setItem('wob_ong',currentOng);sessionStorage.setItem('wob_cat','all');}catch(e){}
+      render();window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+function renderCatFilter() {
   var activeCats = {};
-  DATA.forEach(function(d){
-    var ongOk = currentOng === 'all' ? d.ongs.indexOf('all') !== -1 : d.ongs.indexOf(currentOng) !== -1;
-    if(ongOk) activeCats[d.cat] = true;
+  DATA.forEach(function(obj) {
+    if (favOnly) {
+      if (!favs[obj.id]) return;
+    } else {
+      var ongOk = currentOng === 'all' ? true : obj.ongs.indexOf(currentOng) !== -1;
+      if (!ongOk) return;
+    }
+    activeCats[obj.cat] = true;
   });
-  var h = '';
-  CATS.forEach(function(c){
-    if(c.id !== 'all' && !activeCats[c.id]) return;
-    var sel = c.id === currentCat;
-    var style = sel ? 'border-color:'+c.color+';color:'+c.color+';background:'+c.color+'22' : '';
-    h += '<button class="ctag" data-cid="'+c.id+'" style="'+style+'">'+esc(c.label)+'</button>';
+
+  var html = '';
+  CATS.forEach(function(cat) {
+    if (cat.id !== 'all' && !activeCats[cat.id]) return;
+    var sel   = cat.id === currentCat;
+    var style = sel ? 'border-color:' + cat.color + ';color:' + cat.color + ';background:' + cat.color + '2E' : '';
+    html += '<button class="ctag" data-cid="' + cat.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(cat.label) + '</button>';
   });
-  el('catFilt').innerHTML = h;
-  el('catFilt').querySelectorAll('.ctag').forEach(function(b){
-    b.addEventListener('click', function(){
+
+  el('catFilt').innerHTML = html;
+
+  // Sincronizar label del toggle Tipo (móvil)
+  var _ctl = document.getElementById('cat-toggle-label');
+  var _ctb = document.getElementById('cat-toggle-btn');
+  if (_ctb && _ctl) {
+    var _ac = CATS.find(function(c){ return c.id === currentCat; });
+    var _hasC = currentCat !== 'all';
+    _ctl.textContent = (_hasC && _ac) ? _ac.label : 'Tipo';
+    _ctb.className = 'ctag' + (_hasC ? ' ctag-sel' : '');
+    _ctb.style.cssText = (_hasC && _ac) ? '--tag-color:' + _ac.color : '';
+  }
+
+  el('catFilt').querySelectorAll('.ctag').forEach(function(btn) {
+    btn.addEventListener('click', function() {
       currentCat = this.getAttribute('data-cid');
+      try { sessionStorage.setItem('wob_cat', currentCat); } catch(e) {}
+      el('catFilt').classList.remove('cat-open');
+      var _ctb2 = document.getElementById('cat-toggle-btn');
+      if (_ctb2) _ctb2.setAttribute('aria-expanded', 'false');
       render();
+      window.scrollTo({top: 0, behavior: 'smooth'});
     });
   });
 }
 
-function filterData(){
+function filterData() {
   var q = currentQ.toLowerCase().trim();
-  return DATA.filter(function(d){
-    if(favOnly){
-      if(!favs[d.id]) return false;
+  return DATA.filter(function(obj) {
+    if (favOnly) {
+      if (!favs[obj.id]) return false;
     } else {
-      var ongOk = currentOng === 'all' ? d.ongs.indexOf('all') !== -1 : d.ongs.indexOf(currentOng) !== -1;
-      if(!ongOk) return false;
+      var ongOk = currentOng === 'all' ? true : obj.ongs.indexOf(currentOng) !== -1;
+      if (!ongOk) return false;
     }
-    var catOk = currentCat === 'all' || d.cat === currentCat;
-    var txtOk = !q || d.q.toLowerCase().indexOf(q) !== -1
-                   || d.a.toLowerCase().indexOf(q) !== -1
-                   || (d.tip && d.tip.toLowerCase().indexOf(q) !== -1);
+    var catOk = currentCat === 'all' || obj.cat === currentCat;
+    var txtOk = !q
+      || obj.q.toLowerCase().indexOf(q)   !== -1
+      || obj.a.toLowerCase().indexOf(q)   !== -1
+      || (obj.tip && obj.tip.toLowerCase().indexOf(q) !== -1);
     return catOk && txtOk;
   });
 }
 
-function render(){
-  renderOngFilter();
-  renderCatFilter();
-  var filtered = filterData();
-  var zone = el('results');
+// ============================================================
+//  TARJETAS
+// ============================================================
 
-  if(!filtered.length){
-    if(favOnly && !currentQ){
-      zone.innerHTML = '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-t">Aún no tienes favoritos</div><div class="empty-s">Pulsa la estrella ☆ de cualquier objeción para guardarla aquí y tenerla a mano.</div></div>';
-    } else {
-      zone.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-t">Sin resultados</div><div class="empty-s">Prueba con otros filtros o cambia la búsqueda.</div></div>';
-    }
+// Construye el HTML completo de una tarjeta a partir de un objeto de datos
+function buildCardHtml(obj) {
+  var open      = !!openCards[obj.id];
+  var diff      = obj.diff || 1;
+  var isFav     = !!favs[obj.id];
+  var hasShort  = !!(obj.short && obj.short !== obj.a);
+  var freqLabel = obj.freq === 3 ? '🔥' : obj.freq === 2 ? '⭐' : '📌';
+  var freqTitle = obj.freq === 3 ? 'Muy frecuente' : obj.freq === 2 ? 'Frecuente' : 'Ocasional';
+
+  var html = '<div class="ocard' + (open ? ' open' : '') + (visitedCards[obj.id] && !open ? ' visited' : '') + '" id="oc-' + obj.id + '" style="--card-color:' + obj.catColor + '">';
+
+  // Cabecera — actúa como botón expandir/colapsar
+  html += '<div class="ocard-head" role="button" tabindex="0"'
+        + ' aria-expanded="' + (open ? 'true' : 'false') + '"'
+        + ' aria-controls="ob-' + obj.id + '" data-id="' + obj.id + '">';
+  html += '<div class="ocard-left">';
+  html += '<div class="ocard-q">' + esc(obj.q) + '</div>';
+  html += '<div class="ocard-meta">';
+  html += '<div class="ocard-badge" style="background:' + obj.catColor + '">' + esc(obj.catLabel) + '</div>';
+  html += '<span class="freq-badge" title="' + freqTitle + '">' + freqLabel + '</span>';
+  html += buildDiffDots(diff);
+  if (obj.ongs && obj.ongs.length) {
+    var ongDots = '<div class="ocard-ongs">';
+    obj.ongs.forEach(function(ongId) {
+      var o = ONGS.find(function(x) { return x.id === ongId; });
+      if (o && o.id !== 'General' && o.id !== 'all') ongDots += '<span class="ocard-ong-dot" style="background:' + o.color + '" title="' + esc(o.label) + '"></span>';
+    });
+    ongDots += '</div>';
+    html += ongDots;
+  }
+  html += '</div>';
+  html += '</div>';
+  html += '<div class="ocard-actions">';
+  html += '<button class="ocard-fav' + (isFav ? ' on' : '') + '" data-favid="' + obj.id + '"'
+        + ' aria-label="' + (isFav ? 'Quitar de favoritos' : 'Añadir a favoritos') + ': ' + esc(obj.q) + '"'
+        + ' aria-pressed="' + (isFav ? 'true' : 'false') + '">' + (isFav ? '★' : '☆') + '</button>';
+  html += '<svg class="ocard-arr" aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 6,8 10,4"/></svg>';
+  html += '</div>';
+  html += '</div>'; // ocard-head
+
+  // Cuerpo — respuesta y consejo (ocultos hasta expandir)
+  html += '<div class="ocard-body" id="ob-' + obj.id + '">';
+  html += '<div class="ans-wrap">';
+  if (hasShort) {
+    html += '<div class="ans-toggle">'
+          + '<button class="ans-tbtn" data-mode="short" data-id="' + obj.id + '" aria-pressed="false">⚡ Rápida</button>'
+          + '<button class="ans-tbtn active" data-mode="full"  data-id="' + obj.id + '" aria-pressed="true">📖 Completa</button>'
+          + '</div>';
+  }
+  html += '<div class="ans-label">💬 Respuesta argumentada</div>';
+  html += '<div class="ans-txt ans-short" style="display:none">' + esc(hasShort ? obj.short : obj.a) + '</div>';
+  if (hasShort) { html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>'; }
+  if (obj.tip)  { html += '<div class="ans-tip"><div class="ans-tip-lbl">💡 Consejo de captación</div>' + esc(obj.tip) + '</div>'; }
+  html += '</div></div>'; // ans-wrap, ocard-body
+  html += '</div>';       // ocard
+
+  return html;
+}
+
+function render(rebuildFilters) {
+  if (rebuildFilters !== false) { renderOngFilter(); renderCatFilter(); renderSidebar(); }
+
+  var filtered = filterData();
+  var zone     = el('results');
+
+  if (!filtered.length) {
+    zone.innerHTML = favOnly && !currentQ
+      ? '<div class="empty"><div class="empty-icon">⭐</div><div class="empty-t">Aún no tienes favoritos</div><div class="empty-s">Pulsa la estrella ☆ de cualquier objeción para guardarla aquí y tenerla a mano.</div></div>'
+      : '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-t">Sin resultados</div><div class="empty-s">Prueba con otros filtros o cambia la búsqueda.</div></div>';
     return;
   }
 
-  var h = '<div class="statsbar">'+filtered.length+' objeción'+(filtered.length!==1?'es':'')+' encontrada'+(filtered.length!==1?'s':'')+'</div>';
+  var plural = filtered.length !== 1;
+  zone.innerHTML = '<div class="statsbar">' + filtered.length + ' objeción' + (plural ? 'es' : '') + ' encontrada' + (plural ? 's' : '') + '</div>'
+                 + filtered.map(buildCardHtml).join('');
 
-  filtered.forEach(function(d){
-    var open = !!openCards[d.id];
-    h += '<div class="ocard'+(open?' open':'')+'" id="oc-'+d.id+'" style="--card-color:'+d.catColor+'">';
-    h += '<div class="ocard-head" role="button" tabindex="0" aria-expanded="'+(open?'true':'false')+'" data-id="'+d.id+'">';
-    h += '<div class="ocard-left">';
-    var freqLabel = d.freq===3?'🔥':d.freq===2?'⭐':'📌';
-    var diff = d.diff||1;
-    var dots = '';
-    for(var i=1;i<=3;i++) dots += '<span class="diff-dot'+(i<=diff?' on-'+diff:'')+'" title="'+(diff===1?'Fácil':diff===2?'Media':'Difícil')+'"></span>';
-    h += '<div class="ocard-meta"><div class="ocard-badge" style="background:'+d.catColor+'">'+esc(d.catLabel)+'</div><span class="freq-badge" title="'+(d.freq===3?'Muy frecuente':d.freq===2?'Frecuente':'Ocasional')+'">'+freqLabel+'</span><div class="diff-dots">'+dots+'</div></div>';
-    h += '<div class="ocard-q">'+esc(d.q)+'</div>';
-    h += '</div>';
-    h += '<div class="ocard-actions">';
-    h += '<button class="ocard-fav'+(favs[d.id]?' on':'')+'" data-favid="'+d.id+'" title="'+(favs[d.id]?'Quitar de favoritos':'Añadir a favoritos')+'" aria-label="Favorito" aria-pressed="'+(favs[d.id]?'true':'false')+'">'+(favs[d.id]?'★':'☆')+'</button>';
-    h += '<span class="ocard-arr" aria-hidden="true">▼</span>';
-    h += '</div>';
-    h += '</div>';
-    var hasShort = d.short && d.short !== d.a;
-    h += '<div class="ocard-body">';
-    h += '<div class="ans-wrap">';
-    if(hasShort){
-      h += '<div class="ans-toggle"><button class="ans-tbtn" data-mode="short" data-id="'+d.id+'">⚡ Rápida</button><button class="ans-tbtn active" data-mode="full" data-id="'+d.id+'">📖 Completa</button></div>';
-    }
-    h += '<div class="ans-label">💬 Respuesta argumentada</div>';
-    h += '<div class="ans-txt ans-short" style="display:none">'+esc(hasShort?d.short:d.a)+'</div>';
-    if(hasShort){
-      h += '<div class="ans-txt ans-full">'+esc(d.a)+'</div>';
-    }
-    if(d.tip){
-      h += '<div class="ans-tip"><div class="ans-tip-lbl">💡 Consejo de captación</div>'+esc(d.tip)+'</div>';
-    }
-    h += '</div></div></div>';
-  });
-
-  zone.innerHTML = h;
-
-  zone.querySelectorAll('.ans-tbtn').forEach(function(btn){
-    btn.addEventListener('click', function(e){
+  // Toggle respuesta rápida / completa
+  zone.querySelectorAll('.ans-tbtn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
       e.stopPropagation();
       var mode = this.getAttribute('data-mode');
-      var id = this.getAttribute('data-id');
-      var wrap = el('oc-'+id).querySelector('.ans-wrap');
-      var short = wrap.querySelector('.ans-short');
-      var full = wrap.querySelector('.ans-full');
-      var btns = wrap.querySelectorAll('.ans-tbtn');
-      btns.forEach(function(b){ b.classList.remove('active'); });
+      var id   = this.getAttribute('data-id');
+      var wrap = el('oc-' + id).querySelector('.ans-wrap');
+      wrap.querySelectorAll('.ans-tbtn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       this.classList.add('active');
-      if(mode==='short'){ short.style.display=''; if(full) full.style.display='none'; }
-      else { short.style.display='none'; if(full) full.style.display=''; }
+      this.setAttribute('aria-pressed', 'true');
+      var shortEl = wrap.querySelector('.ans-short');
+      var fullEl  = wrap.querySelector('.ans-full');
+      if (mode === 'short') { shortEl.style.display = ''; if (fullEl) fullEl.style.display = 'none'; }
+      else                  { shortEl.style.display = 'none'; if (fullEl) fullEl.style.display = ''; }
     });
   });
 
-  zone.querySelectorAll('.ocard-fav').forEach(function(btn){
-    btn.addEventListener('click', function(e){
+  // Favorito
+  zone.querySelectorAll('.ocard-fav').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
       e.stopPropagation();
       var id = this.getAttribute('data-favid');
       toggleFav(id);
@@ -4212,318 +4568,423 @@ function render(){
       this.classList.toggle('on', on);
       this.textContent = on ? '★' : '☆';
       this.setAttribute('aria-pressed', on ? 'true' : 'false');
-      this.setAttribute('title', on ? 'Quitar de favoritos' : 'Añadir a favoritos');
-      renderOngFilter();
-      if(favOnly && !on){
-        var card = el('oc-'+id);
-        if(card){ card.style.transition='opacity .2s'; card.style.opacity='0'; setTimeout(render, 200); }
+      this.setAttribute('aria-label', (on ? 'Quitar de favoritos' : 'Añadir a favoritos') + ': ' + el('oc-' + id).querySelector('.ocard-q').textContent);
+      renderOngFilter(); // actualiza el contador del botón Favoritos
+      if (favOnly && !on) { // anima la salida de la tarjeta desfavoritada
+        var card = el('oc-' + id);
+        if (card) { card.style.transition = 'opacity .2s'; card.style.opacity = '0'; setTimeout(render, 200); }
       }
     });
   });
 
-  zone.querySelectorAll('.ocard-head').forEach(function(head){
-    function toggle(){
+  // Expandir / colapsar tarjeta
+  zone.querySelectorAll('.ocard-head').forEach(function(head) {
+    function toggleCard() {
       var id   = head.getAttribute('data-id');
-      var card = el('oc-'+id);
+      var card = el('oc-' + id);
       var now  = card.classList.toggle('open');
       openCards[id] = now;
+      if (!now) { visitedCards[id] = true; card.classList.add('visited'); }
       head.setAttribute('aria-expanded', now ? 'true' : 'false');
     }
-    head.addEventListener('click', toggle);
-    head.addEventListener('keydown', function(e){
-      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+    head.addEventListener('click', toggleCard);
+    head.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(); }
     });
   });
 }
 
+// ============================================================
+//  MODO ENSAYO
+// ============================================================
 
-// === MODO ENSAYO ===
 var ensayoCards = [];
 var ensayoIdx   = 0;
 var ensayoShown = false;
-var ensayoRes   = {ok:0,mid:0,bad:0,badCards:[]};
+var ensayoRes   = {ok: 0, mid: 0, bad: 0, badCards: []};
 
-function shuffleArr(arr){
-  var a=arr.slice();
-  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+// Fisher-Yates shuffle — mezcla aleatoria in-place sobre una copia
+function shuffleArr(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
   return a;
 }
 
-// Ensayo config state
-var ensayoCfgOngs = {};  // {id: true/false}
-var ensayoCfgDiff = 0;   // 0=all 1=easy 2=med 3=hard
-ONGS.forEach(function(o){ ensayoCfgOngs[o.id] = true; });
+// Estado de configuración del Ensayo (persiste entre sesiones dentro de la misma página)
+var ensayoCfgOngs = {};  // { ongId: true/false }
+var ensayoCfgDiff = 0;   // 0=todas 1=fácil 2=media 3=difícil
+ONGS.filter(function(o) { return o.id !== 'all'; })
+    .forEach(function(ong) { ensayoCfgOngs[ong.id] = true; });
 
 function ensayoPool(){
-  return DATA.filter(function(d){
-    // ONG filter — check any ong matches
-    var ongOk = d.ongs.some(function(o){ return ensayoCfgOngs[o]; });
-    // Diff filter
-    var diffOk = ensayoCfgDiff===0 || (d.diff||1)===ensayoCfgDiff;
+  return DATA.filter(function(obj) {
+    var ongOk  = obj.ongs.some(function(ong) { return ensayoCfgOngs[ong]; });
+    var diffOk = ensayoCfgDiff === 0 || (obj.diff || 1) === ensayoCfgDiff;
     return ongOk && diffOk;
   });
 }
 
-function showEnsayoConfig(){
-  el('ensayo').style.display='flex';
+function startEnsayo()  { showEnsayoConfig(); }
+function exitEnsayo()   { el('ensayo').style.display = 'none'; releaseTrap(); }
+
+function showEnsayoConfig() {
+  var dlg = el('ensayo');
+  dlg.style.display = 'flex';
   renderEnsayoConfig();
+  trapFocus(dlg, exitEnsayo);
 }
 
-function renderEnsayoConfig(){
-  var pool = ensayoPool();
-  var hasFavs = Object.keys(favs).filter(function(k){return favs[k];}).length > 0;
-
-  var h='';
-  h+='<div class="fc-cfg">';
-  h+='<div class="fc-cfg-title">Elige qué practicar</div>';
-  h+='<div class="fc-cfg-sub">Selecciona ONGs y dificultad para tu sesión de ensayo</div>';
-
-  // ONG pills
-  h+='<div class="fc-cfg-section">';
-  h+='<div class="fc-cfg-label">Organización</div>';
-  h+='<div class="fc-cfg-pills" id="cfg-ong-pills">';
-  ONGS.forEach(function(o){
-    var sel = ensayoCfgOngs[o.id];
-    var style = sel ? 'background:'+o.color+';border-color:'+o.color : '';
-    h+='<button class="fc-cfg-pill'+(sel?' sel':'')+'" data-cfg-ong="'+o.id+'" style="'+style+'">'+esc(o.label)+'</button>';
-  });
-  h+='</div></div>';
-
-  // Difficulty pills
-  h+='<div class="fc-cfg-section">';
-  h+='<div class="fc-cfg-label">Dificultad</div>';
-  h+='<div class="fc-cfg-pills" id="cfg-diff-pills">';
-  var diffs=[{v:0,l:'Todas',c:'#64748b'},{v:1,l:'🟢 Fácil',c:'#22c55e'},{v:2,l:'🟡 Media',c:'#f59e0b'},{v:3,l:'🔴 Difícil',c:'#ef4444'}];
-  diffs.forEach(function(d){
-    var sel=ensayoCfgDiff===d.v;
-    var style=sel?'background:'+d.c+';border-color:'+d.c:'';
-    h+='<button class="fc-cfg-pill'+(sel?' sel':'')+'" data-cfg-diff="'+d.v+'" style="'+style+'">'+esc(d.l)+'</button>';
-  });
-  h+='</div></div>';
-
-  // Count + buttons
-  h+='<div class="fc-cfg-count">'+
-     (pool.length>0?'<strong>'+pool.length+'</strong> cartas seleccionadas':'<span style="color:#ef4444">Sin cartas con estos filtros</span>')+
-     '</div>';
-  if(hasFavs){
-    h+='<button class="fc-fav-btn" id="cfg-fav-btn">⭐ Solo mis favoritos ('+Object.keys(favs).filter(function(k){return favs[k];}).length+')</button>';
-  }
-  h+='<button class="fc-start-btn" id="cfg-start-btn"'+(pool.length===0?' disabled':'')+'>Empezar →</button>';
-  h+='</div>';
-
-  el('fc-inner').innerHTML=h;
-
-  // ONG pill handlers
-  el('fc-inner').querySelectorAll('[data-cfg-ong]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      var id=this.getAttribute('data-cfg-ong');
-      ensayoCfgOngs[id]=!ensayoCfgOngs[id];
-      renderEnsayoConfig();
-    });
-  });
-  // Diff pill handlers
-  el('fc-inner').querySelectorAll('[data-cfg-diff]').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      ensayoCfgDiff=parseInt(this.getAttribute('data-cfg-diff'));
-      renderEnsayoConfig();
-    });
-  });
-  // Favs shortcut
-  var favBtn=el('fc-inner').querySelector('#cfg-fav-btn');
-  if(favBtn){
-    favBtn.addEventListener('click',function(){
-      var favPool=DATA.filter(function(d){return !!favs[d.id];});
-      launchEnsayo(favPool);
-    });
-  }
-  // Start button
-  var startBtn=el('cfg-start-btn');
-  if(startBtn && !startBtn.disabled){
-    startBtn.addEventListener('click',function(){
-      launchEnsayo(ensayoPool());
-    });
-  }
-}
-
-function launchEnsayo(pool){
-  if(!pool.length) return;
+function launchEnsayo(pool) {
+  if (!pool.length) return;
   ensayoCards = shuffleArr(pool);
   ensayoIdx   = 0;
   ensayoShown = false;
-  ensayoRes   = {ok:0,mid:0,bad:0,badCards:[]};
+  ensayoRes   = {ok: 0, mid: 0, bad: 0, badCards: []};
   renderEnsayo();
 }
 
-function startEnsayo(){
-  showEnsayoConfig();
+function renderEnsayoConfig() {
+  var pool  = ensayoPool();
+  var fc    = favCount();
+  var diffs = [
+    {v:0, l:'Todas',       c:'#64748b'},
+    {v:1, l:'🟢 Fácil',   c:'#22c55e'},
+    {v:2, l:'🟡 Media',   c:'#d97706'},
+    {v:3, l:'🔴 Difícil', c:'#ef4444'}
+  ];
+
+  var html = '<div class="fc-cfg">';
+  html += '<div class="fc-cfg-title">Elige qué practicar</div>';
+  html += '<div class="fc-cfg-sub">Selecciona ONGs y dificultad para tu sesión de ensayo</div>';
+
+  html += '<div class="fc-cfg-section"><div class="fc-cfg-label">Organización</div><div class="fc-cfg-pills" id="cfg-ong-pills">';
+  ONGS.filter(function(o) { return o.id !== 'all'; }).forEach(function(ong) {
+    var sel   = ensayoCfgOngs[ong.id];
+    var style = sel ? '--pill-c:' + ong.color : '';
+    html += '<button class="fc-cfg-pill' + (sel ? ' sel' : '') + '" data-cfg-ong="' + ong.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(ong.label) + '</button>';
+  });
+  html += '</div></div>';
+
+  html += '<div class="fc-cfg-section"><div class="fc-cfg-label">Dificultad</div><div class="fc-cfg-pills" id="cfg-diff-pills">';
+  diffs.forEach(function(d) {
+    var sel   = ensayoCfgDiff === d.v;
+    var style = sel ? '--pill-c:' + d.c : '';
+    html += '<button class="fc-cfg-pill' + (sel ? ' sel' : '') + '" data-cfg-diff="' + d.v + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(d.l) + '</button>';
+  });
+  html += '</div></div>';
+
+  html += '<div class="fc-cfg-count">' + (pool.length > 0
+    ? '<strong>' + pool.length + '</strong> cartas seleccionadas'
+    : '<span style="color:#ef4444">Sin cartas con estos filtros</span>') + '</div>';
+
+  if (fc > 0) { html += '<button class="fc-fav-btn" id="cfg-fav-btn">⭐ Solo mis favoritos (' + fc + ')</button>'; }
+  html += '<button class="fc-start-btn" id="cfg-start-btn"' + (pool.length === 0 ? ' disabled' : '') + '>Empezar →</button>';
+  html += '</div>';
+
+  el('fc-inner').innerHTML = html;
+
+  el('fc-inner').querySelectorAll('[data-cfg-ong]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var id = this.getAttribute('data-cfg-ong');
+      ensayoCfgOngs[id] = !ensayoCfgOngs[id];
+      renderEnsayoConfig();
+    });
+  });
+
+  el('fc-inner').querySelectorAll('[data-cfg-diff]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      ensayoCfgDiff = parseInt(this.getAttribute('data-cfg-diff'));
+      renderEnsayoConfig();
+    });
+  });
+
+  var favBtn   = el('fc-inner').querySelector('#cfg-fav-btn');
+  var startBtn = el('cfg-start-btn');
+
+  if (favBtn) {
+    favBtn.addEventListener('click', function() {
+      launchEnsayo(DATA.filter(function(obj) { return !!favs[obj.id]; }));
+    });
+  }
+  if (startBtn && !startBtn.disabled) {
+    startBtn.addEventListener('click', function() { launchEnsayo(ensayoPool()); });
+  }
 }
 
-function exitEnsayo(){
-  el('ensayo').style.display='none';
-}
+function renderEnsayo() {
+  if (ensayoIdx >= ensayoCards.length) { renderEnsayoEnd(); return; }
 
-function renderEnsayo(){
-  var inner = el('fc-inner');
-  if(ensayoIdx >= ensayoCards.length){ renderEnsayoEnd(); return; }
-  var d   = ensayoCards[ensayoIdx];
-  var pct = Math.round(ensayoIdx/ensayoCards.length*100);
-  var ongId = d.ongs[0]==='all'?'General':d.ongs[0];
-  var diff  = d.diff||1;
-  var dots  = '';
-  for(var i=1;i<=3;i++) dots+='<span class="diff-dot'+(i<=diff?' on-'+diff:'')+'" style="width:7px;height:7px;border-radius:50%;background:'+(i<=diff?(diff===1?'#22c55e':diff===2?'#f59e0b':'#ef4444'):'#334155')+';display:inline-block;margin-right:1px"></span>';
+  var obj   = ensayoCards[ensayoIdx];
+  var pct   = Math.round(ensayoIdx / ensayoCards.length * 100);
+  var diff  = obj.diff || 1;
+  var diffLabel = diff === 1 ? 'Fácil' : diff === 2 ? 'Media' : 'Difícil';
 
-  var h='';
-  h+='<div class="fc-progress-bar"><div class="fc-progress-fill" style="width:'+pct+'%"></div></div>';
-  h+='<div class="fc-counter">'+(ensayoIdx+1)+' de '+ensayoCards.length+'</div>';
-  h+='<div class="fc-badge-row">';
-  h+='<div class="fc-badge" style="background:'+d.catColor+'">'+esc(d.catLabel)+'</div>';
-  h+='<div class="fc-ong-badge">'+esc(ongId)+'</div>';
-  h+='<div class="fc-diff">'+dots+'</div>';
-  h+='</div>';
-  h+='<div class="fc-q">'+esc(d.q)+'</div>';
-
-  if(!ensayoShown){
-    h+='<button class="fc-show-btn" id="fc-show">👁 Ver respuesta</button>';
-  } else {
-    h+='<div class="fc-a-block">';
-    h+='<div class="fc-a-label">💬 Respuesta</div>';
-    h+='<div class="fc-a-txt">'+esc(d.a)+'</div>';
-    h+='</div>';
-    h+='<div class="fc-eval">';
-    h+='<button class="fc-eval-btn fc-bad" data-ev="bad">✗<span>No la sabía</span></button>';
-    h+='<button class="fc-eval-btn fc-mid" data-ev="mid">~<span>La dudaba</span></button>';
-    h+='<button class="fc-eval-btn fc-ok" data-ev="ok">✓<span>La sabía</span></button>';
-    h+='</div>';
+  // Puntos de dificultad con estilos inline (el Ensayo no usa las clases CSS de las tarjetas)
+  var dots = '';
+  for (var i = 1; i <= 3; i++) {
+    var bg = i <= diff ? (diff === 1 ? '#22c55e' : diff === 2 ? '#d97706' : '#ef4444') : '#334155';
+    dots += '<span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:' + bg + ';display:inline-block;margin-right:1px"></span>';
   }
 
-  inner.innerHTML=h;
+  var html = '';
+  html += '<div class="fc-progress-bar"><div class="fc-progress-fill" style="width:' + pct + '%"></div></div>';
+  html += '<div class="fc-counter">' + (ensayoIdx + 1) + ' de ' + ensayoCards.length + '</div>';
+  html += '<div class="fc-badge-row">';
+  html += '<div class="fc-badge" style="background:' + obj.catColor + '">' + esc(obj.catLabel) + '</div>';
+  html += '<div class="fc-ong-badge">' + esc(obj.ongs[0]) + '</div>';
+  html += '<div class="fc-diff" role="img" aria-label="Dificultad: ' + diffLabel + '">' + dots + '</div>';
+  html += '</div>';
+  html += '<div class="fc-q">' + esc(obj.q) + '</div>';
 
-  if(!ensayoShown){
-    inner.querySelector('#fc-show').addEventListener('click',function(){
-      ensayoShown=true; renderEnsayo();
+  if (!ensayoShown) {
+    html += '<button class="fc-show-btn" id="fc-show">👁 Ver respuesta</button>';
+  } else {
+    html += '<div class="fc-a-block"><div class="fc-a-label">💬 Respuesta</div><div class="fc-a-txt">' + esc(obj.a) + '</div></div>';
+    html += '<div class="fc-eval">';
+    html += '<button class="fc-eval-btn fc-bad" data-ev="bad">✗<span>No la sabía</span></button>';
+    html += '<button class="fc-eval-btn fc-mid" data-ev="mid">~<span>La dudaba</span></button>';
+    html += '<button class="fc-eval-btn fc-ok"  data-ev="ok">✓<span>La sabía</span></button>';
+    html += '</div>';
+    html += '<p class="fc-eval-hint">Atajos de teclado: [1] No la sabía &nbsp;·&nbsp; [2] La dudaba &nbsp;·&nbsp; [3] La sabía</p>';
+  }
+
+  el('fc-inner').innerHTML = html;
+
+  if (!ensayoShown) {
+    el('fc-inner').querySelector('#fc-show').addEventListener('click', function() {
+      ensayoShown = true;
+      renderEnsayo();
     });
   } else {
-    inner.querySelectorAll('.fc-eval-btn').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        var ev=this.getAttribute('data-ev');
+    el('fc-inner').querySelectorAll('.fc-eval-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var ev = this.getAttribute('data-ev');
         ensayoRes[ev]++;
-        if(ev==='bad') ensayoRes.badCards.push(ensayoCards[ensayoIdx]);
+        if (ev === 'bad') ensayoRes.badCards.push(ensayoCards[ensayoIdx]);
         ensayoIdx++;
-        ensayoShown=false;
+        ensayoShown = false;
         renderEnsayo();
       });
     });
   }
 }
 
-function renderEnsayoEnd(){
-  var pct = ensayoCards.length>0?Math.round(ensayoRes.ok/ensayoCards.length*100):0;
-  var h='';
-  h+='<div class="fc-end">';
-  h+='<div class="fc-end-icon">'+(pct>=80?'🏆':pct>=50?'💪':'📚')+'</div>';
-  h+='<div class="fc-end-title">Sesión completada</div>';
-  h+='<div class="fc-end-sub">'+ensayoCards.length+' cartas · '+pct+'% resueltas</div>';
-  h+='<div class="fc-end-stats">';
-  h+='<div class="fc-stat fc-stat-ok"><div class="fc-stat-n">'+ensayoRes.ok+'</div><div class="fc-stat-l">✓ Sabías</div></div>';
-  h+='<div class="fc-stat fc-stat-mid"><div class="fc-stat-n">'+ensayoRes.mid+'</div><div class="fc-stat-l">~ Dudabas</div></div>';
-  h+='<div class="fc-stat fc-stat-bad"><div class="fc-stat-n">'+ensayoRes.bad+'</div><div class="fc-stat-l">✗ Fallaste</div></div>';
-  h+='</div>';
-  if(ensayoRes.bad>0){
-    h+='<button class="fc-retry-btn" id="fc-retry">Repetir las que fallé ('+ensayoRes.bad+')</button>';
-  }
-  h+='<button class="fc-restart-btn" id="fc-restart">Nueva sesión con las mismas cartas</button>';
-  h+='</div>';
+function renderEnsayoEnd() {
+  var pct  = ensayoCards.length > 0 ? Math.round(ensayoRes.ok / ensayoCards.length * 100) : 0;
+  var icon = pct >= 80 ? '🏆' : pct >= 50 ? '💪' : '📚';
 
-  el('fc-inner').innerHTML=h;
-  if(ensayoRes.bad>0){
-    el('fc-retry').addEventListener('click',function(){
-      ensayoCards=shuffleArr(ensayoRes.badCards);
-      ensayoIdx=0; ensayoShown=false;
-      ensayoRes={ok:0,mid:0,bad:0,badCards:[]};
+  var html = '<div class="fc-end">';
+  html += '<div class="fc-end-icon">' + icon + '</div>';
+  html += '<div class="fc-end-title">Sesión completada</div>';
+  html += '<div class="fc-end-sub">' + ensayoCards.length + ' cartas · ' + pct + '% resueltas</div>';
+  html += '<div class="fc-end-stats">';
+  html += '<div class="fc-stat fc-stat-ok"><div class="fc-stat-n">'  + ensayoRes.ok  + '</div><div class="fc-stat-l">✓ Sabías</div></div>';
+  html += '<div class="fc-stat fc-stat-mid"><div class="fc-stat-n">' + ensayoRes.mid + '</div><div class="fc-stat-l">~ Dudabas</div></div>';
+  html += '<div class="fc-stat fc-stat-bad"><div class="fc-stat-n">' + ensayoRes.bad + '</div><div class="fc-stat-l">✗ Fallaste</div></div>';
+  html += '</div>';
+  if (ensayoRes.bad > 0) {
+    html += '<button class="fc-retry-btn" id="fc-retry">Repetir las que fallé (' + ensayoRes.bad + ')</button>';
+  }
+  html += '<button class="fc-restart-btn" id="fc-restart">Nueva sesión con las mismas cartas</button>';
+  html += '</div>';
+
+  el('fc-inner').innerHTML = html;
+
+  if (ensayoRes.bad > 0) {
+    el('fc-retry').addEventListener('click', function() {
+      ensayoCards = shuffleArr(ensayoRes.badCards);
+      ensayoIdx   = 0;
+      ensayoShown = false;
+      ensayoRes   = {ok: 0, mid: 0, bad: 0, badCards: []};
       renderEnsayo();
     });
   }
-  el('fc-restart').addEventListener('click',function(){ renderEnsayoConfig(); });
+  el('fc-restart').addEventListener('click', function() { renderEnsayoConfig(); });
 }
 
+// ============================================================
+//  NUEVA REBATIDA
+// ============================================================
 
-// === NUEVA REBATIDA ===
 var nrSelectedOng = null;
 
-function showNuevaRebatida(){
+function showNuevaRebatida() {
   nrSelectedOng = null;
   el('nr-pregunta').value = '';
   el('nr-error').classList.remove('visible');
   renderNrOngPills();
-  var nr=el('nueva-rebatida');nr.style.display='flex';nr.classList.add('open');
+  var nr = el('nueva-rebatida');
+  nr.style.display = 'flex';
+  nr.classList.add('open');
+  trapFocus(nr, closeNuevaRebatida);
 }
 
-function closeNuevaRebatida(){
-  var nr=el('nueva-rebatida');nr.style.display='none';nr.classList.remove('open');
+function closeNuevaRebatida() {
+  var nr = el('nueva-rebatida');
+  nr.style.display = 'none';
+  nr.classList.remove('open');
+  releaseTrap();
 }
 
-function renderNrOngPills(){
-  var ongLabels = [{id:'General',label:'General'}].concat(
-    ONGS.filter(function(o){return o.id!=='all';}).map(function(o){return {id:o.id,label:o.label,color:o.color};})
-  );
-  var h='';
-  ongLabels.forEach(function(o){
-    var sel = nrSelectedOng === o.id;
-    var style = (sel && o.color) ? '--tag-color:'+o.color : (sel ? '--tag-color:var(--brand)' : '');
-    h += '<button class="nr-pill'+(sel?' sel':'')+'" data-nr-ong="'+o.id+'" style="'+style+'">'+esc(o.label)+'</button>';
+function renderNrOngPills() {
+  var html = '';
+  ONGS.filter(function(o) { return o.id !== 'all'; }).forEach(function(ong) {
+    var sel   = nrSelectedOng === ong.id;
+    var style = sel && ong.color ? '--tag-color:' + ong.color : (sel ? '--tag-color:var(--brand)' : '');
+    html += '<button class="nr-pill' + (sel ? ' sel' : '') + '" data-nr-ong="' + ong.id + '" style="' + style + '">' + esc(ong.label) + '</button>';
   });
-  el('nr-ong-pills').innerHTML = h;
-  el('nr-ong-pills').querySelectorAll('[data-nr-ong]').forEach(function(btn){
-    btn.addEventListener('click',function(){
+  el('nr-ong-pills').innerHTML = html;
+  el('nr-ong-pills').querySelectorAll('[data-nr-ong]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
       nrSelectedOng = this.getAttribute('data-nr-ong');
       renderNrOngPills();
     });
   });
 }
 
-function enviarRebatida(){
+function enviarRebatida() {
   var pregunta = el('nr-pregunta').value.trim();
-  if(!nrSelectedOng || !pregunta){
-    el('nr-error').classList.add('visible');
-    return;
-  }
+  if (!nrSelectedOng || !pregunta) { el('nr-error').classList.add('visible'); return; }
   el('nr-error').classList.remove('visible');
   var subject = 'Nueva rebatida sugerida — ' + nrSelectedOng;
-  var body = [
-    'ONG / Bloque: ' + nrSelectedOng,
-    '',
-    'OBJECIÓN DEL DONANTE:',
-    pregunta,
-    '',
-    '---',
-    'Enviado desde la app Objeciones ONG · Wesser'
-  ].join('\n');
+  var body    = ['ONG / Bloque: ' + nrSelectedOng, '', 'OBJECIÓN DEL DONANTE:', pregunta, '', '---', 'Enviado desde la app Objeciones ONG · Wesser'].join('\n');
   window.location.href = 'mailto:formacion@wesser.es?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
 
+// ============================================================
+//  ACCESIBILIDAD — FOCUS TRAP
+// ============================================================
 
-window.addEventListener('DOMContentLoaded', function(){
-  try{
-    if(localStorage.getItem('wob_t')==='1'){
-      document.body.classList.add('light');
-      el('thbtn').textContent = '☀️';
-      el('thbtn').setAttribute('aria-pressed','true');
+var trapCleanup = null;
+
+// Atrapa el foco dentro de un diálogo modal y cierra con Escape.
+// getFocusable() se llama en cada keydown para reflejar cambios dinámicos del DOM.
+function trapFocus(dialogEl, onClose) {
+  var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
+  var prev = document.activeElement;
+
+  function getFocusable() {
+    return Array.prototype.slice.call(dialogEl.querySelectorAll(FOCUSABLE));
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') { e.preventDefault(); onClose(); return; }
+    if (e.key !== 'Tab') return;
+    var items = getFocusable();
+    if (!items.length) { e.preventDefault(); return; }
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
     }
-  }catch(e){}
+  }
 
-  var timer;
-  el('qinput').addEventListener('input', function(){
+  document.addEventListener('keydown', onKeydown);
+
+  // Mueve el foco al primer elemento interactivo del diálogo
+  var items = getFocusable();
+  if (items.length) items[0].focus();
+
+  trapCleanup = function() {
+    document.removeEventListener('keydown', onKeydown);
+    if (prev && prev.focus) prev.focus(); // restaura el foco al elemento que abrió el modal
+    trapCleanup = null;
+  };
+}
+
+function releaseTrap() {
+  if (trapCleanup) trapCleanup();
+}
+
+// ============================================================
+//  INICIALIZACIÓN
+// ============================================================
+
+window.addEventListener('DOMContentLoaded', function() {
+  // Restaurar tema guardado
+  try {
+    if (localStorage.getItem('wob_t') === '1') {
+      document.body.classList.add('light');
+      el('thbtn-icon').textContent = '☀️';
+      el('thbtn').setAttribute('aria-pressed', 'true');
+    }
+  } catch(e) {}
+
+  // Restaurar filtro de ONG y categoría de la sesión anterior
+  try {
+    var savedOng = sessionStorage.getItem('wob_ong');
+    var savedCat = sessionStorage.getItem('wob_cat');
+    if (savedOng) currentOng = savedOng;
+    if (savedCat) currentCat = savedCat;
+  } catch(e) {}
+
+  // Búsqueda con debounce — no reconstruye los filtros ONG/cat en cada tecla
+  var searchTimer;
+  el('qinput').addEventListener('input', function() {
     var v = this.value;
-    clearTimeout(timer);
-    timer = setTimeout(function(){ currentQ = v; render(); }, 180);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function() { currentQ = v; render(false); }, 180);
   });
 
+  el('thbtn').addEventListener('click', toggleTheme);
+  function setHdrH(){var h=document.querySelector('.hdr');if(h)document.documentElement.style.setProperty('--hdr-h',h.offsetHeight+'px');}
+  setHdrH();window.addEventListener('resize',setHdrH);
+  el('sclr-btn').addEventListener('click', clearSearch);
   el('ensayobtn').addEventListener('click', startEnsayo);
   el('fc-exit-btn').addEventListener('click', exitEnsayo);
   el('fab-nueva').addEventListener('click', showNuevaRebatida);
   el('nr-exit-btn').addEventListener('click', closeNuevaRebatida);
   el('nr-send-btn').addEventListener('click', enviarRebatida);
-  render();
+
+  // Toggle panel de ONGs (móvil)
+  var _otb = document.getElementById('ong-toggle-btn');
+  if (_otb) {
+    _otb.addEventListener('click', function() {
+      var isOpen = el('ongFilt').classList.toggle('ong-open');
+      this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      // Cierra el otro panel si estaba abierto
+      el('catFilt').classList.remove('cat-open');
+      var _ctb = document.getElementById('cat-toggle-btn');
+      if (_ctb) _ctb.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // Toggle panel de Tipos/categorías (móvil)
+  var _ctb = document.getElementById('cat-toggle-btn');
+  if (_ctb) {
+    _ctb.addEventListener('click', function() {
+      var isOpen = el('catFilt').classList.toggle('cat-open');
+      this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      // Cierra el otro panel si estaba abierto
+      el('ongFilt').classList.remove('ong-open');
+      var _otb2 = document.getElementById('ong-toggle-btn');
+      if (_otb2) _otb2.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // Atajos de teclado para el Modo Ensayo (1/2/3 y Espacio)
+  document.addEventListener('keydown', function(e) {
+    if (el('ensayo').style.display !== 'flex') return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    var inner = el('fc-inner');
+    if (!ensayoShown && (e.key === ' ' || e.key === 'Enter')) {
+      var showBtn = inner.querySelector('#fc-show');
+      if (showBtn) { e.preventDefault(); showBtn.click(); }
+    }
+    if (ensayoShown) {
+      var evMap = {'1':'bad','2':'mid','3':'ok'};
+      if (evMap[e.key]) {
+        var btn = inner.querySelector('[data-ev="' + evMap[e.key] + '"]');
+        if (btn) { e.preventDefault(); btn.click(); }
+      }
+    }
+  });
+
+  render(); // primer render al cargar
 });
 </script>
 
@@ -4552,8 +5013,10 @@ window.addEventListener('DOMContentLoaded', function(){
     </div>
     <div class="nr-card">
       <div class="nr-section">
-        <label class="nr-label">¿A qué ONG corresponde?</label>
-        <div class="nr-pills" id="nr-ong-pills"></div>
+        <div role="group" aria-labelledby="nr-ong-label">
+          <p class="nr-label" id="nr-ong-label">¿A qué ONG corresponde?</p>
+          <div class="nr-pills" id="nr-ong-pills"></div>
+        </div>
       </div>
       <div class="nr-divider"></div>
       <div class="nr-section nr-section-last">
@@ -4570,6 +5033,7 @@ window.addEventListener('DOMContentLoaded', function(){
   </div>
 </div>
 
+<div id="toast" role="status" aria-live="polite"></div>
 
 </body>
 </html>
