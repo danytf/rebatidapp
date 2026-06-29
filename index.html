@@ -182,10 +182,12 @@ body.light::before{
   display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
   padding:var(--s-2) var(--s-4);padding-right:3rem;max-width:var(--max-w);margin:0 auto;
   -webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(to right,black 85%,transparent);
+  -webkit-mask-image:linear-gradient(to right,black 85%,transparent);
 }
 .cfilt::-webkit-scrollbar{display:none}
 @media(min-width:768px){
-  .cfilt{flex-wrap:wrap;overflow-x:visible;padding-right:var(--s-4);row-gap:var(--s-1)}
+  .cfilt{flex-wrap:wrap;overflow-x:visible;padding-right:var(--s-4);row-gap:var(--s-1);mask-image:none;-webkit-mask-image:none}
   :root{--max-w:740px}
 }
 .ctag{
@@ -201,6 +203,7 @@ body.light::before{
 .ctag:active{transform:translateY(0) scale(.96)}
 .ctag-sel{border-color:var(--tag-color,var(--brand-line));color:var(--tag-color,var(--brand));background:color-mix(in srgb,var(--tag-color,var(--brand)) 18%,transparent);transform:none}
 .ctag-sel:hover{transform:none}
+body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var(--brand-soft);font-weight:700}
 .ctag-fav{font-weight:700}
 .ctag-count{font-size:var(--t-2xs);font-weight:600;opacity:.55;margin-left:.3rem}
 
@@ -332,12 +335,12 @@ body.light::before{
   border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1;
 }
 .fc-hdr-title{font-size:var(--t-sm);font-weight:800;color:var(--ink-2);letter-spacing:.04em}
-.fc-exit{width:auto;padding:.32rem .75rem;font-size:var(--t-xs);font-weight:700;letter-spacing:.02em}
+.fc-exit{width:auto;padding:.32rem .75rem;font-size:var(--t-xs);font-weight:700;letter-spacing:.02em;background:var(--surface-2);border-color:var(--line-2);color:var(--ink-2)}
 .fc-body{flex:1;display:flex;justify-content:center;padding:var(--s-4) var(--s-4) 0}
-.fc-wrap{width:100%;max-width:var(--max-w-modal);display:flex;flex-direction:column}
+.fc-wrap{width:100%;max-width:var(--max-w-modal);display:flex;flex-direction:column;flex:1}
 
 /* Progress */
-.fc-progress-bar{height:3px;background:var(--surface-hi);border-radius:var(--r-pill);margin-bottom:var(--s-2);overflow:hidden}
+.fc-progress-bar{height:6px;background:var(--surface-hi);border-radius:var(--r-pill);margin-bottom:var(--s-2);overflow:hidden}
 .fc-progress-fill{height:100%;background:var(--brand);transition:width .35s var(--ease);border-radius:var(--r-pill)}
 .fc-counter{font-size:var(--t-2xs);color:var(--ink-3);font-weight:600;text-align:right;margin-bottom:var(--s-5)}
 
@@ -357,7 +360,7 @@ body.light::before{
   border-radius:var(--r-lg);color:var(--ink-2);
   font-size:var(--t-base);font-weight:700;cursor:pointer;font-family:inherit;
   transition:border-color .18s,background .18s,transform .18s var(--ease-out);
-  letter-spacing:-.005em;
+  letter-spacing:-.005em;margin-top:auto;
 }
 .fc-show-btn:hover{border-color:var(--brand-line);color:var(--brand);transform:translateY(-1px)}
 .fc-show-btn:active{transform:scale(.98)}
@@ -444,7 +447,7 @@ body.light::before{
 }
 .fc-cfg-pill:hover{transform:translateY(-1px);border-color:var(--ink-3);color:var(--ink-2)}
 .fc-cfg-pill:active{transform:scale(.96)}
-.fc-cfg-pill.sel{color:var(--pill-c,var(--brand));border-color:var(--pill-c,var(--brand));background:color-mix(in srgb,var(--pill-c,var(--brand)) 18%,transparent);box-shadow:none}
+.fc-cfg-pill.sel{color:var(--brand);border-color:var(--brand);background:var(--brand-soft);box-shadow:none}
 .fc-cfg-count{
   text-align:center;font-size:var(--t-sm);color:var(--ink-3);
   margin:var(--s-5) 0 var(--s-3);font-weight:500;
@@ -504,9 +507,9 @@ body.light::before{
 .nr-hero-sub{font-size:var(--t-sm);color:var(--ink-3);line-height:1.5}
 .nr-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-2);margin-bottom:var(--s-3)}
 .nr-section{padding:var(--s-4)}
-.nr-section-last{padding-top:var(--s-3)}
+.nr-section-last{padding-top:var(--s-5)}
 .nr-divider{height:1px;background:var(--line);margin:0 var(--s-4)}
-.nr-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-3);display:block}
+.nr-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:var(--s-3);display:block}
 .nr-pills{display:flex;flex-wrap:wrap;gap:var(--s-2)}
 .nr-pill{padding:.38rem .82rem;border-radius:var(--r-pill);border:1.5px solid var(--line-2);background:transparent;font-size:var(--t-xs);font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink-3);letter-spacing:.01em;transition:transform .18s var(--ease-out),border-color .15s,color .15s,background .15s;-webkit-tap-highlight-color:transparent}
 .nr-pill:hover{transform:translateY(-1px);border-color:var(--ink-2);color:var(--ink-2)}
@@ -572,7 +575,7 @@ body.light::before{
       <div class="sub">Objeciones ONG · Wesser</div>
       <div class="credit">Programado por Daniel Marrero</div>
     </div>
-    <div style="display:flex;align-items:center;gap:.35rem">
+    <div style="display:flex;align-items:center;gap:.35rem;background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:.3rem .4rem">
       <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="false"><span id="thbtn-icon">🌙</span><span class="ibtn-lbl">Tema</span></button>
       <button class="ibtn ibtn--labeled" id="ensayobtn" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
       <button class="ibtn ibtn--labeled" id="fab-nueva" aria-label="Añadir rebatida">✍️<span class="ibtn-lbl">Añadir</span></button>
@@ -584,7 +587,7 @@ body.light::before{
 <div class="sbar">
   <div class="sinput-wrap">
     <span class="sicon">🔍</span>
-    <input class="sinput" id="qinput" type="search" placeholder="Buscar por objeción, argumento o consejo..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="Buscar objeción">
+    <input class="sinput" id="qinput" type="search" placeholder="Buscar objeción o respuesta..." autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" aria-label="Buscar objeción">
     <button class="sclr" id="sclr-btn" aria-label="Limpiar búsqueda">✕</button>
   </div>
 </div>
