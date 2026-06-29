@@ -4443,7 +4443,7 @@ function buildGroupedHtml(filtered) {
     groupMap[obj.cat].items.push(obj);
   });
   var html = '';
-  var isDesktop = window.innerWidth >= 960;
+  var isDesktop = window.matchMedia('(min-width:960px)').matches;
   groups.forEach(function(g) {
     html += '<div class="cat-section' + (isDesktop ? '' : ' collapsed') + '" data-cat="' + g.cat + '">';
     html += '<button class="cat-section-hdr" aria-expanded="' + (isDesktop ? 'true' : 'false') + '">';
@@ -4555,13 +4555,15 @@ function render(rebuildFilters) {
     zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural ? ' objeciones' : ' objeción') + ' encontrada' + (plural ? 's' : '') + '</div>'
                    + filtered.map(buildCardHtml).join('');
   } else {
-    zone.innerHTML = buildGroupedHtml(filtered);
-    zone.querySelectorAll('.cat-section-hdr').forEach(function(hdr) {
-      hdr.addEventListener('click', function() {
-        var sec = this.closest('.cat-section');
-        var col = sec.classList.toggle('collapsed');
-        this.setAttribute('aria-expanded', col ? 'false' : 'true');
-      });
+    var plural2 = filtered.length !== 1;
+    zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural2 ? ' objeciones' : ' objeción') + '</div>'
+                   + buildGroupedHtml(filtered);
+    zone.addEventListener('click', function(e) {
+      var hdr = e.target.closest('.cat-section-hdr');
+      if (!hdr) return;
+      var sec = hdr.closest('.cat-section');
+      var col = sec.classList.toggle('collapsed');
+      hdr.setAttribute('aria-expanded', col ? 'false' : 'true');
     });
   }
 
@@ -4802,9 +4804,9 @@ function saveEnsayoSession() {
 }
 
 function fmtSessionDate(ts) {
-  var d = new Date(ts), now = new Date();
+  var d = new Date(ts);
   var hm = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
-  var diffD = Math.floor((now - d) / 86400000);
+  var diffD = Math.floor((Date.now() - ts) / 86400000);
   if (diffD === 0) return 'Hoy ' + hm;
   if (diffD === 1) return 'Ayer ' + hm;
   return 'Hace ' + diffD + ' días';
