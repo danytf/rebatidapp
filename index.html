@@ -437,6 +437,17 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .fc-empty-t{font-size:var(--t-md);font-weight:700;color:var(--ink-2);margin-bottom:var(--s-1)}
 .fc-empty-s{font-size:var(--t-sm);line-height:1.7}
 
+/* Category sections */
+.cat-section{margin-bottom:var(--s-4)}
+.cat-section-hdr{display:flex;align-items:center;gap:var(--s-2);width:100%;background:transparent;border:none;cursor:pointer;padding:var(--s-2) 0;font-family:inherit;-webkit-tap-highlight-color:transparent;user-select:none}
+.cat-section-hdr:active{opacity:.7}
+.cat-section-badge{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:.2rem .55rem;border-radius:var(--r-sm);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.cat-section-count{font-size:var(--t-xs);font-weight:700;color:var(--ink-3)}
+.cat-section-arr{margin-left:auto;color:var(--ink-4);font-size:.75rem;transition:transform .22s var(--ease-out)}
+.cat-section.collapsed .cat-section-arr{transform:rotate(-90deg)}
+.cat-section-body{display:flex;flex-direction:column;gap:var(--s-2)}
+.cat-section.collapsed .cat-section-body{display:none}
+
 /* ensayo config screen */
 .fc-cfg{padding:var(--s-4) var(--s-4) 0;max-width:var(--max-w-modal);margin:0 auto;width:100%;display:flex;flex-direction:column;flex:1}
 .fc-cfg-actions{margin-top:auto;padding:var(--s-4) 0 calc(var(--s-5) + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:var(--s-2)}
@@ -567,11 +578,9 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   .ong-toggle-wrap{display:flex;gap:var(--s-2);padding:var(--s-2) var(--s-4) 0;max-width:var(--max-w);margin:0 auto}
   #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
   #ongFilt.ong-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
-  #cat-toggle-btn{display:none}
 }
 .ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
-#cat-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -602,9 +611,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 <div class="cfilt" id="ongFilt" role="group" aria-label="Filtro por ONG"></div>
 <div class="ong-toggle-wrap" id="ong-toggle-wrap">
   <button class="ctag" id="ong-toggle-btn" aria-expanded="false" aria-controls="ongFilt"><span id="ong-toggle-label">Entidad</span><span class="ong-arrow">▾</span></button>
-  <button class="ctag" id="cat-toggle-btn" aria-expanded="false" aria-controls="catFilt"><span id="cat-toggle-label">Tipo</span><span class="ong-arrow">▾</span></button>
 </div>
-<div class="cfilt" id="catFilt" role="group" aria-label="Filtro por categoría"></div>
 <div class="rzone" id="results" aria-live="polite"></div>
 </div></div>
 
@@ -4263,7 +4270,6 @@ var CATS = [
 var ONG_EMOJI = {all:'🏢',General:'📋',AECC:'<svg width="1em" height="1em" viewBox="0 0 100 100" style="vertical-align:-0.15em" xmlns="http://www.w3.org/2000/svg"> <path d="M 62 14 A 36 36 0 1 0 72 60 A 36 36 0 0 1 62 14 Z" fill="none" stroke="none"/> <path d="M70 16 C 50 8, 20 18, 14 44 C 8 68, 28 90, 54 88 C 78 86, 92 66, 80 50 C 70 38, 50 42, 48 56 C 47 64, 54 70, 62 64" fill="none" stroke="#24C347" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/> </svg>',AI:'🏠',CR:'<svg width="1em" height="1em" viewBox="0 0 24 24" style="vertical-align:-0.15em;margin-right:.2em" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="2" width="6" height="20" rx="1.5" fill="#dc2626"/><rect x="2" y="9" width="20" height="6" rx="1.5" fill="#dc2626"/></svg>',FEC:'❤️',FJC:'🩸',FPM:'🧠',WWF:'🐼'};
 // --- Estado de la aplicación ---
 var currentOng = 'all';
-var currentCat = 'all';
 var currentQ   = '';
 var openCards    = {};  // { id: true } — tarjetas actualmente desplegadas
 var visitedCards = {};  // { id: true } — tarjetas que se han abierto alguna vez
@@ -4381,7 +4387,6 @@ function renderOngFilter(){
 
   el('ongFilt').querySelector('.ctag-fav').addEventListener('click', function() {
     favOnly    = !favOnly;
-    currentCat = 'all';
     el('ongFilt').classList.remove('ong-open');
     var _otb = document.getElementById('ong-toggle-btn');
     if (_otb) _otb.setAttribute('aria-expanded', 'false');
@@ -4392,9 +4397,8 @@ function renderOngFilter(){
   el('ongFilt').querySelectorAll('.ctag[data-oid]').forEach(function(btn) {
     btn.addEventListener('click', function() {
       currentOng = this.getAttribute('data-oid');
-      currentCat = 'all';
       favOnly    = false;
-      try { sessionStorage.setItem('wob_ong', currentOng); sessionStorage.setItem('wob_cat', 'all'); } catch(e) {}
+      try { sessionStorage.setItem('wob_ong', currentOng); } catch(e) {}
       el('ongFilt').classList.remove('ong-open');
       var _otb = document.getElementById('ong-toggle-btn');
       if (_otb) _otb.setAttribute('aria-expanded', 'false');
@@ -4418,56 +4422,34 @@ function renderSidebar(){
   sb.querySelectorAll('.rb-sb-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
       currentOng=this.getAttribute('data-oid');
-      currentCat='all';favOnly=false;
-      try{sessionStorage.setItem('wob_ong',currentOng);sessionStorage.setItem('wob_cat','all');}catch(e){}
+      favOnly=false;
+      try{sessionStorage.setItem('wob_ong',currentOng);}catch(e){}
       render();window.scrollTo({top:0,behavior:'smooth'});
     });
   });
 }
-function renderCatFilter() {
-  var activeCats = {};
-  DATA.forEach(function(obj) {
-    if (favOnly) {
-      if (!favs[obj.id]) return;
-    } else {
-      var ongOk = currentOng === 'all' ? true : obj.ongs.indexOf(currentOng) !== -1;
-      if (!ongOk) return;
+function buildGroupedHtml(filtered) {
+  var groups = [], groupMap = {};
+  filtered.forEach(function(obj) {
+    if (!groupMap[obj.cat]) {
+      var g = { cat: obj.cat, label: obj.catLabel, color: obj.catColor, items: [] };
+      groupMap[obj.cat] = g;
+      groups.push(g);
     }
-    activeCats[obj.cat] = true;
+    groupMap[obj.cat].items.push(obj);
   });
-
   var html = '';
-  CATS.forEach(function(cat) {
-    if (cat.id !== 'all' && !activeCats[cat.id]) return;
-    var sel   = cat.id === currentCat;
-    var style = sel ? 'border-color:' + cat.color + ';color:' + cat.color + ';background:' + cat.color + '2E' : '';
-    html += '<button class="ctag" data-cid="' + cat.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(cat.label) + '</button>';
+  groups.forEach(function(g) {
+    html += '<div class="cat-section" data-cat="' + g.cat + '">';
+    html += '<button class="cat-section-hdr" aria-expanded="true">';
+    html += '<span class="cat-section-badge" style="background:' + g.color + '">' + esc(g.label) + '</span>';
+    html += '<span class="cat-section-count">' + g.items.length + (g.items.length !== 1 ? ' objeciones' : ' objeción') + '</span>';
+    html += '<span class="cat-section-arr">▴</span>';
+    html += '</button>';
+    html += '<div class="cat-section-body">' + g.items.map(buildCardHtml).join('') + '</div>';
+    html += '</div>';
   });
-
-  el('catFilt').innerHTML = html;
-
-  // Sincronizar label del toggle Tipo (móvil)
-  var _ctl = document.getElementById('cat-toggle-label');
-  var _ctb = document.getElementById('cat-toggle-btn');
-  if (_ctb && _ctl) {
-    var _ac = CATS.find(function(c){ return c.id === currentCat; });
-    var _hasC = currentCat !== 'all';
-    _ctl.textContent = (_hasC && _ac) ? _ac.label : 'Tipo';
-    _ctb.className = 'ctag' + (_hasC ? ' ctag-sel' : '');
-    _ctb.style.cssText = (_hasC && _ac) ? '--tag-color:' + _ac.color : '';
-  }
-
-  el('catFilt').querySelectorAll('.ctag').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      currentCat = this.getAttribute('data-cid');
-      try { sessionStorage.setItem('wob_cat', currentCat); } catch(e) {}
-      el('catFilt').classList.remove('cat-open');
-      var _ctb2 = document.getElementById('cat-toggle-btn');
-      if (_ctb2) _ctb2.setAttribute('aria-expanded', 'false');
-      render();
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    });
-  });
+  return html;
 }
 
 function filterData() {
@@ -4479,12 +4461,11 @@ function filterData() {
       var ongOk = currentOng === 'all' ? true : obj.ongs.indexOf(currentOng) !== -1;
       if (!ongOk) return false;
     }
-    var catOk = currentCat === 'all' || obj.cat === currentCat;
     var txtOk = !q
       || obj.q.toLowerCase().indexOf(q)   !== -1
       || obj.a.toLowerCase().indexOf(q)   !== -1
       || (obj.tip && obj.tip.toLowerCase().indexOf(q) !== -1);
-    return catOk && txtOk;
+    return txtOk;
   });
 }
 
@@ -4552,7 +4533,7 @@ function buildCardHtml(obj) {
 }
 
 function render(rebuildFilters) {
-  if (rebuildFilters !== false) { renderOngFilter(); renderCatFilter(); renderSidebar(); }
+  if (rebuildFilters !== false) { renderOngFilter(); renderSidebar(); }
 
   var filtered = filterData();
   var zone     = el('results');
@@ -4564,9 +4545,20 @@ function render(rebuildFilters) {
     return;
   }
 
-  var plural = filtered.length !== 1;
-  zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural ? ' objeciones' : ' objeción') + ' encontrada' + (plural ? 's' : '') + '</div>'
-                 + filtered.map(buildCardHtml).join('');
+  if (currentQ || favOnly) {
+    var plural = filtered.length !== 1;
+    zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural ? ' objeciones' : ' objeción') + ' encontrada' + (plural ? 's' : '') + '</div>'
+                   + filtered.map(buildCardHtml).join('');
+  } else {
+    zone.innerHTML = buildGroupedHtml(filtered);
+    zone.querySelectorAll('.cat-section-hdr').forEach(function(hdr) {
+      hdr.addEventListener('click', function() {
+        var sec = this.closest('.cat-section');
+        var col = sec.classList.toggle('collapsed');
+        this.setAttribute('aria-expanded', col ? 'false' : 'true');
+      });
+    });
+  }
 
   // Toggle respuesta rápida / completa
   zone.querySelectorAll('.ans-tbtn').forEach(function(btn) {
@@ -4973,9 +4965,7 @@ window.addEventListener('DOMContentLoaded', function() {
   // Restaurar filtro de ONG y categoría de la sesión anterior
   try {
     var savedOng = sessionStorage.getItem('wob_ong');
-    var savedCat = sessionStorage.getItem('wob_cat');
     if (savedOng) currentOng = savedOng;
-    if (savedCat) currentCat = savedCat;
   } catch(e) {}
 
   // Búsqueda con debounce — no reconstruye los filtros ONG/cat en cada tecla
