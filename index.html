@@ -333,8 +333,8 @@ body.light::before{
 }
 .fc-hdr-title{font-size:var(--t-sm);font-weight:800;color:var(--ink-2);letter-spacing:.04em}
 .fc-exit{width:auto;padding:.32rem .75rem;font-size:var(--t-xs);font-weight:700;letter-spacing:.02em}
-.fc-body{flex:1;display:flex;justify-content:center;padding:var(--s-4) var(--s-4) 5rem}
-.fc-wrap{width:100%;max-width:var(--max-w-modal)}
+.fc-body{flex:1;display:flex;justify-content:center;padding:var(--s-4) var(--s-4) 0}
+.fc-wrap{width:100%;max-width:var(--max-w-modal);display:flex;flex-direction:column}
 
 /* Progress */
 .fc-progress-bar{height:3px;background:var(--surface-hi);border-radius:var(--r-pill);margin-bottom:var(--s-2);overflow:hidden}
@@ -427,17 +427,18 @@ body.light::before{
 .fc-empty-s{font-size:var(--t-sm);line-height:1.7}
 
 /* ensayo config screen */
-.fc-cfg{padding:var(--s-4) var(--s-4) 4rem;max-width:var(--max-w-modal);margin:0 auto;width:100%}
+.fc-cfg{padding:var(--s-4) var(--s-4) 0;max-width:var(--max-w-modal);margin:0 auto;width:100%;display:flex;flex-direction:column;flex:1}
+.fc-cfg-actions{margin-top:auto;padding:var(--s-4) 0 calc(var(--s-5) + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:var(--s-2)}
 .fc-cfg-title{font-size:var(--t-2xl);font-weight:800;color:var(--ink);margin-bottom:var(--s-1);letter-spacing:-.03em}
 .fc-cfg-sub{font-size:var(--t-sm);color:var(--ink-3);margin-bottom:var(--s-5);line-height:1.5}
 .fc-cfg-section{margin-bottom:var(--s-5)}
 .fc-cfg-label{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-2)}
 .fc-cfg-pills{display:flex;flex-wrap:wrap;gap:var(--s-2)}
 .fc-cfg-pill{
-  padding:.38rem .8rem;border-radius:var(--r-pill);border:1.5px solid var(--line-2);
-  background:transparent;font-size:var(--t-xs);font-weight:700;cursor:pointer;
+  padding:.45rem 1rem;border-radius:var(--r-pill);border:1.5px solid var(--line-2);
+  background:transparent;font-size:var(--t-sm);font-weight:700;cursor:pointer;
   font-family:inherit;color:var(--ink-3);
-  min-height:44px;display:inline-flex;align-items:center;
+  min-height:44px;min-width:64px;display:inline-flex;align-items:center;justify-content:center;
   transition:transform .18s var(--ease-out),border-color .15s,color .15s,background .15s;
   -webkit-tap-highlight-color:transparent;line-height:1.4;letter-spacing:.01em;
 }
@@ -539,12 +540,12 @@ body.light::before{
 .rb-layout{display:flex;align-items:flex-start}
 .rb-sidebar{display:none}
 .rb-content{flex:1;min-width:0}
-.rb-sb-btn{width:100%;text-align:left;background:transparent;border:none;border-radius:var(--r-sm);padding:.5rem .7rem;font-size:var(--t-sm);font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.5rem;transition:background .12s,color .12s}
+.rb-sb-btn{width:100%;text-align:left;background:transparent;border:none;border-radius:var(--r-sm);padding:.6rem .85rem;font-size:var(--t-base);font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.55rem;transition:background .12s,color .12s}
 .rb-sb-btn:hover{background:var(--surface-hi);color:var(--ink)}
 .rb-sb-btn.rb-sb-active{background:var(--sb-color,var(--brand));color:#fff;font-weight:700}
 .rb-sb-btn.rb-sb-active:hover{background:var(--sb-color,var(--brand))}
 @media(min-width:960px){
-  .rb-sidebar{display:flex;flex-direction:column;flex-shrink:0;width:200px;position:sticky;top:var(--hdr-h,68px);height:calc(100vh - var(--hdr-h,68px));overflow-y:auto;overflow-x:hidden;border-right:1px solid var(--line);background:var(--surface);padding:.65rem .5rem;gap:.2rem}
+  .rb-sidebar{display:flex;flex-direction:column;flex-shrink:0;width:220px;position:sticky;top:var(--hdr-h,68px);height:calc(100vh - var(--hdr-h,68px));overflow-y:auto;overflow-x:hidden;border-right:1px solid var(--line);background:var(--surface);padding:.75rem .6rem;gap:.25rem}
   .rb-sidebar::before{content:'ENTIDADES';display:block;font-size:.6rem;font-weight:800;letter-spacing:.12em;color:var(--ink-3);padding:.2rem .2rem .5rem;flex-shrink:0}
   #ongFilt{display:none}
   .ong-toggle-wrap{display:none}
@@ -555,8 +556,7 @@ body.light::before{
   .ong-toggle-wrap{display:flex;gap:var(--s-2);padding:var(--s-2) var(--s-4) 0;max-width:var(--max-w);margin:0 auto}
   #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
   #ongFilt.ong-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
-  #catFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
-  #catFilt.cat-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
+  #cat-toggle-btn{display:none}
 }
 .ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
@@ -1429,7 +1429,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Cómo sé que no es una estafa, que sois quienes decís?",
     "a": "Es una pregunta muy sensata, y haces bien en preguntarla. Llevo identificación visible con mi nombre y el de la organización, y trabajo con un equipo de captación oficial — puedes pedirme ver mi acreditación cuando quieras. El alta se hace con un documento donde aparecen todos los datos de la organización, su CIF y sus vías de contacto oficiales. Nunca te pediré dinero en efectivo ni datos como tu PIN o tus claves: solo el IBAN, lo mismo que para domiciliar cualquier recibo. Si algo no te encaja, tómate el tiempo que necesites para verificarlo.",
@@ -1444,7 +1444,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Tú cobras por esto? ¿Trabajas a comisión?",
     "a": "Sí, soy parte de un equipo profesional de captación y cobro por mi trabajo, como cualquier persona que trabaja. La captación en calle tiene un coste, igual que cualquier otra forma de dar a conocer una causa — y está pensada para que cada socio que se da de alta aporte durante años mucho más de lo que cuesta conseguirlo. No te estoy pidiendo dinero para mí: te estoy proponiendo que apoyes una causa que merece la pena. Que yo cobre por mi trabajo no cambia que lo que tú aportas va a la organización.",
@@ -1459,7 +1459,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "No me gusta que me paren en la calle / me parece una forma agresiva de pedir",
     "a": "Lo entiendo, y es una crítica válida. No todo el mundo lo hace bien, y hay captadores que generan incomodidad. Lo que sí te digo es que la conversación en la calle es uno de los canales más eficaces para llegar a personas que de otra manera nunca habrían considerado colaborar — gente que no estaba buscando esto, pero que cuando lo conoce, decide que le importa. Si lo que te molesta es el método pero la causa te importa, no dejes que una cosa quite valor a la otra.",
@@ -1474,7 +1474,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Por qué captar socios en la calle y no por internet?",
     "a": "Las dos cosas existen, pero no funcionan igual. La captación online llega a quien ya está buscando colaborar — quien ya tiene la intención. La conversación en la calle llega a personas que nunca habrían llegado solas, que no estaban buscando esto pero que, cuando lo conocen, deciden que sí les importa. Es el canal más eficiente para ampliar la base de socios más allá de quienes ya estaban convencidos.",
@@ -1489,7 +1489,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Me llegan muchas ONGs al mes y no sé a cuál apoyar",
     "a": "Es una situación muy común y entendible. Una buena guía es preguntarte qué causa te importa más — y luego buscar la organización con mayor trayectoria, transparencia verificada e impacto real en ese ámbito. No todas las ONGs son iguales en rigor ni en resultados. Si ya tienes claro que esta causa te importa, yo te cuento por qué esta organización es la opción más sólida.",
@@ -1504,7 +1504,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Cuánto se lleva la empresa de captación de mi cuota?",
     "a": "La captación en calle tiene un coste — las empresas que gestionan este canal cobran por ello, igual que cualquier otro canal de marketing. Lo que importa es el retorno: por cada euro invertido en captación, las organizaciones serias obtienen varios euros en aportaciones sostenidas durante años. Las cuentas de las ONGs serias son auditadas y públicas, y el coste de captación aparece desglosado. Es el funcionamiento normal de cualquier organización que quiere mantener su impacto en el tiempo.",
@@ -1519,7 +1519,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "No tengo dinero / Con lo que cobro no me llega para ayudar a nadie más",
     "a": "Lo entiendo, y no lo voy a minimizar: la aportación periódica es un compromiso real, y hay que pensárselo. Lo que sí quiero que sepas es por qué importa que sea periódica y no puntual. Las organizaciones financian programas que duran meses o años — psicólogos, técnicos de empleo, servicios de atención, investigadores. Nada de eso puede planificarse con donaciones esporádicas. Si ahora mismo no es el momento, lo respeto completamente. Pero si hay un pequeño margen, ese compromiso sostenido tiene un impacto que una donación única no puede tener. La periodicidad — mensual, trimestral o como mejor te venga — la decidís juntos.",
@@ -1534,7 +1534,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Soy estudiante / no tengo ingresos propios todavía",
     "a": "Lo entiendo perfectamente, y si ahora mismo no tienes ingresos estables, lo último que quiero es que te compliques. No hay ninguna prisa. Si te parece, te explico la causa para que la conozcas, y el día que tengas tu situación más asentada y te apetezca, das el paso tú. Hay colaboraciones desde cantidades muy pequeñas — el valor no está en cuánto, sino en sumarte. Pero solo cuando sea tu momento.",
@@ -1549,7 +1549,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Estoy en paro / ahora mismo no tengo trabajo",
     "a": "Lo entiendo, es una situación complicada y hay que mirar muy bien en qué se gasta cada euro. Dicho eso, muchas personas que están cobrando el paro sí encuentran margen para una aportación pequeña — la cuota mínima son 10€ al mes. Tú sabes mejor que nadie si encaja o no en tu situación ahora mismo. Si hay margen y la causa te importa, es un buen momento para sumar. Y si ahora de verdad no puede ser, sin problema — la puerta sigue abierta cuando cambie tu situación.",
@@ -1564,7 +1564,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Y si dentro de unos meses no puedo seguir pagándolo?",
     "a": "No pasa absolutamente nada. La colaboración no tiene ninguna permanencia. Mira, en el formulario que estamos rellenando aquí en la tablet aparece un teléfono gratuito: llamando ahí, en cualquier momento puedes modificar tu cuota, reducirla, pausarla o darte de baja — de forma sencilla, rápida y sin coste. Si tu situación cambia, una llamada lo resuelve. Lo que aportes mientras puedas ya habrá tenido impacto, y si más adelante quieres retomarlo, las puertas siguen abiertas.",
@@ -1579,7 +1579,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Con la crisis que hay, hay gente que necesita esa cuota para sí misma",
     "a": "Lo entiendo, y si estás pasándola mal tú mismo, no te pido nada — en serio. Pero si hay un pequeño margen, piensa que las organizaciones como esta atienden a personas en situaciones de vulnerabilidad real — personas que también están en crisis, muchas veces más profunda. Una pequeña aportación periódica forma parte de la red que evita que esas situaciones empeoren.",
@@ -1594,7 +1594,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Ya colaboro con otra ONG y no puedo asumir dos compromisos",
     "a": "Lo respeto, y el hecho de que ya colabores con otra causa dice mucho de ti. No te voy a pedir que abandones lo que ya tienes. Lo que sí te propongo es que lo veas como un reparto: hay personas que apoyan dos o tres causas con aportaciones pequeñas porque entienden que los problemas no son excluyentes. Si ahora mismo el presupuesto no da para más, lo entiendo perfectamente. Pero si hay aunque sea un pequeño margen, este compromiso puede convivir perfectamente con el que ya tienes.",
@@ -1609,7 +1609,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Ya tengo demasiadas domiciliaciones / No puedo añadir más compromisos",
     "a": "Lo entiendo, y no te voy a pedir que hagas algo que no encaja en tu situación. Sí te aseguro una cosa: si en algún momento revisas tus compromisos y queda espacio, las organizaciones serias son las que publican cuentas auditadas, llevan años de trayectoria sin escándalos y tienen impacto verificable. Si alguna de tus domiciliaciones actuales no tiene ese nivel de transparencia, quizás merece la pena revisarlo. Pero eso ya es decisión tuya.",
@@ -1624,7 +1624,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿La donación desgrava en la declaración de la renta?",
     "a": "Sí, y bastante. Las organizaciones acogidas a la Ley de Mecenazgo (Ley 49/2002) dan derecho a deducción en el IRPF: el 80% de los primeros 250€ donados al año, y el 40% del resto — o el 45% si llevas tres o más años colaborando con la misma entidad. La organización te envía un certificado fiscal anual para incluirlo en tu declaración.",
@@ -1639,7 +1639,7 @@ body.light::before{
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Prefiero una donación puntual, no quiero un compromiso fijo",
     "a": "Lo entiendo, y una donación puntual también es valiosa. La diferencia está en la planificación: las organizaciones no solo actúan en emergencias — mantienen programas activos todo el año que no se pueden sostener con ingresos que solo llegan de forma esporádica. Una aportación periódica, aunque sea pequeña, es lo que permite que esos programas existan antes de que haga falta, no solo después.",
@@ -1654,7 +1654,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Prefiero hacer voluntariado que dar dinero",
     "a": "El voluntariado es una forma valiosísima de contribuir. Pero el voluntariado y la aportación económica hacen cosas distintas: tu tiempo puede acompañar a una persona, pero no puede financiar los programas que necesitan profesionales trabajando cada día ni los recursos materiales que sostienen esos servicios. Las dos cosas son necesarias y se complementan.",
@@ -1669,7 +1669,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Yo ya colaboro a través de mi iglesia / mi comunidad",
     "a": "Eso es estupendo, y dice mucho de ti que ya tengas ese compromiso. No te pido que lo cambies. Lo que apoya esta organización es complementario a lo que haces en tu comunidad — llega a personas y a situaciones que quizás tu vía actual no alcanza, con programas específicos y presencia en sitios donde otras redes no llegan. Si hay un pequeño margen para sumar, las dos formas de ayudar conviven perfectamente.",
@@ -1684,7 +1684,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Las ONGs deberían autofinanciarse y no depender de donaciones de la gente",
     "a": "Sería ideal. Pero las causas que más importan son precisamente las que menos rentabilidad tienen para el mercado: la investigación de enfermedades raras, el acompañamiento a personas en exclusión, la prevención en poblaciones vulnerables. Si las ONG tuvieran que autofinanciarse como una empresa, solo sobrevivirían las que trabajan en causas rentables — y esas ya las cubre el mercado. Las donaciones de personas como tú son exactamente lo que permite que existan organizaciones trabajando en lo que no tiene rentabilidad económica pero sí tiene un valor humano enorme. ¿Quién, si no, lo haría?",
@@ -1699,7 +1699,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿Qué hacéis con mis datos personales? ¿Me vais a llamar o mandar publicidad?",
     "a": "Tus datos se usan solo para gestionar tu colaboración — el cargo de la cuota y enviarte tu certificado fiscal. No se venden ni se ceden a terceros con fines comerciales, y la organización cumple con el RGPD. Tienes derecho a acceder a tus datos, corregirlos o pedir que dejen de usarlos cuando quieras. Si no quieres recibir comunicaciones, puedes decirlo y se respeta.",
@@ -1714,7 +1714,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿No puedo pagar con tarjeta o Bizum en lugar de dar mi cuenta bancaria?",
     "a": "Para el alta de socio se usa la domiciliación bancaria porque es lo que permite una colaboración estable y con el menor coste de gestión — cada euro que no se va en comisiones de pasarela de pago es un euro que llega a los programas. La domiciliación es además el método más fácil de cancelar: una orden a tu banco y listo, sin depender de ninguna plataforma. Solo necesito tu IBAN, los mismos datos de cualquier recibo que ya tengas domiciliado.",
@@ -1729,7 +1729,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "¿La domiciliación es segura? No quiero dar mis datos bancarios en la calle",
     "a": "Es una pregunta muy razonable. Lo que recojo es únicamente tu IBAN y tu nombre — los mismos datos que facilitas cuando domicilias un recibo de luz o una suscripción. Con eso se genera una orden de débito SEPA, el sistema bancario regulado europeo: tu banco tiene la obligación de devolverte cualquier cargo que no reconozcas en un plazo de ocho semanas sin necesidad de dar explicaciones. La organización no tiene acceso a tu saldo ni a ningún otro movimiento de tu cuenta. Y si en algún momento quieres cancelar, lo haces directamente con tu banco.",
@@ -1744,7 +1744,7 @@ body.light::before{
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Mi marido / pareja dice que no demos datos bancarios en la calle",
     "a": "Es una precaución completamente razonable, y tu pareja tiene razón en ser cuidadoso. Lo que sí te puedo aclarar es qué datos recojo exactamente: únicamente tu IBAN y tu nombre — los mismos que aparecen en cualquier recibo domiciliado. Con eso se genera una orden SEPA regulada por el sistema bancario europeo. Tu banco puede anular cualquier cargo en ocho semanas sin justificación. Pero si necesitáis decidirlo juntos, lo entiendo — es una decisión de pareja.",
@@ -1759,7 +1759,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "No me gusta tener un cargo que se repite indefinidamente, se me olvidará",
     "a": "Lo entiendo. Lo bueno es que tú tienes el control en todo momento: cada cargo aparece en tu cuenta con el nombre de la organización, recibes tu certificado anual, y tienes un teléfono gratuito en el propio formulario que hemos rellenado en la tablet para modificar o cancelar cuando quieras — sin coste y en minutos. No es una trampa que se olvida — es un compromiso voluntario que tú decides cuánto dura. Y la razón de que sea recurrente es práctica: los programas se planifican a años, y eso solo es posible con apoyos estables.",
@@ -1774,7 +1774,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "No llevo el IBAN encima",
     "a": "No pasa nada, lo buscamos juntos. El IBAN aparece en la app de tu banco — en el apartado de cuentas — o en cualquier recibo domiciliado que tengas en el móvil: luz, teléfono, gimnasio. Son los 24 caracteres que empiezan por ES. ¿Lo miramos un momento?",
@@ -1789,7 +1789,7 @@ body.light::before{
     "catLabel": "🙅 Personal",
     "catColor": "#475569",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Soy mayor y no me manejo bien con estas cosas de domiciliaciones / bancos",
     "a": "No te preocupes, lo hacemos juntos ahora mismo y es muy sencillo. Solo necesito tu IBAN — que aparece en la app de tu banco o en cualquier recibo domiciliado — y tu nombre completo. Con eso lo gestiono yo todo. No tienes que hacer nada más. Si en algún momento quieres cancelar, puedes pedírselo a alguien de confianza o ir a tu banco y pedirlo en ventanilla.",
@@ -1804,7 +1804,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Mi pareja / marido tiene que decidirlo también",
     "a": "Lo entiendo perfectamente, y respeto que las decisiones económicas las toméis juntos. Lo que sí te propongo es esto: el alta lo cerramos ahora — son dos minutos — y tienes margen para revisarlo con tu pareja tranquilamente. Si decidís que no es el momento, puedes cancelar directamente con tu banco sin ningún coste. Así al menos tienes toda la información para contárselo bien.",
@@ -1819,7 +1819,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Mándame la información por email o WhatsApp y ya lo miro",
     "a": "Te entiendo, pero te seré sincero: la experiencia nos dice que esa información casi nunca se llega a mirar — no por mala intención, sino porque la vida se cruza y se queda en el cajón. Por eso estamos aquí en persona, para poder resolverte cualquier duda ahora mismo, que es cuando de verdad puedo ayudarte a decidir. ¿Qué es lo que te gustaría saber? Si después de hablarlo no lo ves, no pasa absolutamente nada.",
@@ -1834,7 +1834,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Prefiero pensármelo y decidirlo en casa",
     "a": "Claro, lo respeto. Antes de que te vayas, ¿hay algo concreto que no te haya quedado claro o que te genere alguna duda? A veces \"pensarlo\" significa que falta información, y prefiero dártela ahora. Si la decisión es simplemente que hoy no es el momento, lo entiendo perfectamente.",
@@ -1849,7 +1849,7 @@ body.light::before{
     "catLabel": "⏱️ Sin tiempo",
     "catColor": "#f59e0b",
     "ongs": [
-      "all"
+      "General"
     ],
     "q": "Ahora no es buen momento / quizás más adelante / después de las vacaciones",
     "a": "Lo entiendo. Pero te hago una pregunta honesta: ¿hay algo concreto que cambie después, o es que hoy simplemente no es el momento? Si hay una razón real — económica, personal — lo respeto completamente. Si es que la decisión en la calle se hace cuesta arriba, también lo entiendo. Pero las personas que estas organizaciones atienden no esperan a que sea buen momento.",
@@ -3228,7 +3228,9 @@ body.light::before{
     "cat": "utilidad",
     "catLabel": "❓ Impacto",
     "catColor": "#dc2626",
-    "ongs": ["FPM"],
+    "ongs": [
+      "FPM"
+    ],
     "q": "¿Si ya hay fármacos para el Alzheimer, para qué seguir investigando?",
     "a": "Es una noticia importante y real: hay nuevos tratamientos que enlentecen el avance de la enfermedad en fases muy tempranas. Pero hay dos cosas que todavía no existen: una cura, y acceso universal a esos tratamientos. Los fármacos disponibles requieren un diagnóstico muy precoz — en una fase en que la mayoría de las personas todavía no saben que tienen la enfermedad. Eso solo es posible con biomarcadores y pruebas de detección que la Fundación Pascual Maragall está desarrollando. Y los tratamientos actuales, por ahora, solo están disponibles en algunos países y a un coste elevado. La investigación de la Fundación trabaja exactamente en eso: diagnóstico precoz para que los fármacos lleguen a tiempo, e investigación en etapas más avanzadas donde esos tratamientos todavía no funcionan.",
     "tip": "No niegues que hay avances farmacológicos — son reales y es buena noticia. El argumento tiene dos ejes: (1) los nuevos fármacos requieren diagnóstico precoz, que es exactamente lo que investiga la Fundación; (2) solo funcionan en fases muy tempranas y queda mucho por resolver en fases moderadas y avanzadas. Si el donante pregunta por nombres concretos de fármacos, no improvises — redirige al eje del diagnóstico precoz.",
@@ -3721,7 +3723,9 @@ body.light::before{
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
-    "ongs": ["WWF"],
+    "ongs": [
+      "WWF"
+    ],
     "q": "WWF se opone a la nuclear y yo creo que es la mejor solución para el clima, ¿cómo lo justificáis?",
     "a": "Es un debate real y legítimo, y hay personas con buena fe en los dos lados. La posición de WWF es que la energía nuclear presenta riesgos de seguridad, genera residuos radioactivos sin solución definitiva y tiene tiempos de construcción demasiado largos para los plazos de la crisis climática. Pero lo más importante: WWF no trabaja a favor o en contra de tecnologías concretas por capricho — trabaja desde la evidencia científica disponible. Puedes no estar de acuerdo con esa posición. Y tu cuota no implica que endoses cada postura de la organización: implica que apoyas el trabajo en biodiversidad, lince, Doñana, océanos y lucha contra el crimen ambiental.",
     "tip": "No entres en un debate técnico sobre la nuclear — no vas a ganar ese debate en calle y no es necesario. El eje correcto es: las posiciones de política energética son debatibles, pero el trabajo de conservación en el que va la cuota no lo es. Separa la posición política de la misión. Si el donante insiste en que no puede apoyar a una organización que se opone a la nuclear, acepta el no con respeto.",
@@ -4104,13 +4108,14 @@ body.light::before{
     "diff": 3,
     "short": "Ha habido denuncias documentadas en África. WWF reconoció los problemas, encargó una investigación independiente e implementó una política global de derechos humanos."
   },
-
   {
     "id": "gen_iban",
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "¿Es seguro daros mi IBAN en la calle?",
     "a": "Es una pregunta muy razonable. El IBAN solo permite realizar cargos autorizados — no extracciones ni transferencias desde tu cuenta. Lo que autorizas es una domiciliación SEPA, que tiene una protección específica: tienes 8 semanas para reclamar cualquier cargo no autorizado directamente a tu banco, y el banco está obligado a devolverlo sin necesidad de justificación. Además, el IBAN no es un dato secreto — aparece en cualquier factura o transferencia que hayas hecho.",
     "tip": "No minimices la pregunta ni la trates como desconfianza hacia ti personalmente. La protección SEPA es un argumento real y sólido. Si el donante quiere consultarlo antes de firmar, dale espacio — no hay ninguna urgencia que justifique presionar en este punto.",
@@ -4123,7 +4128,9 @@ body.light::before{
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "¿Cómo cancelo si cambio de opinión?",
     "a": "Cancelar es sencillo y sin coste: puedes llamar o escribir directamente a la organización para darte de baja, o cancelar la domiciliación desde tu propio banco en cualquier momento. No hay permanencia mínima ni penalización. La cuota solo se cobra mientras eres socio activo.",
     "tip": "Esta pregunta no es señal de que el donante vaya a cancelar — es señal de que está considerando comprometerse y quiere saber que tiene salida. Cuanto más fácil parece cancelar, más fácil resulta comprometerse. Respóndela con total naturalidad y sin defensividad.",
@@ -4136,7 +4143,9 @@ body.light::before{
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "¿Cuánto tiempo me comprometo? ¿Hay permanencia mínima?",
     "a": "No hay permanencia mínima. Puedes darte de baja cuando quieras, sin penalización ni preaviso obligatorio. La cuota se carga mensualmente mientras eres socio. Muchos socios llevan años porque quieren — no porque estén obligados.",
     "tip": "Respuesta directa y breve. No añadas condicionantes ni matices que puedan sonar a letra pequeña. Cuanto más simple y clara, más confianza genera.",
@@ -4149,7 +4158,9 @@ body.light::before{
     "cat": "economica",
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "¿Puedo cambiar el importe de la cuota más adelante?",
     "a": "Sí, puedes ajustar tu cuota en cualquier momento contactando con la organización — tanto para aumentarla como para reducirla. No hay importe mínimo fijo más allá del acordado al darte de alta. Muchas personas empiezan con una cantidad cómoda y la ajustan con el tiempo según sus posibilidades.",
     "tip": "Si el donante dice que ahora no puede comprometerse a más, propón empezar con una cuota pequeña — mejor un compromiso real y sostenible que uno mayor que no se mantenga.",
@@ -4162,7 +4173,9 @@ body.light::before{
     "cat": "economica",
     "catLabel": "💸 Económica",
     "catColor": "#16a34a",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "Prefiero hacer una donación única en vez de cuota mensual",
     "a": "Una donación única es bienvenida y tiene valor real. La diferencia es que las organizaciones solo pueden planificar investigadores, programas y servicios de atención con ingresos predecibles. Una cuota de 10 euros al mes permite sostener cosas que ninguna donación puntual puede financiar sola: un investigador trabaja durante años, no días. Dicho esto, si prefiries empezar con una cuota pequeña y ver cómo te sientes, también es una opción perfectamente válida.",
     "tip": "No hagas sentir al donante que su propuesta no vale. Si insiste en el donativo único, facilítalo — es mejor que nada y puede ser el primer paso hacia una relación más larga. El argumento de la previsibilidad es honesto y concreto.",
@@ -4175,7 +4188,9 @@ body.light::before{
     "cat": "confianza",
     "catLabel": "🤔 Desconfianza",
     "catColor": "#7c3aed",
-    "ongs": ["General"],
+    "ongs": [
+      "General"
+    ],
     "q": "¿Qué hacéis con mis datos personales?",
     "a": "Los datos que facilitas — nombre, IBAN y dirección — se usan exclusivamente para gestionar tu cuota de socio y enviarte información sobre la organización. No se venden ni ceden a terceros. La base legal es la relación contractual contigo como socio. Tienes derecho a acceder, rectificar o cancelar tus datos en cualquier momento contactando directamente con la organización. La política de privacidad completa está en la web de la ONG.",
     "tip": "Esta pregunta es legítima y frecuente — respóndela con naturalidad y sin defensividad. Si el donante quiere leer la política de privacidad antes de firmar, indícale la web de la organización. No cierres el alta sin que el donante haya tenido acceso suficiente a esta información.",
@@ -4187,6 +4202,7 @@ body.light::before{
 </script>
 
 <script>
+(function() {
 // ============================================================
 //  OBJECIONES ONG · WESSER — Lógica principal
 // ============================================================
@@ -4535,7 +4551,7 @@ function render(rebuildFilters) {
   }
 
   var plural = filtered.length !== 1;
-  zone.innerHTML = '<div class="statsbar">' + filtered.length + ' objeción' + (plural ? 'es' : '') + ' encontrada' + (plural ? 's' : '') + '</div>'
+  zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural ? ' objeciones' : ' objeción') + ' encontrada' + (plural ? 's' : '') + '</div>'
                  + filtered.map(buildCardHtml).join('');
 
   // Toggle respuesta rápida / completa
@@ -4616,6 +4632,12 @@ function shuffleArr(arr) {
 // Estado de configuración del Ensayo (persiste entre sesiones dentro de la misma página)
 var ensayoCfgOngs = {};  // { ongId: true/false }
 var ensayoCfgDiff = 0;   // 0=todas 1=fácil 2=media 3=difícil
+var ENSAYO_DIFFS  = [
+  {v:0, l:'Todas',       c:'#64748b'},
+  {v:1, l:'🟢 Fácil',   c:'#22c55e'},
+  {v:2, l:'🟡 Media',   c:'#d97706'},
+  {v:3, l:'🔴 Difícil', c:'#ef4444'}
+];
 ONGS.filter(function(o) { return o.id !== 'all'; })
     .forEach(function(ong) { ensayoCfgOngs[ong.id] = true; });
 
@@ -4649,12 +4671,6 @@ function launchEnsayo(pool) {
 function renderEnsayoConfig() {
   var pool  = ensayoPool();
   var fc    = favCount();
-  var diffs = [
-    {v:0, l:'Todas',       c:'#64748b'},
-    {v:1, l:'🟢 Fácil',   c:'#22c55e'},
-    {v:2, l:'🟡 Media',   c:'#d97706'},
-    {v:3, l:'🔴 Difícil', c:'#ef4444'}
-  ];
 
   var html = '<div class="fc-cfg">';
   html += '<div class="fc-cfg-title">Elige qué practicar</div>';
@@ -4669,7 +4685,7 @@ function renderEnsayoConfig() {
   html += '</div></div>';
 
   html += '<div class="fc-cfg-section"><div class="fc-cfg-label">Dificultad</div><div class="fc-cfg-pills" id="cfg-diff-pills">';
-  diffs.forEach(function(d) {
+  ENSAYO_DIFFS.forEach(function(d) {
     var sel   = ensayoCfgDiff === d.v;
     var style = sel ? '--pill-c:' + d.c : '';
     html += '<button class="fc-cfg-pill' + (sel ? ' sel' : '') + '" data-cfg-diff="' + d.v + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(d.l) + '</button>';
@@ -4680,8 +4696,10 @@ function renderEnsayoConfig() {
     ? '<strong>' + pool.length + '</strong> cartas seleccionadas'
     : '<span style="color:#ef4444">Sin cartas con estos filtros</span>') + '</div>';
 
+  html += '<div class="fc-cfg-actions">';
   if (fc > 0) { html += '<button class="fc-fav-btn" id="cfg-fav-btn">⭐ Solo mis favoritos (' + fc + ')</button>'; }
   html += '<button class="fc-start-btn" id="cfg-start-btn"' + (pool.length === 0 ? ' disabled' : '') + '>Empezar →</button>';
+  html += '</div>';
   html += '</div>';
 
   el('fc-inner').innerHTML = html;
@@ -4720,14 +4738,6 @@ function renderEnsayo() {
   var obj   = ensayoCards[ensayoIdx];
   var pct   = Math.round(ensayoIdx / ensayoCards.length * 100);
   var diff  = obj.diff || 1;
-  var diffLabel = diff === 1 ? 'Fácil' : diff === 2 ? 'Media' : 'Difícil';
-
-  // Puntos de dificultad con estilos inline (el Ensayo no usa las clases CSS de las tarjetas)
-  var dots = '';
-  for (var i = 1; i <= 3; i++) {
-    var bg = i <= diff ? (diff === 1 ? '#22c55e' : diff === 2 ? '#d97706' : '#ef4444') : '#334155';
-    dots += '<span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:' + bg + ';display:inline-block;margin-right:1px"></span>';
-  }
 
   var html = '';
   html += '<div class="fc-progress-bar"><div class="fc-progress-fill" style="width:' + pct + '%"></div></div>';
@@ -4735,7 +4745,7 @@ function renderEnsayo() {
   html += '<div class="fc-badge-row">';
   html += '<div class="fc-badge" style="background:' + obj.catColor + '">' + esc(obj.catLabel) + '</div>';
   html += '<div class="fc-ong-badge">' + esc(obj.ongs[0]) + '</div>';
-  html += '<div class="fc-diff" role="img" aria-label="Dificultad: ' + diffLabel + '">' + dots + '</div>';
+  html += buildDiffDots(diff);
   html += '</div>';
   html += '<div class="fc-q">' + esc(obj.q) + '</div>';
 
@@ -4946,23 +4956,6 @@ window.addEventListener('DOMContentLoaded', function() {
     _otb.addEventListener('click', function() {
       var isOpen = el('ongFilt').classList.toggle('ong-open');
       this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      // Cierra el otro panel si estaba abierto
-      el('catFilt').classList.remove('cat-open');
-      var _ctb = document.getElementById('cat-toggle-btn');
-      if (_ctb) _ctb.setAttribute('aria-expanded', 'false');
-    });
-  }
-
-  // Toggle panel de Tipos/categorías (móvil)
-  var _ctb = document.getElementById('cat-toggle-btn');
-  if (_ctb) {
-    _ctb.addEventListener('click', function() {
-      var isOpen = el('catFilt').classList.toggle('cat-open');
-      this.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      // Cierra el otro panel si estaba abierto
-      el('ongFilt').classList.remove('ong-open');
-      var _otb2 = document.getElementById('ong-toggle-btn');
-      if (_otb2) _otb2.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -4986,6 +4979,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
   render(); // primer render al cargar
 });
+})();
 </script>
 
 <div id="ensayo" role="dialog" aria-modal="true" aria-label="Modo ensayo">
