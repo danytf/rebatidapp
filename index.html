@@ -4440,8 +4440,8 @@ function buildGroupedHtml(filtered) {
   });
   var html = '';
   groups.forEach(function(g) {
-    html += '<div class="cat-section" data-cat="' + g.cat + '">';
-    html += '<button class="cat-section-hdr" aria-expanded="true">';
+    html += '<div class="cat-section collapsed" data-cat="' + g.cat + '">';
+    html += '<button class="cat-section-hdr" aria-expanded="false">';
     html += '<span class="cat-section-badge" style="background:' + g.color + '">' + esc(g.label) + '</span>';
     html += '<span class="cat-section-count">' + g.items.length + (g.items.length !== 1 ? ' objeciones' : ' objeción') + '</span>';
     html += '<span class="cat-section-arr">▴</span>';
