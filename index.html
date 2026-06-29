@@ -424,6 +424,14 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .fc-retry-btn:hover{background:rgba(239,68,68,.08);transform:translateY(-1px)}
 .fc-restart-btn{background:var(--surface);border:1px solid var(--line-2);color:var(--ink-2)}
 .fc-restart-btn:hover{border-color:var(--ink-3);transform:translateY(-1px)}
+.fc-history{margin-top:var(--s-5);text-align:left;width:100%}
+.fc-history-title{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin-bottom:var(--s-2)}
+.fc-history-row{display:flex;align-items:center;justify-content:space-between;padding:var(--s-2) 0;border-bottom:1px solid var(--line);font-size:var(--t-xs)}
+.fc-history-row:last-child{border-bottom:none}
+.fc-history-date{color:var(--ink-2);font-weight:600}
+.fc-history-meta{color:var(--ink-3)}
+.fc-history-pct{font-weight:800;min-width:3rem;text-align:right}
+.fc-history-pct.h-ok{color:var(--ok)}.fc-history-pct.h-mid{color:var(--warn)}.fc-history-pct.h-bad{color:var(--bad)}
 .fc-empty{text-align:center;padding:var(--s-6) var(--s-4);color:var(--ink-3)}
 .fc-empty-icon{font-size:2.5rem;margin-bottom:var(--s-3);opacity:.6}
 .fc-empty-t{font-size:var(--t-md);font-weight:700;color:var(--ink-2);margin-bottom:var(--s-1)}
@@ -4263,6 +4271,9 @@ var favOnly    = false;
 var favs       = {};
 try { favs = JSON.parse(localStorage.getItem('wob_favs') || '{}'); } catch(e) { favs = {}; }
 
+var ensayoStats = [];
+try { ensayoStats = JSON.parse(localStorage.getItem('wob_stats') || '[]'); } catch(e) { ensayoStats = []; }
+
 // ============================================================
 //  UTILIDADES
 // ============================================================
@@ -4785,7 +4796,25 @@ function renderEnsayo() {
   }
 }
 
+function saveEnsayoSession() {
+  if (!ensayoCards.length) return;
+  var pct = Math.round(ensayoRes.ok / ensayoCards.length * 100);
+  ensayoStats.unshift({ ts: Date.now(), total: ensayoCards.length, ok: ensayoRes.ok, mid: ensayoRes.mid, bad: ensayoRes.bad, pct: pct });
+  if (ensayoStats.length > 20) ensayoStats.length = 20;
+  try { localStorage.setItem('wob_stats', JSON.stringify(ensayoStats)); } catch(e) {}
+}
+
+function fmtSessionDate(ts) {
+  var d = new Date(ts), now = new Date();
+  var hm = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+  var diffD = Math.floor((now - d) / 86400000);
+  if (diffD === 0) return 'Hoy ' + hm;
+  if (diffD === 1) return 'Ayer ' + hm;
+  return 'Hace ' + diffD + ' días';
+}
+
 function renderEnsayoEnd() {
+  saveEnsayoSession();
   var pct  = ensayoCards.length > 0 ? Math.round(ensayoRes.ok / ensayoCards.length * 100) : 0;
   var icon = pct >= 80 ? '🏆' : pct >= 50 ? '💪' : '📚';
 
@@ -4802,6 +4831,20 @@ function renderEnsayoEnd() {
     html += '<button class="fc-retry-btn" id="fc-retry">Repetir las que fallé (' + ensayoRes.bad + ')</button>';
   }
   html += '<button class="fc-restart-btn" id="fc-restart">Nueva sesión con las mismas cartas</button>';
+
+  if (ensayoStats.length > 1) {
+    html += '<div class="fc-history"><div class="fc-history-title">Últimas sesiones</div>';
+    ensayoStats.slice(1, 6).forEach(function(s) {
+      var cls = s.pct >= 80 ? 'h-ok' : s.pct >= 50 ? 'h-mid' : 'h-bad';
+      html += '<div class="fc-history-row">';
+      html += '<span class="fc-history-date">' + fmtSessionDate(s.ts) + '</span>';
+      html += '<span class="fc-history-meta">' + s.total + ' cartas</span>';
+      html += '<span class="fc-history-pct ' + cls + '">' + s.pct + '%</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
   html += '</div>';
 
   el('fc-inner').innerHTML = html;
