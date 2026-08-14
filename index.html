@@ -634,8 +634,8 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   "{{cr_personas_espana}}": "2,7 millones",
   "{{cr_personas_total}}": "11,6 millones",
   "{{cr_presupuesto}}": "979",
-  "{{cr_dana_asistencias}}": "323.063",
-  "{{cr_dana_recaudacion}}": "112",
+  "{{cr_dana_asistencias}}": "490.000",
+  "{{cr_dana_recaudacion}}": "115",
   "{{cr_voluntarios}}": "231.236",
   "{{cr_teleasistencia}}": "132.000",
   "{{cr_empleo}}": "274.000",
@@ -673,7 +673,10 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   "{{ai_centros_dia}}": "30",
   "{{ai_ninos_riesgo}}": "2,7 millones",
   "{{aecc_puntos}}": "2.000",
-  "{{aecc_personas_prevencion}}": "1,4 millones"
+  "{{aecc_personas_prevencion}}": "1,4 millones",
+  "{{cr_dana_personas}}": "143.000",
+  "{{cr_dana_ejecutado}}": "61,5",
+  "{{cr_dana_movilizados}}": "7.000"
 }
 </script>
 <script type="application/json" id="obj-data">
@@ -1917,11 +1920,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "Cruz Roja no apareció por Valencia / llegó tarde a la DANA",
-    "a": "Es uno de los bulos más extendidos de la DANA, desmentido con datos y registros. Cruz Roja estaba desplegando voluntarios desde el mismo 29 de octubre, el día de la catástrofe: {{cr_dana_asistencias}} asistencias hasta diciembre, 6.019 personas movilizadas, 213 equipos especializados. Y todo mientras sus propias sedes quedaban destruidas por la riada. En las calles de Valencia la gente se paraba a darles las gracias; en redes circulaba otra historia. Si has visto un vídeo concreto, pregúntate de dónde salió — muchos están fuera de contexto o son de otras emergencias.",
-    "tip": "Este bulo tiene mucha carga emocional y política. No entres en el debate de redes sociales. Los datos son concretos y verificables: {{cr_dana_asistencias}} asistencias, presencia desde el día 1, 213 equipos. Si el donante menciona un vídeo o una imagen concreta, pregunta de dónde lo sacó — muchos de esos contenidos están fuera de contexto o son de otras emergencias.",
+    "a": "Es uno de los bulos más extendidos de la DANA, desmentido con datos y registros. Cruz Roja estaba desplegando voluntarios desde el mismo 29 de octubre, el día de la catástrofe: {{cr_dana_asistencias}} asistencias al año, {{cr_dana_personas}} personas atendidas y {{cr_dana_movilizados}} personas movilizadas entre voluntariado y plantilla. Y todo mientras sus propias sedes quedaban destruidas por la riada. En las calles de Valencia la gente se paraba a darles las gracias; en redes circulaba otra historia. Si has visto un vídeo concreto, pregúntate de dónde salió — muchos están fuera de contexto o son de otras emergencias.",
+    "tip": "Este bulo tiene mucha carga emocional y política. No entres en el debate de redes sociales. Los datos son concretos y verificables: {{cr_dana_asistencias}} asistencias, presencia desde el día 1, {{cr_dana_personas}} personas atendidas. Si el donante menciona un vídeo o una imagen concreta, pregunta de dónde lo sacó — muchos de esos contenidos están fuera de contexto o son de otras emergencias.",
     "freq": 3,
     "diff": 3,
-    "short": "Cruz Roja estaba desde el día 1: {{cr_dana_asistencias}} asistencias, sedes propias destruidas y siguieron trabajando. Los bulos de 'no apareció' están desmentidos."
+    "short": "Cruz Roja estaba desde el día 1. Al año, {{cr_dana_asistencias}} asistencias y {{cr_dana_personas}} personas atendidas, con sus propias sedes destruidas. Los bulos de 'no apareció' están desmentidos."
   },
   {
     "id": "cr10",
@@ -1932,11 +1935,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "El dinero de la DANA no llegó a las víctimas / Cruz Roja se quedó el dinero",
-    "a": "Es un bulo desmentido. Cruz Roja recaudó {{cr_dana_recaudacion}} millones de euros tras la DANA y tiene un plan de recuperación de tres años (2024-2027). A un año ya había movilizado 80 millones. El dinero no se distribuye de golpe porque la recuperación tiene fases: respuesta urgente, recuperación y resiliencia. El plan es público y auditado. Ninguna verificación independiente encontró evidencia de que 'se quedaran el dinero'.",
+    "a": "Es un bulo desmentido. Cruz Roja recaudó {{cr_dana_recaudacion}} millones de euros tras la DANA y tiene un plan de recuperación de tres años. Al año llevaba {{cr_dana_ejecutado}} millones ejecutados, el 54%, y {{cr_dana_personas}} personas atendidas. El dinero no se distribuye de golpe porque la recuperación tiene fases: respuesta urgente, recuperación y resiliencia. El plan es público y auditado. Ninguna verificación independiente encontró evidencia de que 'se quedaran el dinero'.",
     "tip": "Este bulo está muy vivo todavía, especialmente en redes. El argumento más sólido es el plan de recuperación a tres años con los {{cr_dana_recaudacion}}M€ y el dato de los 80M€ ya movilizados al año de la catástrofe. No prometas que 'todo el dinero llegó ya' porque la distribución es progresiva por diseño.",
     "freq": 3,
     "diff": 3,
-    "short": "{{cr_dana_recaudacion}}M€ recaudados, plan a 3 años, 80M€ ya movilizados al año de la catástrofe. La distribución es progresiva por diseño."
+    "short": "{{cr_dana_recaudacion}}M€ recaudados y {{cr_dana_ejecutado}}M€ ejecutados al año, el 54%. La distribución es progresiva por diseño."
   },
   {
     "id": "cr8",
@@ -2067,11 +2070,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "No confío en organizaciones tan grandes / me parecen demasiado burocráticas",
-    "a": "Es una desconfianza razonable, y no te voy a pedir que la abandones sin más. Pero hay algo claro: la escala de Cruz Roja no es burocracia por burocracia — es lo que permite tener 6.019 personas sobre el terreno el primer día de una catástrofe, o mantener teleasistencia para {{cr_teleasistencia}} mayores cada día del año. Esa capacidad no existe sin estructura. Y las cuentas son públicas y auditadas: si la desconfianza viene de no saber a dónde va el dinero, eso tiene respuesta verificable.",
+    "a": "Es una desconfianza razonable, y no te voy a pedir que la abandones sin más. Pero hay algo claro: la escala de Cruz Roja no es burocracia por burocracia — es lo que permite mover {{cr_dana_movilizados}} personas en una catástrofe como la DANA, o mantener teleasistencia para {{cr_teleasistencia}} mayores cada día del año. Esa capacidad no existe sin estructura. Y las cuentas son públicas y auditadas: si la desconfianza viene de no saber a dónde va el dinero, eso tiene respuesta verificable.",
     "tip": "Con perfiles escépticos hacia las organizaciones grandes, escucha antes de argumentar. No niegues que existe estructura — explica que es lo que permite la escala y la velocidad de respuesta. El ejemplo de la DANA (terreno el día 1) es el más sólido.",
     "freq": 2,
     "diff": 2,
-    "short": "La escala permite 6.019 personas sobre el terreno el primer día de la DANA. Sin estructura, esa capacidad no existe."
+    "short": "La escala permite mover {{cr_dana_movilizados}} personas en una catástrofe como la DANA. Sin estructura, esa capacidad no existe."
   },
   {
     "id": "cr7",
@@ -2082,11 +2085,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "Me parece que no coordinan bien en emergencias",
-    "a": "¿De dónde viene esa percepción? A veces es una noticia puntual o una confusión con otra entidad. Lo que sí puedo decirte es lo que pasó en la DANA: Cruz Roja desplegó 6.019 personas y 213 equipos especializados, y gestionó {{cr_dana_asistencias}} asistencias, mientras sus propias sedes quedaban destruidas. Es la mayor movilización de su historia, y es la organización de referencia en el Plan Estatal de Protección Civil. Si tienes una crítica concreta, cuéntamela y la hablamos.",
+    "a": "¿De dónde viene esa percepción? A veces es una noticia puntual o una confusión con otra entidad. Lo que sí puedo decirte es lo que pasó en la DANA: Cruz Roja llegó a movilizar {{cr_dana_movilizados}} personas entre voluntariado y plantilla, y al año llevaba {{cr_dana_asistencias}} asistencias, mientras sus propias sedes quedaban destruidas. Es la mayor movilización de su historia, y es la organización de referencia en el Plan Estatal de Protección Civil. Si tienes una crítica concreta, cuéntamela y la hablamos.",
     "tip": "Antes de argumentar, pregunta de dónde viene la percepción — muchas veces es una noticia puntual, una confusión con otra entidad o una experiencia de terceros. Si hay una crítica concreta y fundada, escúchala sin defensividad. El caso de la DANA es el argumento más sólido y reciente: datos concretos, escala excepcional y reconocimiento público.",
     "freq": 2,
     "diff": 2,
-    "short": "En la DANA movilizaron 6.019 personas en pocas horas. Son la referencia del Plan Estatal de Protección Civil — eso no se improvisa."
+    "short": "En la DANA movilizaron {{cr_dana_movilizados}} personas. Son la referencia del Plan Estatal de Protección Civil — eso no se improvisa."
   },
   {
     "id": "cr11",
@@ -2266,7 +2269,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
     "tip": "No niegues que hay costes de estructura. El argumento honesto y sólido es que esos costes son los que permiten la capacidad de respuesta. El ejemplo de la DANA — en el terreno el día 1 — es la mejor demostración.",
     "freq": 1,
     "diff": 2,
-    "short": "La estructura permite estar sobre el terreno en horas. Sin ella, Cruz Roja no podría haber desplegado 6.019 personas el primer día de la DANA."
+    "short": "La estructura permite estar sobre el terreno en horas. Sin ella, Cruz Roja no podría haber movido {{cr_dana_movilizados}} personas en la DANA."
   },
   {
     "id": "cr58",
@@ -2292,11 +2295,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "Me parece que priorizan la imagen sobre la acción real",
-    "a": "Entiendo esa percepción, especialmente después de la avalancha de comunicación durante la DANA. Lo que sí puedo decirte es que los números son verificables e independientes de la imagen: 2,7 millones de personas atendidas en España en 2024, 231.236 voluntarios activos, {{cr_dana_asistencias}} asistencias en la DANA. Eso no es imagen — es trabajo. La tensión entre visibilidad y acción existe, y Cruz Roja la vive también — pero los datos no mienten.",
+    "a": "Entiendo esa percepción, especialmente después de la avalancha de comunicación durante la DANA. Lo que sí puedo decirte es que los números son verificables e independientes de la imagen: {{cr_personas_espana}} de personas atendidas en España, {{cr_voluntarios}} voluntarios activos, {{cr_dana_asistencias}} asistencias en la DANA. Eso no es imagen — es trabajo. La tensión entre visibilidad y acción existe, y Cruz Roja la vive también — pero los datos no mienten.",
     "tip": "No niegues que la comunicación existe — sería poco creíble. El argumento es que los datos de impacto son verificables e independientes de la imagen. Deja el argumento en los datos, sin atribuir citas a personas concretas que no puedas verificar en el momento.",
     "freq": 1,
     "diff": 2,
-    "short": "Los datos son verificables: 2,7M personas atendidas, {{cr_dana_asistencias}} asistencias en la DANA. Eso no es comunicación — es trabajo."
+    "short": "Los datos son verificables: {{cr_personas_espana}} de personas atendidas, {{cr_dana_asistencias}} asistencias en la DANA. Eso no es comunicación — es trabajo."
   },
   {
     "id": "cr59",
@@ -2307,7 +2310,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "Con lo de la DANA ya doné mucho, ahora no puedo más",
-    "a": "Lo que hiciste durante la DANA fue importante, y Cruz Roja lo aprovechó: recaudó {{cr_dana_recaudacion}} millones de euros y lleva más de 80 millones ya movilizados en el plan de recuperación. Lo que pasa es que la DANA es solo una parte de lo que hace Cruz Roja. Los {{cr_teleasistencia}} mayores con teleasistencia, los programas de empleo, la atención a personas en exclusión — eso no depende de las emergencias, existe todo el año y necesita financiación estable. Una donación puntual en una crisis y una aportación periódica son cosas distintas que se complementan. Si ahora mismo no puedes, lo entiendo perfectamente.",
+    "a": "Lo que hiciste durante la DANA fue importante, y Cruz Roja lo aprovechó: recaudó {{cr_dana_recaudacion}} millones de euros y lleva {{cr_dana_ejecutado}} millones ejecutados en el plan de recuperación. Lo que pasa es que la DANA es solo una parte de lo que hace Cruz Roja. Los {{cr_teleasistencia}} mayores con teleasistencia, los programas de empleo, la atención a personas en exclusión — eso no depende de las emergencias, existe todo el año y necesita financiación estable. Una donación puntual en una crisis y una aportación periódica son cosas distintas que se complementan. Si ahora mismo no puedes, lo entiendo perfectamente.",
     "tip": "Valida la donación anterior con sinceridad — fue una contribución real y valiosa. No hagas sentir que no fue suficiente. El argumento es que la aportación periódica financia lo que ocurre entre catástrofes, no lo que ya donaron para la DANA.",
     "freq": 1,
     "diff": 2,
@@ -2352,11 +2355,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "CR"
     ],
     "q": "He visto a voluntarios de Cruz Roja con un comportamiento que no me pareció correcto",
-    "a": "Lo entiendo, y si viste algo que no te pareció bien, es normal que genere desconfianza. Cruz Roja tiene {{cr_voluntarios}} voluntarios — con esa escala es inevitable que haya personas cuyo comportamiento no represente los valores de la organización. Lo que sí existe son mecanismos para reportar conductas inadecuadas: Cruz Roja tiene un canal de denuncias activo. Una mala conducta individual no define a una organización de 160 años. Lo que sí la define es lo que hace el resto: {{cr_dana_asistencias}} asistencias en la DANA, {{cr_teleasistencia}} mayores con teleasistencia, casi un millón de personas en exclusión atendidas en 2024.",
+    "a": "Lo entiendo, y si viste algo que no te pareció bien, es normal que genere desconfianza. Cruz Roja tiene {{cr_voluntarios}} voluntarios — con esa escala es inevitable que haya personas cuyo comportamiento no represente los valores de la organización. Lo que sí existe son mecanismos para reportar conductas inadecuadas: Cruz Roja tiene un canal de denuncias activo. Una mala conducta individual no define a una organización que existe desde 1864. Lo que sí la define es lo que hace el resto: {{cr_dana_asistencias}} asistencias en la DANA, {{cr_teleasistencia}} mayores con teleasistencia, casi un millón de personas en exclusión atendidas en 2024.",
     "tip": "Escucha antes de argumentar — no sabes qué vio ni en qué contexto. No minimices ni defiendas a ciegas. Reconoce que con 231.000 voluntarios puede haber comportamientos individuales que no son aceptables, y que existen mecanismos de reporte. El argumento de peso es el impacto global verificado frente a un incidente individual.",
     "freq": 1,
     "diff": 3,
-    "short": "Con {{cr_voluntarios}} voluntarios puede haber comportamientos individuales inaceptables. Lo que define a Cruz Roja es el conjunto: 2,7M personas atendidas."
+    "short": "Con {{cr_voluntarios}} voluntarios puede haber comportamientos individuales inaceptables. Lo que define a Cruz Roja es el conjunto: {{cr_personas_espana}} de personas atendidas."
   },
   {
     "id": "cr64",
