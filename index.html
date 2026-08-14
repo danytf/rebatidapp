@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#080f1c">
+<meta name="theme-color" content="#eef2f7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23e51a1a%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-family=%27system-ui,Arial%27 font-size=%2720%27 font-weight=%27800%27 text-anchor=%27middle%27 fill=%27white%27%3EW%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -587,7 +587,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
 </style>
 </head>
-<body>
+<body class="light">
 
 <div class="hdr">
   <div class="hdr-top">
@@ -597,7 +597,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       <div class="credit">Programado por Daniel Marrero</div>
     </div>
     <div style="display:flex;align-items:center;gap:.35rem;background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:.3rem .4rem">
-      <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="false"><span id="thbtn-icon">🌙</span><span class="ibtn-lbl">Tema</span></button>
+      <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="true"><span id="thbtn-icon">☀️</span><span class="ibtn-lbl">Tema</span></button>
       <button class="ibtn ibtn--labeled" id="ensayobtn" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
       <button class="ibtn ibtn--labeled" id="fab-nueva" aria-label="Añadir rebatida">✍️<span class="ibtn-lbl">Añadir</span></button>
     </div>
@@ -4339,6 +4339,7 @@ function toggleTheme() {
   var isLight = document.body.classList.toggle('light');
   el('thbtn-icon').textContent = isLight ? '☀️' : '🌙';
   el('thbtn').setAttribute('aria-pressed', isLight ? 'true' : 'false');
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', isLight ? '#eef2f7' : '#080f1c');
   try { localStorage.setItem('wob_t', isLight ? '1' : '0'); } catch(e) {}
 }
 
@@ -4960,12 +4961,13 @@ function releaseTrap() {
 // ============================================================
 
 window.addEventListener('DOMContentLoaded', function() {
-  // Restaurar tema guardado
+  // Restaurar tema guardado (claro por defecto; solo se aplica oscuro si se eligió)
   try {
-    if (localStorage.getItem('wob_t') === '1') {
-      document.body.classList.add('light');
-      el('thbtn-icon').textContent = '☀️';
-      el('thbtn').setAttribute('aria-pressed', 'true');
+    if (localStorage.getItem('wob_t') === '0') {
+      document.body.classList.remove('light');
+      el('thbtn-icon').textContent = '🌙';
+      el('thbtn').setAttribute('aria-pressed', 'false');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#080f1c');
     }
   } catch(e) {}
 
