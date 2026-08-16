@@ -287,9 +287,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ans-wrap{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
 .ans-toggle{display:flex;gap:var(--s-2)}
 .ans-tbtn{
-  display:inline-flex;align-items:center;gap:.2rem;
+  /* min-height para poder pulsarlos con el pulgar en la calle: con el relleno
+     solo se quedaban en 27px de alto */
+  display:inline-flex;align-items:center;justify-content:center;gap:.2rem;min-height:40px;
   background:var(--surface-2);border:1.5px solid var(--line-2);color:var(--ink-3);
-  border-radius:var(--r-sm);padding:.32rem .7rem;
+  border-radius:var(--r-sm);padding:.32rem .9rem;
   font-size:var(--t-xs);font-weight:700;cursor:pointer;font-family:inherit;
   letter-spacing:.01em;transition:all .16s var(--ease);
 }
@@ -449,7 +451,10 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .cat-section.collapsed .cat-section-arr{transform:rotate(-90deg)}
 .cat-section-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s var(--ease-out)}
 .cat-section.collapsed .cat-section-body{grid-template-rows:0fr}
-.cat-section-inner{overflow:hidden;display:flex;flex-direction:column;gap:var(--s-2);padding-top:var(--s-2)}
+/* El relleno superior no lo recorta overflow:hidden: sin esto una sección
+   cerrada seguía ocupando 8px y dejaba un hueco suelto entre cabeceras */
+.cat-section.collapsed .cat-section-inner{padding-top:0}
+.cat-section-inner{overflow:hidden;display:flex;flex-direction:column;gap:var(--s-2);padding-top:var(--s-2);transition:padding-top .25s var(--ease-out)}
 .cat-section-inner .ocard-badge{display:none}
 
 /* ensayo config screen */
@@ -4240,6 +4245,7 @@ var currentOng = 'all';
 var currentQ   = '';
 var openCards    = {};  // { id: true } — tarjetas actualmente desplegadas
 var visitedCards = {};  // { id: true } — tarjetas que se han abierto alguna vez
+var secAbiertas  = {};  // { categoria: true } — secciones que el captador ha abierto a mano
 var favOnly    = false;
 var favs       = {};
 try { favs = JSON.parse(localStorage.getItem('wob_favs') || '{}'); } catch(e) { favs = {}; }
@@ -4438,8 +4444,11 @@ function buildGroupedHtml(filtered) {
   var html = '';
   var isDesktop = window.matchMedia('(min-width:960px)').matches;
   groups.forEach(function(g) {
-    html += '<div class="cat-section' + (isDesktop ? '' : ' collapsed') + '" data-cat="' + g.cat + '">';
-    html += '<button class="cat-section-hdr" aria-expanded="' + (isDesktop ? 'true' : 'false') + '">';
+    // Por defecto abiertas en escritorio y cerradas en móvil, pero si el captador
+    // ya la abrió o la cerró, se respeta su decisión al repintar
+    var abierta = secAbiertas.hasOwnProperty(g.cat) ? secAbiertas[g.cat] : isDesktop;
+    html += '<div class="cat-section' + (abierta ? '' : ' collapsed') + '" data-cat="' + g.cat + '">';
+    html += '<button class="cat-section-hdr" aria-expanded="' + (abierta ? 'true' : 'false') + '">';
     html += '<span class="cat-section-badge" style="background:' + g.color + '">' + esc(g.label) + '</span>';
     html += '<span class="cat-section-count">' + g.items.length + (g.items.length !== 1 ? ' objeciones' : ' objeción') + '</span>';
     html += '<span class="cat-section-arr">▴</span>';
@@ -4547,13 +4556,6 @@ function render(rebuildFilters) {
     var plural2 = filtered.length !== 1;
     zone.innerHTML = '<div class="statsbar">' + filtered.length + (plural2 ? ' objeciones' : ' objeción') + '</div>'
                    + buildGroupedHtml(filtered);
-    zone.addEventListener('click', function(e) {
-      var hdr = e.target.closest('.cat-section-hdr');
-      if (!hdr) return;
-      var sec = hdr.closest('.cat-section');
-      var col = sec.classList.toggle('collapsed');
-      hdr.setAttribute('aria-expanded', col ? 'false' : 'true');
-    });
   }
 
   // Toggle respuesta rápida / completa
@@ -4974,6 +4976,27 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   el('thbtn').addEventListener('click', toggleTheme);
+
+  // Desplegables de categoría. El listener se cuelga una sola vez: si se colgara
+  // dentro de render() se acumularía uno por repintado y cada clic dispararía
+  // varios toggles seguidos, con lo que tras un número par de filtrados el
+  // desplegable dejaba de responder.
+  el('results').addEventListener('click', function(e) {
+    var hdr = e.target.closest('.cat-section-hdr');
+    if (!hdr) return;
+    var sec     = hdr.closest('.cat-section');
+    var abierta = !sec.classList.toggle('collapsed');
+    secAbiertas[sec.getAttribute('data-cat')] = abierta;
+    hdr.setAttribute('aria-expanded', abierta ? 'true' : 'false');
+  });
+
+  // Al girar la tablet se cruza el punto de corte de 960px: hay que repintar para
+  // que las secciones queden como si se hubiera abierto la app a ese tamaño.
+  var mqAncho = window.matchMedia('(min-width:960px)');
+  var alCruzarCorte = function() { secAbiertas = {}; render(); };
+  if (mqAncho.addEventListener) mqAncho.addEventListener('change', alCruzarCorte);
+  else if (mqAncho.addListener) mqAncho.addListener(alCruzarCorte);
+
   function setHdrH(){var h=document.querySelector('.hdr');if(h)document.documentElement.style.setProperty('--hdr-h',h.offsetHeight+'px');}
   setHdrH();window.addEventListener('resize',setHdrH);
   el('sclr-btn').addEventListener('click', clearSearch);
