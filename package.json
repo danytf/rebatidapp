@@ -1,0 +1,10 @@
+{
+  "name": "rebatidapp",
+  "private": true,
+  "scripts": {
+    "verificar": "node verificar.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}
