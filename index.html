@@ -4197,10 +4197,17 @@ function interpolate(text) {
   });
 }
 
+// En la calle se teclea rápido y sin tildes: "cancer" tiene que encontrar "cáncer"
+function normalizar(texto) {
+  return (texto || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
 DATA.forEach(function(obj) {
   obj.a     = interpolate(obj.a);
   obj.short = interpolate(obj.short);
   if (obj.tip) obj.tip = interpolate(obj.tip);
+  // Índice de búsqueda precalculado: se normaliza una vez al cargar, no en cada pulsación
+  obj._buscar = normalizar(obj.q + ' ' + obj.a + ' ' + obj.short + ' ' + (obj.tip || ''));
 });
 
 // --- Catálogos de ONGs y categorías ---
@@ -4444,7 +4451,7 @@ function buildGroupedHtml(filtered) {
 }
 
 function filterData() {
-  var q = currentQ.toLowerCase().trim();
+  var q = normalizar(currentQ.trim());
   return DATA.filter(function(obj) {
     if (favOnly) {
       if (!favs[obj.id]) return false;
@@ -4452,11 +4459,7 @@ function filterData() {
       var ongOk = currentOng === 'all' ? true : obj.ongs.indexOf(currentOng) !== -1;
       if (!ongOk) return false;
     }
-    var txtOk = !q
-      || obj.q.toLowerCase().indexOf(q)   !== -1
-      || obj.a.toLowerCase().indexOf(q)   !== -1
-      || (obj.tip && obj.tip.toLowerCase().indexOf(q) !== -1);
-    return txtOk;
+    return !q || obj._buscar.indexOf(q) !== -1;
   });
 }
 
