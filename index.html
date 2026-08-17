@@ -4930,6 +4930,11 @@ function enviarRebatida() {
   var subject = 'Nueva rebatida sugerida — ' + nrSelectedOng;
   var body    = ['ONG / Bloque: ' + nrSelectedOng, '', 'OBJECIÓN DEL DONANTE:', pregunta, '', '---', 'Enviado desde la app Objeciones ONG · Wesser'].join('\n');
   window.location.href = 'mailto:formacion@wesser.es?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  // mailto: no avisa si funcionó, así que el aviso lo damos nosotros y cerramos
+  // el formulario; si no hay app de correo configurada, al menos el captador
+  // sabe que lo intentamos, en vez de ver que no pasa nada al pulsar
+  showToast('✉️ Correo listo, revísalo en tu app y envíalo');
+  closeNuevaRebatida();
 }
 
 // ============================================================
