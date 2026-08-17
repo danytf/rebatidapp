@@ -350,7 +350,6 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .fc-badge-row{display:flex;gap:var(--s-2);margin-bottom:var(--s-3);flex-wrap:wrap;align-items:center}
 .fc-badge{display:inline-flex;align-items:center;font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:.15rem .5rem;border-radius:var(--r-sm);color:#fff}
 .fc-ong-badge{font-size:var(--t-2xs);font-weight:700;padding:.15rem .5rem;border-radius:var(--r-sm);border:1.5px solid var(--line-2);color:var(--ink-3)}
-.fc-diff{display:flex;gap:3px;align-items:center}
 
 /* Question */
 .fc-q{font-size:var(--t-2xl);font-weight:700;color:var(--ink);line-height:1.35;letter-spacing:-.025em;margin-bottom:var(--s-6)}
@@ -434,10 +433,6 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .fc-history-meta{color:var(--ink-3)}
 .fc-history-pct{font-weight:800;min-width:3rem;text-align:right}
 .fc-history-pct.h-ok{color:var(--ok)}.fc-history-pct.h-mid{color:var(--warn)}.fc-history-pct.h-bad{color:var(--bad)}
-.fc-empty{text-align:center;padding:var(--s-6) var(--s-4);color:var(--ink-3)}
-.fc-empty-icon{font-size:2.5rem;margin-bottom:var(--s-3);opacity:.6}
-.fc-empty-t{font-size:var(--t-md);font-weight:700;color:var(--ink-2);margin-bottom:var(--s-1)}
-.fc-empty-s{font-size:var(--t-sm);line-height:1.7}
 
 /* Category sections */
 .cat-section{margin-bottom:var(--s-4)}
@@ -4355,7 +4350,7 @@ function buildDiffDots(diff) {
 
 function saveFavs() {
   try { localStorage.setItem('wob_favs', JSON.stringify(favs)); }
-  catch(e) { showToast('⚠️ No se pudo guardar el favorito — almacenamiento lleno'); }
+  catch(e) { showToast('⚠️ No se pudo guardar el favorito: almacenamiento lleno'); }
 }
 function favCount() {
   return Object.keys(favs).filter(function(k) { return favs[k]; }).length;
@@ -5108,7 +5103,7 @@ window.addEventListener('DOMContentLoaded', function() {
       <div class="nr-divider"></div>
       <div class="nr-section nr-section-last">
         <label class="nr-label" for="nr-pregunta">¿Qué dice el donante?</label>
-        <textarea class="nr-textarea" id="nr-pregunta" placeholder="Escribe la objeción tal como la oirías en calle..." rows="4"></textarea>
+        <textarea class="nr-textarea" id="nr-pregunta" placeholder="Escribe la objeción tal como la oirías en calle..." rows="4" maxlength="400"></textarea>
       </div>
     </div>
     <p class="nr-error" id="nr-error">⚠ Selecciona una ONG y escribe la objeción del donante.</p>
