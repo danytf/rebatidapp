@@ -1,0 +1,7 @@
+# Dependencias (se reinstalan con npm install; nunca deben subirse)
+node_modules/
+
+# Basura habitual del sistema y del editor
+.DS_Store
+Thumbs.db
+*.log

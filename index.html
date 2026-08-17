@@ -4268,6 +4268,13 @@ var CATS = [
   {id:'personal',    label:'🙅 Personal',     color:'#475569'}
 ];
 
+// Texto blanco sobre estos tres colores no llega al contraste mínimo legible
+// (económica 3.3:1, ya-colaboro 2.8:1, aplazamiento 2.2:1 — el mínimo WCAG AA
+// para texto pequeño es 4.5:1), así que esas tres etiquetas usan texto oscuro.
+// Con sol directo en la calle esos badges eran casi ilegibles.
+var CAT_TEXT = { '#16a34a':'#111827', '#0ea5e9':'#111827', '#f59e0b':'#111827' };
+function catTextColor(hex) { return CAT_TEXT[hex] || '#fff'; }
+
 
 var ONG_EMOJI = {all:'🏢',General:'📋',AECC:'<svg width="1em" height="1em" viewBox="0 0 100 100" style="vertical-align:-0.15em" xmlns="http://www.w3.org/2000/svg"> <path d="M 62 14 A 36 36 0 1 0 72 60 A 36 36 0 0 1 62 14 Z" fill="none" stroke="none"/> <path d="M70 16 C 50 8, 20 18, 14 44 C 8 68, 28 90, 54 88 C 78 86, 92 66, 80 50 C 70 38, 50 42, 48 56 C 47 64, 54 70, 62 64" fill="none" stroke="#24C347" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/> </svg>',AI:'🏠',CR:'<svg width="1em" height="1em" viewBox="0 0 24 24" style="vertical-align:-0.15em;margin-right:.2em" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="2" width="6" height="20" rx="1.5" fill="#dc2626"/><rect x="2" y="9" width="20" height="6" rx="1.5" fill="#dc2626"/></svg>',FEC:'❤️',FJC:'🩸',FPM:'🧠',WWF:'🐼'};
 // --- Estado de la aplicación ---
@@ -4479,7 +4486,7 @@ function buildGroupedHtml(filtered) {
     var abierta = secAbiertas.hasOwnProperty(g.cat) ? secAbiertas[g.cat] : isDesktop;
     html += '<div class="cat-section' + (abierta ? '' : ' collapsed') + '" data-cat="' + g.cat + '">';
     html += '<button class="cat-section-hdr" aria-expanded="' + (abierta ? 'true' : 'false') + '">';
-    html += '<span class="cat-section-badge" style="background:' + g.color + '">' + esc(g.label) + '</span>';
+    html += '<span class="cat-section-badge" style="background:' + g.color + ';color:' + catTextColor(g.color) + '">' + esc(g.label) + '</span>';
     html += '<span class="cat-section-count">' + g.items.length + (g.items.length !== 1 ? ' objeciones' : ' objeción') + '</span>';
     html += '<span class="cat-section-arr">▴</span>';
     html += '</button>';
@@ -4524,7 +4531,7 @@ function buildCardHtml(obj) {
   html += '<div class="ocard-left">';
   html += '<div class="ocard-q">' + esc(obj.q) + '</div>';
   html += '<div class="ocard-meta">';
-  html += '<div class="ocard-badge" style="background:' + obj.catColor + '">' + esc(obj.catLabel) + '</div>';
+  html += '<div class="ocard-badge" style="background:' + obj.catColor + ';color:' + catTextColor(obj.catColor) + '">' + esc(obj.catLabel) + '</div>';
   html += '<span class="freq-badge" title="' + freqTitle + '">' + freqLabel + '</span>';
   html += buildDiffDots(diff);
   if (obj.ongs && obj.ongs.length) {
@@ -4777,7 +4784,7 @@ function renderEnsayo() {
   html += '<div class="fc-progress-bar"><div class="fc-progress-fill" style="width:' + pct + '%"></div></div>';
   html += '<div class="fc-counter">' + (ensayoIdx + 1) + ' de ' + ensayoCards.length + '</div>';
   html += '<div class="fc-badge-row">';
-  html += '<div class="fc-badge" style="background:' + obj.catColor + '">' + esc(obj.catLabel) + '</div>';
+  html += '<div class="fc-badge" style="background:' + obj.catColor + ';color:' + catTextColor(obj.catColor) + '">' + esc(obj.catLabel) + '</div>';
   html += '<div class="fc-ong-badge">' + esc(obj.ongs[0]) + '</div>';
   html += buildDiffDots(diff);
   html += '</div>';
