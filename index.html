@@ -4936,7 +4936,12 @@ function enviarRebatida() {
 //  ACCESIBILIDAD — FOCUS TRAP
 // ============================================================
 
-var trapCleanup = null;
+// Pila de limpiezas, no una única variable: hoy Ensayo y Nueva rebatida se
+// tapan a pantalla completa y nunca hay dos abiertos a la vez, pero con una
+// sola variable un futuro tercer modal (o cualquier overlay con más z-index)
+// pisaría la limpieza del anterior y dejaría un listener de teclado colgado
+// para siempre. Con pila, releaseTrap() siempre cierra el último abierto.
+var trapStack = [];
 
 // Atrapa el foco dentro de un diálogo modal y cierra con Escape.
 // getFocusable() se llama en cada keydown para reflejar cambios dinámicos del DOM.
@@ -4967,15 +4972,15 @@ function trapFocus(dialogEl, onClose) {
   var items = getFocusable();
   if (items.length) items[0].focus();
 
-  trapCleanup = function() {
+  trapStack.push(function() {
     document.removeEventListener('keydown', onKeydown);
     if (prev && prev.focus) prev.focus(); // restaura el foco al elemento que abrió el modal
-    trapCleanup = null;
-  };
+  });
 }
 
 function releaseTrap() {
-  if (trapCleanup) trapCleanup();
+  var cleanup = trapStack.pop();
+  if (cleanup) cleanup();
 }
 
 // ============================================================
