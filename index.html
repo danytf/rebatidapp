@@ -308,7 +308,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ans-tbtn.active{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft)}
 
 .ans-label{display:none}
-.ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em}
+.ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em;white-space:pre-line}
 .ans-txt.ans-short{
   font-size:var(--t-lg);font-weight:600;color:var(--ink);
   line-height:1.55;letter-spacing:-.012em;
@@ -332,7 +332,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ans-tip-lbl::before{content:'▸';display:inline-block;font-size:var(--t-xs)}
 .ans-tip[open] .ans-tip-lbl{margin-bottom:.25rem}
 .ans-tip[open] .ans-tip-lbl::before{content:'▾'}
-.ans-tip-txt{line-height:1.65}
+.ans-tip-txt{line-height:1.65;white-space:pre-line}
 
 .ans-terr{
   position:relative;
@@ -565,7 +565,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 #sugerir-cambio.open{animation:slideUp .28s var(--ease-out)}
 .sc-preview-box{background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-md);padding:.75rem .9rem;font-size:var(--t-sm)}
 .sc-preview-q{font-weight:700;color:var(--ink);margin-bottom:.35rem}
-.sc-preview-a{color:var(--ink-3);line-height:1.55}
+.sc-preview-a{color:var(--ink-3);line-height:1.55;white-space:pre-line}
 
 /* === MODO LECTURA === */
 #lectura{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
@@ -573,7 +573,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .lc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:var(--s-4)}
 .lc-ong{font-size:1.1rem;line-height:1}
 .lc-q{font-size:var(--t-2xl);font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:var(--s-5)}
-.lc-txt{font-size:1.15rem;line-height:1.75;color:var(--ink);margin-bottom:var(--s-5)}
+.lc-txt{font-size:1.15rem;line-height:1.75;color:var(--ink);margin-bottom:var(--s-5);white-space:pre-line}
 .lc-fav{
   background:transparent;border:none;color:var(--ink-4);font-size:1.3rem;line-height:1;
   cursor:pointer;min-width:44px;min-height:44px;padding:0;
@@ -684,13 +684,10 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 <!-- VARS: última revisión 2025 — verificar fuentes y actualizar semestralmente -->
 <script type="application/json" id="obj-vars">
 {
-  "{{aecc_socios}}": "764.745",
   "{{aecc_personas}}": "177.577",
   "{{aecc_investigacion_m}}": "157",
   "{{aecc_ayudas}}": "792",
-  "{{aecc_publicaciones}}": "354",
   "{{aecc_investigadores}}": "3.000",
-  "{{aecc_diagnosticos}}": "300.000",
   "{{aecc_muertes}}": "116.000",
   "{{aecc_supervivencia_mama}}": "85%",
   "{{cr_personas_espana}}": "2,5 millones",
@@ -703,10 +700,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   "{{cr_empleo}}": "280.000",
   "{{ai_ninos}}": "20.900",
   "{{ai_jovenes}}": "1.141",
-  "{{fjc_donantes}}": "520.850",
-  "{{fjc_socios}}": "157.383",
   "{{fjc_trasplantes}}": "790",
-  "{{fjc_investigacion_m}}": "19,9",
   "{{fec_socios}}": "14.306",
   "{{fec_deas}}": "29.164",
   "{{fec_ariadna_usuarios}}": "71.099",
@@ -729,8 +723,6 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   "{{ai_aldeas}}": "8",
   "{{ai_centros_dia}}": "30",
   "{{ai_ninos_riesgo}}": "2,7 millones",
-  "{{aecc_puntos}}": "1.800",
-  "{{aecc_personas_prevencion}}": "1,4 millones",
   "{{cr_dana_personas}}": "143.000",
   "{{cr_dana_ejecutado}}": "61,5",
   "{{cr_dana_movilizados}}": "7.000"
