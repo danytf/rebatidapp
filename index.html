@@ -4761,11 +4761,10 @@ function buildGroupedHtml(filtered) {
     groupMap[obj.cat].items.push(obj);
   });
   var html = '';
-  var isDesktop = window.matchMedia('(min-width:960px)').matches;
   groups.forEach(function(g) {
-    // Por defecto abiertas en escritorio y cerradas en móvil, pero si el captador
-    // ya la abrió o la cerró, se respeta su decisión al repintar
-    var abierta = secAbiertas.hasOwnProperty(g.cat) ? secAbiertas[g.cat] : isDesktop;
+    // Por defecto plegadas, pero si el captador ya la abrió o la cerró,
+    // se respeta su decisión al repintar
+    var abierta = secAbiertas.hasOwnProperty(g.cat) ? secAbiertas[g.cat] : false;
     html += '<div class="cat-section' + (abierta ? '' : ' collapsed') + '" data-cat="' + g.cat + '">';
     html += '<button class="cat-section-hdr" aria-expanded="' + (abierta ? 'true' : 'false') + '">';
     html += '<span class="cat-section-badge" style="background:' + g.color + ';color:' + catTextColor(g.color) + '">' + esc(g.label) + '</span>';
