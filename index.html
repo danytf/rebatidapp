@@ -338,6 +338,13 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 }
 .ans-terr-item{padding-top:.1rem}
 .ans-terr-apoyo{margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--brand-line);color:var(--ink-2)}
+.ans-terr-mas{margin-top:.6rem;padding-top:.5rem;border-top:1px dashed var(--brand-line)}
+.ans-terr-mas summary{cursor:pointer;font-weight:700;font-size:var(--t-xs);color:var(--brand);list-style:none}
+.ans-terr-mas summary::-webkit-details-marker{display:none}
+.ans-terr-mas summary::before{content:'▸ ';display:inline-block}
+.ans-terr-mas[open] summary::before{content:'▾ '}
+.ans-terr-mas ul{margin:.5rem 0 0;padding-left:1.1rem;color:var(--ink-2)}
+.ans-terr-mas li{margin-bottom:.35rem}
 
 /* ---- Empty ---- */
 .empty{text-align:center;padding:4rem 2rem;color:var(--ink-3)}
@@ -4240,87 +4247,142 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       {
         "region": "Andalucía",
         "texto": "En Andalucía, uno de los grandes ejemplos es Doñana. Llevamos décadas trabajando por su conservación y actualmente seguimos reclamando medidas para recuperar su funcionamiento hídrico y ecológico y restaurar zonas prioritarias del entorno.",
-        "apoyo": "Además, fuimos quienes recurrimos el proyecto de dragado del Guadalquivir y el Tribunal Supremo anuló su inclusión en el Plan Hidrológico."
+        "apoyo": "Además, fuimos quienes recurrimos el proyecto de dragado del Guadalquivir y el Tribunal Supremo anuló su inclusión en el Plan Hidrológico.",
+        "municion": [
+          "Junto a IKEA, a través del Plan Allen, hemos restaurado cerca de 300 hectáreas de bosques y humedales en el entorno de Doñana.",
+          "Con la Fundación Coca-Cola restauramos 6 hectáreas de marisma en Trebujena, dentro del proyecto Misión Posible.",
+          "Participamos en programas de conservación del lince ibérico centrados en su hábitat, la disponibilidad de conejo y amenazas como el furtivismo."
+        ]
       },
       {
         "region": "Aragón",
-        "texto": "En Aragón, llevamos al Parlamento Europeo el proyecto de Canal Roya por su posible impacto sobre los ecosistemas de alta montaña. Además, Aragón es una de las comunidades que identificamos como clave para salvar al visón europeo.",
-        "apoyo": "También hemos reclamado medidas de emergencia para el visón europeo y la restauración de los ríos y hábitats donde vive."
+        "texto": "En 2023 comparecimos ante el Parlamento Europeo, junto a otras organizaciones ecologistas, para denunciar el posible impacto del proyecto de Canal Roya sobre los ecosistemas de alta montaña. Además, Aragón es una de las comunidades que identificamos como clave para salvar al visón europeo.",
+        "apoyo": "También hemos reclamado medidas de emergencia para el visón europeo y la restauración de los ríos y hábitats donde vive.",
+        "municion": [
+          "Hemos analizado las políticas autonómicas de convivencia entre el lobo y la ganadería, incluida Aragón."
+        ]
       },
       {
         "region": "Asturias",
         "texto": "En Asturias, tuvimos un papel muy activo en la protección de El Cachucho. En 2011 fue declarado la primera Área Marina Protegida de España y además se incorporó a la Red Natura 2000.",
-        "apoyo": "También trabajamos en el ámbito de la conservación del lobo y la convivencia con la ganadería."
+        "apoyo": "En 2025 recurrimos la autorización de Asturias para la extracción de 53 lobos, casi el 15% de la población autonómica según las estimaciones oficiales.",
+        "municion": [
+          "El Cachucho fue uno de los espacios que propusimos proteger en un listado de 2006 con 20 zonas submarinas prioritarias.",
+          "También trabajamos en Asturias en la conservación del lobo y la convivencia con la ganadería."
+        ]
       },
       {
         "region": "Baleares",
-        "texto": "En Mallorca, participamos en RestaurAlcúdia, un proyecto iniciado en 2023 y finalizado en 2026 para restaurar los humedales de Maristany y Estany des Ponts, mejorar su estado ecológico y reducir el riesgo de inundaciones.",
-        "apoyo": "Antes de ese proyecto, habíamos elaborado el primer inventario de humedales de Baleares, con 358 humedales identificados, y reclamamos medidas para protegerlos."
+        "texto": "En Mallorca, participamos en RestaurAlcúdia, un proyecto desarrollado entre 2023 y 2026 para restaurar los humedales de Maristany y Estany des Ponts, mejorar su estado ecológico y reducir el riesgo de inundaciones.",
+        "apoyo": "Antes de ese proyecto, habíamos elaborado el primer inventario de humedales de Baleares, con 358 humedales identificados, y reclamamos medidas para protegerlos.",
+        "municion": [
+          "El inventario de 358 humedales incluyó espacios en Mallorca, Menorca, Ibiza y Formentera."
+        ]
       },
       {
         "region": "Canarias",
-        "texto": "En Canarias, llevamos décadas trabajando en la conservación del Parque Natural del Archipiélago Chinijo. Nuestra oficina en Canarias, activa desde 1998, ha mantenido acciones de restauración, seguimiento y conservación del espacio con más de 2.000 voluntarios.",
-        "apoyo": "También desarrollamos proyectos de ciencia ciudadana para conocer amenazas sobre la fauna marina y terrestre de Canarias."
+        "texto": "En Canarias, llevamos décadas trabajando en la conservación del Parque Natural del Archipiélago Chinijo. Nuestra oficina en Canarias está activa desde 1998, y la campaña de conservación del espacio ha contado desde entonces con la participación de más de 2.000 voluntarios.",
+        "apoyo": "También desarrollamos iniciativas de ciencia ciudadana para mejorar el conocimiento y seguimiento de la fauna y sus amenazas.",
+        "municion": [
+          "A lo largo de la campaña en Chinijo hemos retirado unos 30.000 kg de plástico de la costa.",
+          "Hemos pedido al Cabildo de Lanzarote que actualice los planes de gestión de sus espacios protegidos ante la presión del turismo."
+        ]
       },
       {
         "region": "Cantabria",
         "texto": "En Cantabria, trabajamos especialmente en el conflicto entre conservación del lobo y ganadería. Reclamamos medidas de prevención como mastines y vallados y compensaciones rápidas y justas cuando se producen daños.",
-        "apoyo": "Hemos criticado que se recurra al control letal sin priorizar antes las medidas de prevención y coexistencia."
+        "apoyo": "En 2025 recurrimos ante la justicia el cupo de 41 lobos autorizado en Cantabria; el Tribunal Superior de Justicia rechazó nuestra petición de suspenderlo, pero la actuación legal queda documentada.",
+        "municion": [
+          "Hemos analizado las políticas autonómicas sobre prevención, compensación y conservación del lobo, incluida Cantabria."
+        ]
       },
       {
         "region": "Castilla-La Mancha",
-        "texto": "En Castilla-La Mancha, hemos participado en la recuperación del lince ibérico y coordinamos el proyecto LIFE Iberconejo, desarrollado hasta 2024, trabajando con agricultores, cazadores, científicos y administraciones para mejorar las poblaciones de conejo y reducir sus daños sobre la agricultura.",
-        "apoyo": "También seguimos reclamando medidas de conservación para especies como el lobo en Castilla-La Mancha."
+        "texto": "En Castilla-La Mancha, hemos participado en la recuperación del lince ibérico y fuimos la entidad coordinadora del proyecto LIFE Iberconejo, desarrollado hasta 2024, trabajando con agricultores, cazadores, científicos y administraciones para mejorar las poblaciones de conejo y reducir sus daños sobre la agricultura.",
+        "apoyo": "Además, en las Tablas de Daimiel colaboramos con Parques Nacionales, regantes y voluntariado para restaurar 210 hectáreas con 45.000 plantones de especies autóctonas.",
+        "municion": [
+          "En el marco de LIFE+ Iberlince, en 2016 se documentó la reproducción en libertad de una hembra de lince reintroducida en Montes de Toledo.",
+          "Hemos reclamado junto a otras organizaciones ecologistas un programa urgente de actuaciones para salvar las Tablas de Daimiel."
+        ]
       },
       {
         "region": "Castilla y León",
         "texto": "En Castilla y León está uno de nuestros proyectos más emblemáticos: el Refugio de Rapaces de Montejo de la Vega, en Segovia. En 2025 cumplió 50 años y seguimos desarrollando allí acciones de conservación y restauración.",
-        "apoyo": "También estamos reclamando medidas urgentes para conservar el visón europeo, presente en las provincias de Burgos y Soria."
+        "apoyo": "En el censo de 2024 se registraron más de 754 parejas de buitre leonado en el refugio, una de las colonias más importantes de España y Europa.",
+        "municion": [
+          "El refugio lo fundó en 1975 Félix Rodríguez de la Fuente, entonces vicepresidente de ADENA, la organización que hoy es WWF España, junto a la población local de Montejo.",
+          "También estamos reclamando medidas urgentes para conservar el visón europeo, presente en las provincias de Burgos y Soria."
+        ]
       },
       {
         "region": "Cataluña",
         "texto": "En Cataluña, uno de nuestros grandes focos de trabajo es el Delta del Ebro. Llevamos años reclamando una gestión del agua que garantice los caudales y sedimentos necesarios para conservar el delta frente a la presión ambiental y al cambio climático.",
-        "apoyo": "También hemos trabajado en la conservación de especies y hábitats marinos y en la propuesta de espacios de la costa catalana para su protección."
+        "apoyo": "También participamos como socios en LIFE ECOREST, un proyecto coordinado por el Instituto de Ciencias del Mar (CSIC) para restaurar cerca de 30.000 hectáreas de hábitats marinos profundos frente a las costas de Barcelona y Girona.",
+        "municion": [
+          "A nivel estatal hemos pedido al Gobierno cambios en la gestión del agua para afrontar el cambio climático, con el Ebro como uno de los casos más señalados."
+        ]
       },
       {
         "region": "Comunitat Valenciana",
         "texto": "En la Comunidad Valenciana, desarrollamos en Yátova y Dos Aguas un proyecto de restauración para crear un paisaje en mosaico que ayudara a prevenir la propagación de grandes incendios. El proyecto tenía como objetivo restaurar 125 hectáreas y combinar bosques, pastos y usos ganaderos extensivos.",
-        "apoyo": "Es un ejemplo de cómo la prevención de incendios puede integrarse en la propia gestión del territorio."
+        "apoyo": "En 2026 firmamos un convenio con la Confederación Hidrográfica del Júcar para actuaciones de custodia fluvial en el río Mijares, en el propio término de Yátova.",
+        "municion": [
+          "El proyecto de Yátova y Dos Aguas combinaba bosques, pastos y usos ganaderos extensivos para crear un paisaje más resistente al fuego."
+        ]
       },
       {
         "region": "Extremadura",
         "texto": "En Extremadura, participamos en la recuperación del lince ibérico a través del proyecto LIFE+ Iberlince. En el valle de Matachel se produjeron en 2014 los primeros nacimientos en libertad de lince ibérico fuera de Andalucía dentro de este proceso de reintroducción.",
-        "apoyo": "El lince volvió a Extremadura tras décadas de ausencia gracias a este proceso de reintroducción."
+        "apoyo": "Este proceso permitió recuperar la presencia del lince en Extremadura después de décadas de ausencia.",
+        "municion": [
+          "Extremadura también formó parte de las regiones prioritarias del proyecto LIFE Iberconejo, que coordinamos."
+        ]
       },
       {
         "region": "Galicia",
         "texto": "En Galicia, apoyamos la creación de la Reserva Pesquera de Os Miñarzos, en A Coruña, un proyecto pionero de pesca sostenible y gestión participativa en el que colaboraron pescadores, científicos y administraciones.",
-        "apoyo": "En 2024, también participamos junto a otras organizaciones ecologistas en la respuesta al vertido de pellets que afectó a las costas gallegas y del Cantábrico."
+        "apoyo": "En 2024, también participamos junto a otras organizaciones ecologistas en la respuesta al vertido de pellets que afectó a las costas gallegas y del Cantábrico.",
+        "municion": [
+          "Promovemos modelos de pesca sostenible y de certificación pesquera responsable, con Os Miñarzos como ejemplo de referencia."
+        ]
       },
       {
         "region": "Comunidad de Madrid",
-        "texto": "En Madrid, seguimos trabajando por la conservación de especies como el lobo y por la restauración de espacios naturales. En 2025 participamos en una manifestación en Madrid, junto a más de un centenar de organizaciones, para reclamar la protección del lobo ibérico y su coexistencia con la ganadería.",
-        "apoyo": "También reclamamos medidas de prevención para reducir los daños al ganado, como vallados y mastines."
+        "texto": "En Madrid, en 2026, junto al Ayuntamiento de Mejorada del Campo y con la colaboración de Sanitas, trabajamos en la restauración del humedal de Las Islillas Norte.",
+        "apoyo": "También seguimos trabajando por la conservación de especies como el lobo: en 2025 participamos en una manifestación en Madrid, junto a más de un centenar de organizaciones, para reclamar su protección y su coexistencia con la ganadería.",
+        "municion": [
+          "También reclamamos medidas de prevención como vallados y mastines para reducir los daños al ganado.",
+          "Hemos reclamado durante años que Madrid apruebe planes de recuperación para especies como el lince ibérico y el lobo."
+        ]
       },
       {
         "region": "Región de Murcia",
         "texto": "En Murcia, llevamos años trabajando por la recuperación del Mar Menor. Hemos investigado y denunciado problemas como el regadío ilegal y la contaminación y reclamamos medidas para reducir la entrada de nutrientes y recuperar el ecosistema.",
-        "apoyo": "Trabajamos conjuntamente con ANSE en la denuncia de los impactos de la agricultura intensiva sobre la laguna."
+        "apoyo": "Trabajamos conjuntamente con ANSE en la denuncia de los impactos de la agricultura intensiva sobre la laguna.",
+        "municion": [
+          "Hemos pedido eliminar y restaurar más de 8.500 hectáreas de cultivos de regadío ilegal en el entorno del Mar Menor.",
+          "En 2011 impulsamos, junto a ANSE y Greenpeace, una campaña para ampliar la reserva marina de Cabo Tiñoso, cuya extensión se redujo drásticamente respecto a la propuesta inicial."
+        ]
       },
       {
         "region": "Navarra",
         "texto": "En Navarra, trabajamos por la conservación del visón europeo, una especie en situación crítica en España. Navarra es uno de los núcleos clave de la población española, y reclamamos medidas urgentes para evitar su extinción y recuperar la especie.",
-        "apoyo": "Navarra también ha participado en proyectos específicos como LIFE Territorio Visón, dedicado a restaurar los hábitats fluviales de los ríos Arga y Aragón."
+        "apoyo": "Navarra también ha participado en proyectos específicos como LIFE Territorio Visón, dedicado a restaurar los hábitats fluviales de los ríos Arga y Aragón.",
+        "municion": []
       },
       {
         "region": "País Vasco",
         "texto": "En el País Vasco, trabajamos para evitar la desaparición del visón europeo y reclamamos medidas para proteger sus poblaciones y sus hábitats, dentro del plan de emergencia que proponemos para la especie.",
-        "apoyo": "El País Vasco forma parte de las comunidades que consideramos prioritarias para la recuperación de la especie."
+        "apoyo": "El País Vasco forma parte de las comunidades que consideramos prioritarias para la recuperación de la especie.",
+        "municion": []
       },
       {
         "region": "La Rioja",
         "texto": "En La Rioja, trabajamos por la conservación del visón europeo, una especie de la que España conserva una de las últimas poblaciones. Reclamamos actuaciones urgentes sobre su hábitat y sobre la expansión del visón americano.",
-        "apoyo": "La Rioja participó también en el proyecto LIFE Lutreola Spain, dentro del cual se consiguió erradicar el visón americano en determinados tramos de la región, lo que permitió impulsar la recuperación del visón europeo."
+        "apoyo": "La Rioja participó también en el proyecto LIFE Lutreola Spain, dentro del cual se consiguió erradicar el visón americano en determinados tramos de la región, lo que permitió impulsar la recuperación del visón europeo.",
+        "municion": [
+          "En 2025 recurrimos ante la justicia la autorización de caza del lobo en La Rioja."
+        ]
       }
     ]
   },
@@ -4465,7 +4527,8 @@ DATA.forEach(function(obj) {
       r.region = interpolate(r.region);
       r.texto  = interpolate(r.texto);
       if (r.apoyo) r.apoyo = interpolate(r.apoyo);
-      terrTexto += ' ' + r.region + ' ' + r.texto + ' ' + (r.apoyo || '');
+      if (r.municion) r.municion = r.municion.map(interpolate);
+      terrTexto += ' ' + r.region + ' ' + r.texto + ' ' + (r.apoyo || '') + ' ' + (r.municion || []).join(' ');
     });
   }
   // Índice de búsqueda precalculado: se normaliza una vez al cargar, no en cada pulsación
@@ -4807,6 +4870,11 @@ function buildCardHtml(obj) {
       html += '<div class="ans-terr-item" data-terr-id="' + obj.id + '" data-idx="' + i + '" style="display:none">';
       html += '<div class="ans-terr-txt">' + esc(r.texto) + '</div>';
       if (r.apoyo) html += '<div class="ans-terr-apoyo">' + esc(r.apoyo) + '</div>';
+      if (r.municion && r.municion.length) {
+        html += '<details class="ans-terr-mas"><summary>¿Algo más en tu comunidad?</summary><ul>';
+        r.municion.forEach(function(m) { html += '<li>' + esc(m) + '</li>'; });
+        html += '</ul></details>';
+      }
       html += '</div>';
     });
     html += '</div>';
