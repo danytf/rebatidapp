@@ -4999,7 +4999,7 @@ var ENSAYO_DIFFS  = [
   {v:3, l:'🔴 Difícil', c:'#ef4444'}
 ];
 ONGS.filter(function(o) { return o.id !== 'all'; })
-    .forEach(function(ong) { ensayoCfgOngs[ong.id] = true; });
+    .forEach(function(ong) { ensayoCfgOngs[ong.id] = false; });
 
 function ensayoPool(){
   return DATA.filter(function(obj) {
