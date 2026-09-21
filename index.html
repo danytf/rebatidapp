@@ -270,6 +270,14 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 }
 .ocard-fav:hover{transform:scale(1.25)}
 .ocard-fav.on{color:var(--brand)}
+.ocard-read{
+  background:transparent;border:none;color:var(--ink-4);
+  font-size:1.05rem;line-height:1;cursor:pointer;
+  min-width:44px;min-height:44px;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:color .2s,transform .2s var(--ease-out);font-family:inherit;
+}
+.ocard-read:hover{color:var(--brand);transform:scale(1.1)}
 .ocard-arr{
   color:var(--ink-4);flex-shrink:0;margin-top:3px;
   transition:transform .3s var(--ease-out),color .2s;
@@ -546,6 +554,20 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 /* === NUEVA REBATIDA === */
 #nueva-rebatida{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
 #nueva-rebatida.open{animation:slideUp .28s var(--ease-out)}
+
+/* === MODO LECTURA === */
+#lectura{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.lc-body{max-width:640px}
+.lc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-bottom:var(--s-4)}
+.lc-ong{font-size:1.1rem;line-height:1}
+.lc-q{font-size:var(--t-2xl);font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:var(--s-5)}
+.lc-txt{font-size:1.15rem;line-height:1.75;color:var(--ink);margin-bottom:var(--s-5)}
+.lc-fav{
+  background:transparent;border:none;color:var(--ink-4);font-size:1.3rem;line-height:1;
+  cursor:pointer;min-width:44px;min-height:44px;padding:0;
+  display:inline-flex;align-items:center;justify-content:center;font-family:inherit;
+}
+.lc-fav.on{color:var(--brand)}
 @keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .nr-hdr{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);padding:.75rem var(--s-4);padding-top:max(.75rem,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
 .nr-hdr-left{display:flex;align-items:center;gap:.45rem}
@@ -4829,6 +4851,7 @@ function buildCardHtml(obj) {
   html += '</div>';
   html += '</div>';
   html += '<div class="ocard-actions">';
+  html += '<button class="ocard-read" data-readid="' + obj.id + '" aria-label="Leer a pantalla completa: ' + esc(obj.q) + '">⛶</button>';
   html += '<button class="ocard-fav' + (isFav ? ' on' : '') + '" data-favid="' + obj.id + '"'
         + ' aria-label="' + (isFav ? 'Quitar de favoritos' : 'Añadir a favoritos') + ': ' + esc(obj.q) + '"'
         + ' aria-pressed="' + (isFav ? 'true' : 'false') + '">' + (isFav ? '★' : '☆') + '</button>';
@@ -4933,6 +4956,14 @@ function render(rebuildFilters) {
         var item = card.querySelector('.ans-terr-item[data-idx="' + idx + '"]');
         if (item) item.style.display = '';
       }
+    });
+  });
+
+  // Leer a pantalla completa
+  zone.querySelectorAll('.ocard-read').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openLectura(this.getAttribute('data-readid'));
     });
   });
 
@@ -5264,6 +5295,87 @@ function enviarRebatida() {
 }
 
 // ============================================================
+//  MODO LECTURA
+// ============================================================
+
+function openLectura(id) {
+  var obj = DATA.find(function(x) { return x.id === id; });
+  if (!obj) return;
+  renderLectura(obj);
+  var lc = el('lectura');
+  lc.style.display = 'flex';
+  trapFocus(lc, closeLectura);
+}
+
+function closeLectura() {
+  el('lectura').style.display = 'none';
+  releaseTrap();
+}
+
+function renderLectura(obj) {
+  var isFav = !!favs[obj.id];
+  var html  = '';
+  html += '<div class="lc-meta">';
+  html += '<div class="ocard-badge" style="background:' + obj.catColor + ';color:' + catTextColor(obj.catColor) + '">' + esc(obj.catLabel) + '</div>';
+  if (obj.ongs && obj.ongs.length) {
+    obj.ongs.forEach(function(ongId) {
+      var o = ONGS.find(function(x) { return x.id === ongId; });
+      if (o && o.id !== 'General' && o.id !== 'all') html += '<span class="lc-ong" title="' + esc(o.label) + '">' + (ONG_EMOJI[o.id] || '') + '</span>';
+    });
+  }
+  html += '<button class="lc-fav' + (isFav ? ' on' : '') + '" data-favid="' + obj.id + '"'
+        + ' aria-label="' + (isFav ? 'Quitar de favoritos' : 'Añadir a favoritos') + '"'
+        + ' aria-pressed="' + (isFav ? 'true' : 'false') + '" style="margin-left:auto">' + (isFav ? '★' : '☆') + '</button>';
+  html += '</div>';
+  html += '<div class="lc-q">' + esc(obj.q) + '</div>';
+  html += '<div class="lc-txt">' + esc(obj.a) + '</div>';
+  if (obj.tip) { html += '<details class="ans-tip" open><summary class="ans-tip-lbl">💡 Consejo de captación</summary><div class="ans-tip-txt">' + esc(obj.tip) + '</div></details>'; }
+  if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
+    html += '<div class="ans-terr" style="margin-top:var(--s-5)">';
+    html += '<div class="ans-terr-lbl">🗺️ Chuleta territorial</div>';
+    html += '<select class="ans-terr-select" data-id="' + obj.id + '">';
+    html += '<option value="">Elige tu comunidad…</option>';
+    obj.chuletaTerritorial.forEach(function(r, i) { html += '<option value="' + i + '">' + esc(r.region) + '</option>'; });
+    html += '</select>';
+    obj.chuletaTerritorial.forEach(function(r, i) {
+      html += '<div class="ans-terr-item" data-terr-id="' + obj.id + '" data-idx="' + i + '" style="display:none">';
+      html += '<div class="ans-terr-txt">' + esc(r.texto) + '</div>';
+      if (r.apoyo) html += '<div class="ans-terr-apoyo">' + esc(r.apoyo) + '</div>';
+      if (r.municion && r.municion.length) {
+        html += '<details class="ans-terr-mas" open><summary>¿Algo más en tu comunidad?</summary><ul>';
+        r.municion.forEach(function(m) { html += '<li>' + esc(m) + '</li>'; });
+        html += '</ul></details>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  el('lc-inner').innerHTML = html;
+
+  el('lc-inner').querySelector('.lc-fav').addEventListener('click', function() {
+    var id = this.getAttribute('data-favid');
+    toggleFav(id);
+    var on = !!favs[id];
+    this.classList.toggle('on', on);
+    this.textContent = on ? '★' : '☆';
+    this.setAttribute('aria-pressed', on ? 'true' : 'false');
+    this.setAttribute('aria-label', on ? 'Quitar de favoritos' : 'Añadir a favoritos');
+    renderOngFilter();
+  });
+
+  // Chuleta territorial: selector de comunidad (mismo comportamiento que en la tarjeta)
+  el('lc-inner').querySelectorAll('.ans-terr-select').forEach(function(sel) {
+    sel.addEventListener('change', function() {
+      var id = this.getAttribute('data-id');
+      var idx = this.value;
+      el('lc-inner').querySelectorAll('.ans-terr-item[data-terr-id="' + id + '"]').forEach(function(item) {
+        item.style.display = (item.getAttribute('data-idx') === idx) ? '' : 'none';
+      });
+    });
+  });
+}
+
+// ============================================================
 //  ACCESIBILIDAD — FOCUS TRAP
 // ============================================================
 
@@ -5373,6 +5485,7 @@ window.addEventListener('DOMContentLoaded', function() {
   el('fab-nueva').addEventListener('click', showNuevaRebatida);
   el('nr-exit-btn').addEventListener('click', closeNuevaRebatida);
   el('nr-send-btn').addEventListener('click', enviarRebatida);
+  el('lc-exit-btn').addEventListener('click', closeLectura);
 
   // Toggle panel de ONGs (móvil)
   var _otb = document.getElementById('ong-toggle-btn');
@@ -5449,6 +5562,17 @@ window.addEventListener('DOMContentLoaded', function() {
     </button>
     <p class="nr-footer">Se enviará a <strong>formacion@wesser.es</strong> desde tu app de correo.</p>
   </div>
+</div>
+
+<div id="lectura" role="dialog" aria-modal="true" aria-label="Modo lectura">
+  <div class="nr-hdr">
+    <div class="nr-hdr-left">
+      <span class="nr-hdr-icon">⛶</span>
+      <span class="nr-hdr-title">Modo lectura</span>
+    </div>
+    <button class="ibtn fc-exit" id="lc-exit-btn" aria-label="Cerrar">✕ Cerrar</button>
+  </div>
+  <div class="nr-body lc-body" id="lc-inner"></div>
 </div>
 
 <div id="toast" role="status" aria-live="polite"></div>
