@@ -4687,7 +4687,8 @@ function renderOngFilter(){
     var style = sel ? '--tag-color:' + ong.color : '';
     var count = ong.id === 'all' ? DATA.length : (ongCounts[ong.id] || 0);
     var countStr = count ? '<span class="ctag-count">' + count + '</span>' : '';
-    html += '<button class="ctag' + (sel ? ' ctag-sel' : '') + '" data-oid="' + ong.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(ong.label) + countStr + '</button>';
+    var emoji = ONG_EMOJI[ong.id] || '';
+    html += '<button class="ctag' + (sel ? ' ctag-sel' : '') + '" data-oid="' + ong.id + '" style="' + style + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + (emoji ? emoji + ' ' : '') + esc(ong.label) + countStr + '</button>';
   });
 
   el('ongFilt').innerHTML = html;
