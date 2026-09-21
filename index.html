@@ -258,7 +258,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   line-height:1.35;letter-spacing:-.025em;
 }
 .ocard-ongs{display:flex;gap:3px;align-items:center;margin-left:var(--s-1)}
-.ocard-ong-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
+.ocard-ong-ico{font-size:12px;line-height:1;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 
 .ocard-actions{display:flex;align-items:center;gap:var(--s-2);flex-shrink:0}
 .ocard-fav{
@@ -4821,7 +4821,7 @@ function buildCardHtml(obj) {
     var ongDots = '<div class="ocard-ongs">';
     obj.ongs.forEach(function(ongId) {
       var o = ONGS.find(function(x) { return x.id === ongId; });
-      if (o && o.id !== 'General' && o.id !== 'all') ongDots += '<span class="ocard-ong-dot" style="background:' + o.color + '" title="' + esc(o.label) + '"></span>';
+      if (o && o.id !== 'General' && o.id !== 'all') ongDots += '<span class="ocard-ong-ico" title="' + esc(o.label) + '">' + (ONG_EMOJI[o.id] || '') + '</span>';
     });
     ongDots += '</div>';
     html += ongDots;
