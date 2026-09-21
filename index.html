@@ -179,15 +179,11 @@ body.light::before{
    FILTERS
    ============================================ */
 .cfilt{
-  display:flex;gap:var(--s-2);overflow-x:auto;scrollbar-width:none;
-  padding:var(--s-2) var(--s-4);padding-right:3rem;max-width:var(--max-w);margin:0 auto;
-  -webkit-overflow-scrolling:touch;
-  mask-image:linear-gradient(to right,black 85%,transparent);
-  -webkit-mask-image:linear-gradient(to right,black 85%,transparent);
+  display:flex;flex-wrap:wrap;gap:var(--s-2);row-gap:var(--s-1);overflow-x:visible;
+  padding:var(--s-2) var(--s-4);padding-right:var(--s-4);max-width:var(--max-w);margin:0 auto;
 }
 .cfilt::-webkit-scrollbar{display:none}
 @media(min-width:768px){
-  .cfilt{flex-wrap:wrap;overflow-x:visible;padding-right:var(--s-4);row-gap:var(--s-1);mask-image:none;-webkit-mask-image:none}
   :root{--max-w:740px}
 }
 .ctag{
@@ -607,7 +603,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 @media(max-width:959px){
   .ong-toggle-wrap{display:flex;gap:var(--s-2);padding:var(--s-2) var(--s-4) 0;max-width:var(--max-w);margin:0 auto}
   #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
-  #ongFilt.ong-open{max-height:200px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:auto;overflow-y:hidden}
+  #ongFilt.ong-open{max-height:400px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:visible;overflow-y:auto}
 }
 .ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
