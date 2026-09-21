@@ -555,6 +555,13 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 #nueva-rebatida{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
 #nueva-rebatida.open{animation:slideUp .28s var(--ease-out)}
 
+/* === SUGERIR CAMBIO === */
+#sugerir-cambio{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+#sugerir-cambio.open{animation:slideUp .28s var(--ease-out)}
+.sc-preview-box{background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-md);padding:.75rem .9rem;font-size:var(--t-sm)}
+.sc-preview-q{font-weight:700;color:var(--ink);margin-bottom:.35rem}
+.sc-preview-a{color:var(--ink-3);line-height:1.55}
+
 /* === MODO LECTURA === */
 #lectura{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
 .lc-body{max-width:640px}
@@ -649,6 +656,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="true"><span id="thbtn-icon">☀️</span><span class="ibtn-lbl">Tema</span></button>
       <button class="ibtn ibtn--labeled" id="ensayobtn" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
       <button class="ibtn ibtn--labeled" id="fab-nueva" aria-label="Añadir rebatida">✍️<span class="ibtn-lbl">Añadir</span></button>
+      <button class="ibtn ibtn--labeled" id="fab-modificar" aria-label="Sugerir cambio en una ficha">✏️<span class="ibtn-lbl">Modificar</span></button>
     </div>
   </div>
 </div>
@@ -5295,6 +5303,108 @@ function enviarRebatida() {
 }
 
 // ============================================================
+//  SUGERIR CAMBIO EN UNA FICHA EXISTENTE
+// ============================================================
+
+var scSelectedOng    = null;
+var scSelectedFicha  = null;
+
+function showSugerirCambio() {
+  scSelectedOng   = null;
+  scSelectedFicha = null;
+  el('sc-texto').value = '';
+  el('sc-error').classList.remove('visible');
+  renderScOngPills();
+  renderScFichaSelect();
+  renderScPreview();
+  var sc = el('sugerir-cambio');
+  sc.style.display = 'flex';
+  sc.classList.add('open');
+  trapFocus(sc, closeSugerirCambio);
+}
+
+function closeSugerirCambio() {
+  var sc = el('sugerir-cambio');
+  sc.style.display = 'none';
+  sc.classList.remove('open');
+  releaseTrap();
+}
+
+function renderScOngPills() {
+  var html = '';
+  ONGS.filter(function(o) { return o.id !== 'all'; }).forEach(function(ong) {
+    var sel   = scSelectedOng === ong.id;
+    var style = sel ? '--tag-color:' + ong.color : '';
+    html += '<button class="nr-pill' + (sel ? ' sel' : '') + '" data-sc-ong="' + ong.id + '" style="' + style + '">' + esc(ong.label) + '</button>';
+  });
+  el('sc-ong-pills').innerHTML = html;
+  el('sc-ong-pills').querySelectorAll('[data-sc-ong]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      scSelectedOng   = this.getAttribute('data-sc-ong');
+      scSelectedFicha = null;
+      renderScOngPills();
+      renderScFichaSelect();
+      renderScPreview();
+    });
+  });
+}
+
+function renderScFichaSelect() {
+  var wrap = el('sc-ficha-wrap');
+  if (!scSelectedOng) {
+    wrap.innerHTML = '<p style="font-size:var(--t-sm);color:var(--ink-3)">Elige antes una ONG.</p>';
+    return;
+  }
+  var fichas = DATA.filter(function(o) { return o.ongs.indexOf(scSelectedOng) !== -1; });
+  var html = '<select class="nr-textarea" id="sc-ficha-select" style="min-height:44px;resize:none">';
+  html += '<option value="">Elige la ficha…</option>';
+  fichas.forEach(function(f) {
+    var label = f.q.length > 70 ? f.q.slice(0, 70) + '…' : f.q;
+    html += '<option value="' + f.id + '">' + esc(label) + '</option>';
+  });
+  html += '</select>';
+  wrap.innerHTML = html;
+  el('sc-ficha-select').addEventListener('change', function() {
+    scSelectedFicha = this.value || null;
+    renderScPreview();
+  });
+}
+
+function renderScPreview() {
+  var wrap = el('sc-preview');
+  var obj  = scSelectedFicha ? DATA.find(function(x) { return x.id === scSelectedFicha; }) : null;
+  if (!obj) { wrap.style.display = 'none'; wrap.innerHTML = ''; return; }
+  wrap.style.display = '';
+  wrap.innerHTML = '<p class="nr-label">Contenido actual</p>'
+    + '<div class="sc-preview-box"><div class="sc-preview-q">' + esc(obj.q) + '</div><div class="sc-preview-a">' + esc(obj.a) + '</div></div>';
+}
+
+function enviarSugerenciaCambio() {
+  var texto = el('sc-texto').value.trim();
+  if (!scSelectedOng || !scSelectedFicha || !texto) { el('sc-error').classList.add('visible'); return; }
+  el('sc-error').classList.remove('visible');
+  var obj     = DATA.find(function(x) { return x.id === scSelectedFicha; });
+  var subject = 'Sugerencia de cambio — ' + scSelectedOng + ' — ' + scSelectedFicha;
+  var body    = [
+    'ONG / Bloque: ' + scSelectedOng,
+    'Ficha: ' + scSelectedFicha,
+    '',
+    'PREGUNTA ACTUAL:', obj ? obj.q : '(no encontrada)',
+    '',
+    'RESPUESTA ACTUAL:', obj ? obj.a : '',
+    '',
+    '---',
+    'CAMBIO PROPUESTO:', texto,
+    '',
+    '---',
+    'Enviado desde la app Banco de Objeciones Wesser'
+  ].join('\n');
+  window.location.href = 'mailto:formacion@wesser.es?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  showToast('✉️ Correo listo, revísalo en tu app y envíalo');
+  closeSugerirCambio();
+}
+
+// ============================================================
 //  MODO LECTURA
 // ============================================================
 
@@ -5485,6 +5595,9 @@ window.addEventListener('DOMContentLoaded', function() {
   el('fab-nueva').addEventListener('click', showNuevaRebatida);
   el('nr-exit-btn').addEventListener('click', closeNuevaRebatida);
   el('nr-send-btn').addEventListener('click', enviarRebatida);
+  el('fab-modificar').addEventListener('click', showSugerirCambio);
+  el('sc-exit-btn').addEventListener('click', closeSugerirCambio);
+  el('sc-send-btn').addEventListener('click', enviarSugerenciaCambio);
   el('lc-exit-btn').addEventListener('click', closeLectura);
 
   // Toggle panel de ONGs (móvil)
@@ -5557,6 +5670,47 @@ window.addEventListener('DOMContentLoaded', function() {
     </div>
     <p class="nr-error" id="nr-error">⚠ Selecciona una ONG y escribe la objeción del donante.</p>
     <button class="nr-send" id="nr-send-btn">
+      <span class="nr-send-icon">✉️</span>
+      <span>Enviar a formación</span>
+    </button>
+    <p class="nr-footer">Se enviará a <strong>formacion@wesser.es</strong> desde tu app de correo.</p>
+  </div>
+</div>
+
+<div id="sugerir-cambio" role="dialog" aria-modal="true" aria-label="Sugerir cambio en una ficha">
+  <div class="nr-hdr">
+    <div class="nr-hdr-left">
+      <span class="nr-hdr-icon">✏️</span>
+      <span class="nr-hdr-title">Sugerir cambio</span>
+    </div>
+    <button class="ibtn fc-exit" id="sc-exit-btn" aria-label="Cancelar">✕ Cancelar</button>
+  </div>
+  <div class="nr-body" id="sc-inner">
+    <div class="nr-hero">
+      <p class="nr-hero-title">¿Qué ficha cambiarías?</p>
+      <p class="nr-hero-sub">Elige la ONG y la ficha, y cuéntanos qué corregirías. El equipo de formación revisará tu propuesta.</p>
+    </div>
+    <div class="nr-card">
+      <div class="nr-section">
+        <div role="group" aria-labelledby="sc-ong-label">
+          <p class="nr-label" id="sc-ong-label">¿A qué ONG corresponde?</p>
+          <div class="nr-pills" id="sc-ong-pills"></div>
+        </div>
+      </div>
+      <div class="nr-divider"></div>
+      <div class="nr-section">
+        <p class="nr-label" id="sc-ficha-label">¿Qué ficha es?</p>
+        <div id="sc-ficha-wrap"></div>
+      </div>
+      <div class="nr-section" id="sc-preview" style="display:none"></div>
+      <div class="nr-divider"></div>
+      <div class="nr-section nr-section-last">
+        <label class="nr-label" for="sc-texto">¿Qué cambiarías y por qué?</label>
+        <textarea class="nr-textarea" id="sc-texto" placeholder="Describe el cambio que propones..." rows="4" maxlength="600"></textarea>
+      </div>
+    </div>
+    <p class="nr-error" id="sc-error">⚠ Elige ONG y ficha, y describe el cambio propuesto.</p>
+    <button class="nr-send" id="sc-send-btn">
       <span class="nr-send-icon">✉️</span>
       <span>Enviar a formación</span>
     </button>
