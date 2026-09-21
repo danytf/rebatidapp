@@ -314,7 +314,12 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   font-size:var(--t-sm);color:var(--ink);line-height:1.65;
 }
 .ans-tip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
-.ans-tip-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.25rem;display:flex;align-items:center;gap:.25rem}
+.ans-tip-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);display:flex;align-items:center;gap:.25rem;cursor:pointer;list-style:none}
+.ans-tip-lbl::-webkit-details-marker{display:none}
+.ans-tip-lbl::before{content:'▸';display:inline-block;font-size:var(--t-xs)}
+.ans-tip[open] .ans-tip-lbl{margin-bottom:.25rem}
+.ans-tip[open] .ans-tip-lbl::before{content:'▾'}
+.ans-tip-txt{line-height:1.65}
 
 .ans-terr{
   position:relative;
@@ -4836,14 +4841,14 @@ function buildCardHtml(obj) {
   html += '<div class="ans-wrap">';
   if (hasShort) {
     html += '<div class="ans-toggle">'
-          + '<button class="ans-tbtn" data-mode="short" data-id="' + obj.id + '" aria-pressed="false">⚡ Rápida</button>'
-          + '<button class="ans-tbtn active" data-mode="full"  data-id="' + obj.id + '" aria-pressed="true">📖 Completa</button>'
+          + '<button class="ans-tbtn active" data-mode="short" data-id="' + obj.id + '" aria-pressed="true">⚡ Rápida</button>'
+          + '<button class="ans-tbtn" data-mode="full"  data-id="' + obj.id + '" aria-pressed="false">📖 Completa</button>'
           + '</div>';
   }
   html += '<div class="ans-label">💬 Respuesta argumentada</div>';
-  html += '<div class="ans-txt ans-short" style="display:none">' + esc(hasShort ? obj.short : obj.a) + '</div>';
-  if (hasShort) { html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>'; }
-  if (obj.tip)  { html += '<div class="ans-tip"><div class="ans-tip-lbl">💡 Consejo de captación</div>' + esc(obj.tip) + '</div>'; }
+  html += '<div class="ans-txt ans-short">' + esc(hasShort ? obj.short : obj.a) + '</div>';
+  if (hasShort) { html += '<div class="ans-txt ans-full" style="display:none">' + esc(obj.a) + '</div>'; }
+  if (obj.tip)  { html += '<details class="ans-tip"><summary class="ans-tip-lbl">💡 Consejo de captación</summary><div class="ans-tip-txt">' + esc(obj.tip) + '</div></details>'; }
   if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
     html += '<div class="ans-terr">';
     html += '<div class="ans-terr-lbl">🗺️ Chuleta territorial</div>';
