@@ -320,6 +320,25 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ans-tip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
 .ans-tip-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.25rem;display:flex;align-items:center;gap:.25rem}
 
+.ans-terr{
+  position:relative;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-line);
+  border-radius:var(--r-md);
+  padding:.7rem .85rem .8rem 1rem;
+  font-size:var(--t-sm);color:var(--ink);line-height:1.65;
+  margin-top:var(--s-2);
+}
+.ans-terr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
+.ans-terr-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.5rem;display:flex;align-items:center;gap:.25rem}
+.ans-terr-select{
+  width:100%;background:var(--surface);border:1.5px solid var(--line-2);
+  border-radius:var(--r-sm);padding:.5rem .6rem;
+  font-size:var(--t-sm);color:var(--ink);font-family:inherit;margin-bottom:.6rem;
+}
+.ans-terr-item{padding-top:.1rem}
+.ans-terr-apoyo{margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--brand-line);color:var(--ink-2)}
+
 /* ---- Empty ---- */
 .empty{text-align:center;padding:4rem 2rem;color:var(--ink-3)}
 .empty-icon{font-size:3rem;margin-bottom:var(--s-3);opacity:.6}
@@ -4092,11 +4111,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       "WWF"
     ],
     "q": "Prefiero apoyar causas más urgentes como el hambre o las enfermedades",
-    "a": "Son causas importantes, sin duda. Pero el hambre y la salud dependen de la naturaleza más de lo que parece: el 70% de los medicamentos sale de compuestos naturales y el 80% de los cultivos depende de los polinizadores. El agua dulce viene de ecosistemas que estamos destruyendo. La crisis ambiental no compite con el hambre, está debajo.",
-    "tip": "No compitas con otras causas. El argumento es la interdependencia: la naturaleza no es un lujo, es la infraestructura de todo lo demás. Los datos de los medicamentos y los polinizadores son los que mejor lo aterrizan, porque conectan con cosas que el donante usa a diario.",
+    "a": "Claro, y son causas muy importantes. Pero no tenemos que elegir entre una cosa y otra, porque están más relacionadas de lo que parece. La naturaleza está detrás de nuestros alimentos, del agua y también influye en nuestra salud. Por ejemplo, alrededor del 75% de los cultivos alimentarios del mundo dependen de los polinizadores. Por eso proteger la naturaleza no es una causa alejada de las personas: es proteger también muchas de las cosas de las que dependemos para vivir.",
+    "tip": "No compitas con otras causas. Reconoce primero que hambre y salud son prioridades legítimas. Después introduce la conexión: la naturaleza sostiene alimentos, agua y bienestar. El dato de los polinizadores es suficiente y fácil de recordar; no hace falta acumular más cifras. La idea clave: \"No es elegir entre las personas y la naturaleza: proteger la naturaleza también protege las condiciones de las que dependemos.\"",
     "freq": 2,
     "diff": 2,
-    "short": "El 70% de los medicamentos sale de compuestos naturales y el 80% de los cultivos depende de polinizadores."
+    "short": "Son causas muy importantes, pero están más relacionadas de lo que parece. La naturaleza sostiene nuestros alimentos, el agua y parte de nuestra salud. Alrededor del 75% de los cultivos alimentarios del mundo dependen de los polinizadores. Por eso proteger la naturaleza también es proteger a las personas."
   },
   {
     "id": "wwf23",
@@ -4205,18 +4224,105 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   },
   {
     "id": "wwf14",
-    "cat": "ya-colaboro",
-    "catLabel": "🤝 Ya colaboro",
-    "catColor": "#0ea5e9",
+    "cat": "utilidad",
+    "catLabel": "❓ Impacto",
+    "catColor": "#dc2626",
     "ongs": [
       "WWF"
     ],
-    "q": "Ya hago voluntariado ambiental / plantaciones de árboles / limpieza de playas",
-    "a": "Lo que haces se ve y vale mucho. Tu tiempo y una cuota cubren cosas distintas: tú puedes plantar árboles un domingo, y la cuota paga a los científicos que deciden cuáles y dónde para que sobrevivan, a los abogados que los defienden si alguien quiere talarlos y a los técnicos que los vigilan durante años.",
-    "tip": "Valida el voluntariado antes de nada, que es gente que se moja de verdad. El ejemplo del árbol es lo más claro que tienes: plantarlo es un día, protegerlo son años de trabajo técnico y jurídico que no se ve. Si hay apertura, cierra con naturalidad.",
-    "freq": 1,
-    "diff": 1,
-    "short": "Puedes plantar árboles un domingo. La cuota paga a quien sabe cuáles plantar y a quien los defiende cuando alguien quiere talarlos."
+    "q": "¿Y qué ha hecho WWF aquí?",
+    "a": "También trabajamos en esta comunidad, con proyectos de conservación, restauración y defensa del territorio. Por ejemplo, aquí tienes un caso concreto de tu zona. Es una muestra de que nuestro trabajo no se queda en campañas generales, sino que también actúa sobre problemas concretos del territorio.",
+    "tip": "Esta pregunta busca proximidad y algo concreto. No vuelvas a explicar qué es WWF: utiliza directamente un ejemplo de la comunidad en la que estás captando (mira la chuleta territorial de abajo). Habla con precisión sobre el papel de WWF: \"trabaja\", \"participó\", \"apoyó\", \"coordinó\", \"reclamó\" o \"recurrió\" según corresponda. No atribuyas a WWF un resultado conseguido conjuntamente por varias entidades. Si el ejemplo es histórico, no lo presentes como un proyecto actual. La idea clave es: \"WWF también trabaja aquí, sobre problemas concretos de nuestro territorio.\"",
+    "freq": 2,
+    "diff": 2,
+    "short": "También trabajamos aquí. Consulta la chuleta territorial y usa el ejemplo de tu comunidad: es parte de nuestro trabajo de conservación y defensa de la naturaleza sobre el territorio.",
+    "chuletaTerritorial": [
+      {
+        "region": "Andalucía",
+        "texto": "En Andalucía, uno de los grandes ejemplos es Doñana. Llevamos décadas trabajando por su conservación y actualmente seguimos reclamando medidas para recuperar su funcionamiento hídrico y ecológico y restaurar zonas prioritarias del entorno.",
+        "apoyo": "Además, fuimos quienes recurrimos el proyecto de dragado del Guadalquivir y el Tribunal Supremo anuló su inclusión en el Plan Hidrológico."
+      },
+      {
+        "region": "Aragón",
+        "texto": "En Aragón, llevamos al Parlamento Europeo el proyecto de Canal Roya por su posible impacto sobre los ecosistemas de alta montaña. Además, Aragón es una de las comunidades que identificamos como clave para salvar al visón europeo.",
+        "apoyo": "También hemos reclamado medidas de emergencia para el visón europeo y la restauración de los ríos y hábitats donde vive."
+      },
+      {
+        "region": "Asturias",
+        "texto": "En Asturias, tuvimos un papel muy activo en la protección de El Cachucho. En 2011 fue declarado la primera Área Marina Protegida de España y además se incorporó a la Red Natura 2000.",
+        "apoyo": "También trabajamos en el ámbito de la conservación del lobo y la convivencia con la ganadería."
+      },
+      {
+        "region": "Baleares",
+        "texto": "En Mallorca, participamos en RestaurAlcúdia, un proyecto iniciado en 2023 y finalizado en 2026 para restaurar los humedales de Maristany y Estany des Ponts, mejorar su estado ecológico y reducir el riesgo de inundaciones.",
+        "apoyo": "Antes de ese proyecto, habíamos elaborado el primer inventario de humedales de Baleares, con 358 humedales identificados, y reclamamos medidas para protegerlos."
+      },
+      {
+        "region": "Canarias",
+        "texto": "En Canarias, llevamos décadas trabajando en la conservación del Parque Natural del Archipiélago Chinijo. Nuestra oficina en Canarias, activa desde 1998, ha mantenido acciones de restauración, seguimiento y conservación del espacio con más de 2.000 voluntarios.",
+        "apoyo": "También desarrollamos proyectos de ciencia ciudadana para conocer amenazas sobre la fauna marina y terrestre de Canarias."
+      },
+      {
+        "region": "Cantabria",
+        "texto": "En Cantabria, trabajamos especialmente en el conflicto entre conservación del lobo y ganadería. Reclamamos medidas de prevención como mastines y vallados y compensaciones rápidas y justas cuando se producen daños.",
+        "apoyo": "Hemos criticado que se recurra al control letal sin priorizar antes las medidas de prevención y coexistencia."
+      },
+      {
+        "region": "Castilla-La Mancha",
+        "texto": "En Castilla-La Mancha, hemos participado en la recuperación del lince ibérico y coordinamos el proyecto LIFE Iberconejo, desarrollado hasta 2024, trabajando con agricultores, cazadores, científicos y administraciones para mejorar las poblaciones de conejo y reducir sus daños sobre la agricultura.",
+        "apoyo": "También seguimos reclamando medidas de conservación para especies como el lobo en Castilla-La Mancha."
+      },
+      {
+        "region": "Castilla y León",
+        "texto": "En Castilla y León está uno de nuestros proyectos más emblemáticos: el Refugio de Rapaces de Montejo de la Vega, en Segovia. En 2025 cumplió 50 años y seguimos desarrollando allí acciones de conservación y restauración.",
+        "apoyo": "También estamos reclamando medidas urgentes para conservar el visón europeo, presente en las provincias de Burgos y Soria."
+      },
+      {
+        "region": "Cataluña",
+        "texto": "En Cataluña, uno de nuestros grandes focos de trabajo es el Delta del Ebro. Llevamos años reclamando una gestión del agua que garantice los caudales y sedimentos necesarios para conservar el delta frente a la presión ambiental y al cambio climático.",
+        "apoyo": "También hemos trabajado en la conservación de especies y hábitats marinos y en la propuesta de espacios de la costa catalana para su protección."
+      },
+      {
+        "region": "Comunitat Valenciana",
+        "texto": "En la Comunidad Valenciana, desarrollamos en Yátova y Dos Aguas un proyecto de restauración para crear un paisaje en mosaico que ayudara a prevenir la propagación de grandes incendios. El proyecto tenía como objetivo restaurar 125 hectáreas y combinar bosques, pastos y usos ganaderos extensivos.",
+        "apoyo": "Es un ejemplo de cómo la prevención de incendios puede integrarse en la propia gestión del territorio."
+      },
+      {
+        "region": "Extremadura",
+        "texto": "En Extremadura, participamos en la recuperación del lince ibérico a través del proyecto LIFE+ Iberlince. En el valle de Matachel se produjeron en 2014 los primeros nacimientos en libertad de lince ibérico fuera de Andalucía dentro de este proceso de reintroducción.",
+        "apoyo": "El lince volvió a Extremadura tras décadas de ausencia gracias a este proceso de reintroducción."
+      },
+      {
+        "region": "Galicia",
+        "texto": "En Galicia, apoyamos la creación de la Reserva Pesquera de Os Miñarzos, en A Coruña, un proyecto pionero de pesca sostenible y gestión participativa en el que colaboraron pescadores, científicos y administraciones.",
+        "apoyo": "En 2024, también participamos junto a otras organizaciones ecologistas en la respuesta al vertido de pellets que afectó a las costas gallegas y del Cantábrico."
+      },
+      {
+        "region": "Comunidad de Madrid",
+        "texto": "En Madrid, seguimos trabajando por la conservación de especies como el lobo y por la restauración de espacios naturales. En 2025 participamos en una manifestación en Madrid, junto a más de un centenar de organizaciones, para reclamar la protección del lobo ibérico y su coexistencia con la ganadería.",
+        "apoyo": "También reclamamos medidas de prevención para reducir los daños al ganado, como vallados y mastines."
+      },
+      {
+        "region": "Región de Murcia",
+        "texto": "En Murcia, llevamos años trabajando por la recuperación del Mar Menor. Hemos investigado y denunciado problemas como el regadío ilegal y la contaminación y reclamamos medidas para reducir la entrada de nutrientes y recuperar el ecosistema.",
+        "apoyo": "Trabajamos conjuntamente con ANSE en la denuncia de los impactos de la agricultura intensiva sobre la laguna."
+      },
+      {
+        "region": "Navarra",
+        "texto": "En Navarra, trabajamos por la conservación del visón europeo, una especie en situación crítica en España. Navarra es uno de los núcleos clave de la población española, y reclamamos medidas urgentes para evitar su extinción y recuperar la especie.",
+        "apoyo": "Navarra también ha participado en proyectos específicos como LIFE Territorio Visón, dedicado a restaurar los hábitats fluviales de los ríos Arga y Aragón."
+      },
+      {
+        "region": "País Vasco",
+        "texto": "En el País Vasco, trabajamos para evitar la desaparición del visón europeo y reclamamos medidas para proteger sus poblaciones y sus hábitats, dentro del plan de emergencia que proponemos para la especie.",
+        "apoyo": "El País Vasco forma parte de las comunidades que consideramos prioritarias para la recuperación de la especie."
+      },
+      {
+        "region": "La Rioja",
+        "texto": "En La Rioja, trabajamos por la conservación del visón europeo, una especie de la que España conserva una de las últimas poblaciones. Reclamamos actuaciones urgentes sobre su hábitat y sobre la expansión del visón americano.",
+        "apoyo": "La Rioja participó también en el proyecto LIFE Lutreola Spain, dentro del cual se consiguió erradicar el visón americano en determinados tramos de la región, lo que permitió impulsar la recuperación del visón europeo."
+      }
+    ]
   },
   {
     "id": "wwf19",
@@ -4353,8 +4459,17 @@ DATA.forEach(function(obj) {
   obj.a     = interpolate(obj.a);
   obj.short = interpolate(obj.short);
   if (obj.tip) obj.tip = interpolate(obj.tip);
+  var terrTexto = '';
+  if (obj.chuletaTerritorial) {
+    obj.chuletaTerritorial.forEach(function(r) {
+      r.region = interpolate(r.region);
+      r.texto  = interpolate(r.texto);
+      if (r.apoyo) r.apoyo = interpolate(r.apoyo);
+      terrTexto += ' ' + r.region + ' ' + r.texto + ' ' + (r.apoyo || '');
+    });
+  }
   // Índice de búsqueda precalculado: se normaliza una vez al cargar, no en cada pulsación
-  obj._buscar = normalizar(obj.q + ' ' + obj.a + ' ' + obj.short + ' ' + (obj.tip || ''));
+  obj._buscar = normalizar(obj.q + ' ' + obj.a + ' ' + obj.short + ' ' + (obj.tip || '') + terrTexto);
 });
 
 // --- Catálogos de ONGs y categorías ---
@@ -4679,6 +4794,23 @@ function buildCardHtml(obj) {
   html += '<div class="ans-txt ans-short" style="display:none">' + esc(hasShort ? obj.short : obj.a) + '</div>';
   if (hasShort) { html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>'; }
   if (obj.tip)  { html += '<div class="ans-tip"><div class="ans-tip-lbl">💡 Consejo de captación</div>' + esc(obj.tip) + '</div>'; }
+  if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
+    html += '<div class="ans-terr">';
+    html += '<div class="ans-terr-lbl">🗺️ Chuleta territorial</div>';
+    html += '<select class="ans-terr-select" data-id="' + obj.id + '">';
+    html += '<option value="">Elige tu comunidad…</option>';
+    obj.chuletaTerritorial.forEach(function(r, i) {
+      html += '<option value="' + i + '">' + esc(r.region) + '</option>';
+    });
+    html += '</select>';
+    obj.chuletaTerritorial.forEach(function(r, i) {
+      html += '<div class="ans-terr-item" data-terr-id="' + obj.id + '" data-idx="' + i + '" style="display:none">';
+      html += '<div class="ans-terr-txt">' + esc(r.texto) + '</div>';
+      if (r.apoyo) html += '<div class="ans-terr-apoyo">' + esc(r.apoyo) + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
   html += '</div></div>'; // ans-wrap, ocard-body
   html += '</div>';       // ocard
 
@@ -4725,6 +4857,22 @@ function render(rebuildFilters) {
       var fullEl  = wrap.querySelector('.ans-full');
       if (mode === 'short') { shortEl.style.display = ''; if (fullEl) fullEl.style.display = 'none'; }
       else                  { shortEl.style.display = 'none'; if (fullEl) fullEl.style.display = ''; }
+    });
+  });
+
+  // Chuleta territorial: selector de comunidad
+  zone.querySelectorAll('.ans-terr-select').forEach(function(sel) {
+    sel.addEventListener('click', function(e) { e.stopPropagation(); });
+    sel.addEventListener('change', function(e) {
+      e.stopPropagation();
+      var id   = this.getAttribute('data-id');
+      var idx  = this.value;
+      var card = el('oc-' + id);
+      card.querySelectorAll('.ans-terr-item').forEach(function(it) { it.style.display = 'none'; });
+      if (idx !== '') {
+        var item = card.querySelector('.ans-terr-item[data-idx="' + idx + '"]');
+        if (item) item.style.display = '';
+      }
     });
   });
 
