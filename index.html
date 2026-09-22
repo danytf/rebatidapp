@@ -586,6 +586,15 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   display:inline-flex;align-items:center;justify-content:center;font-family:inherit;
 }
 .lc-fav.on{color:var(--brand)}
+
+/* === AYUDA === */
+#ayuda{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.help-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s-4);max-width:640px}
+.help-item{display:flex;gap:.85rem;align-items:flex-start}
+.help-icon{font-size:1.3rem;line-height:1.4;flex-shrink:0;width:1.6rem;text-align:center}
+.help-title{font-weight:700;color:var(--ink);margin-bottom:.15rem}
+.help-desc{color:var(--ink-3);font-size:var(--t-sm);line-height:1.55}
+
 @keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 .nr-hdr{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);padding:.75rem var(--s-4);padding-top:max(.75rem,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
 .nr-hdr-left{display:flex;align-items:center;gap:.45rem}
@@ -670,6 +679,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
         <button class="ibtn ibtn--labeled" id="ensayobtn" role="menuitem" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
         <button class="ibtn ibtn--labeled" id="fab-nueva" role="menuitem" aria-label="Añadir rebatida">➕<span class="ibtn-lbl">Añadir</span></button>
         <button class="ibtn ibtn--labeled" id="fab-modificar" role="menuitem" aria-label="Sugerir cambio en una ficha">✏️<span class="ibtn-lbl">Modificar</span></button>
+        <button class="ibtn ibtn--labeled" id="fab-ayuda" role="menuitem" aria-label="Cómo usar la app">❓<span class="ibtn-lbl">Ayuda</span></button>
       </div>
     </div>
   </div>
@@ -5433,6 +5443,17 @@ function closeLectura() {
   releaseTrap();
 }
 
+function showAyuda() {
+  var ay = el('ayuda');
+  ay.style.display = 'flex';
+  trapFocus(ay, closeAyuda);
+}
+
+function closeAyuda() {
+  el('ayuda').style.display = 'none';
+  releaseTrap();
+}
+
 function renderLectura(obj) {
   var isFav = !!favs[obj.id];
   var html  = '';
@@ -5610,6 +5631,8 @@ window.addEventListener('DOMContentLoaded', function() {
   el('sc-exit-btn').addEventListener('click', closeSugerirCambio);
   el('sc-send-btn').addEventListener('click', enviarSugerenciaCambio);
   el('lc-exit-btn').addEventListener('click', closeLectura);
+  el('fab-ayuda').addEventListener('click', showAyuda);
+  el('ayuda-exit-btn').addEventListener('click', closeAyuda);
 
   // Menú desplegable de la cabecera (Tema / Ensayo / Añadir / Modificar)
   var hdrMenuBtn = el('hdr-menu-btn');
@@ -5760,6 +5783,30 @@ window.addEventListener('DOMContentLoaded', function() {
     <button class="ibtn fc-exit" id="lc-exit-btn" aria-label="Cerrar">✕ Cerrar</button>
   </div>
   <div class="nr-body lc-body" id="lc-inner"></div>
+</div>
+
+<div id="ayuda" role="dialog" aria-modal="true" aria-label="Cómo usar la app">
+  <div class="nr-hdr">
+    <div class="nr-hdr-left">
+      <span class="nr-hdr-icon">❓</span>
+      <span class="nr-hdr-title">Cómo usar la app</span>
+    </div>
+    <button class="ibtn fc-exit" id="ayuda-exit-btn" aria-label="Cerrar">✕ Cerrar</button>
+  </div>
+  <div class="nr-body">
+    <ul class="help-list">
+      <li class="help-item"><span class="help-icon">🔍</span><div><div class="help-title">Buscador</div><div class="help-desc">Busca por palabra clave en preguntas y respuestas.</div></div></li>
+      <li class="help-item"><span class="help-icon">🏢</span><div><div class="help-title">Entidad</div><div class="help-desc">Filtra las fichas por ONG (en el móvil con el botón "Entidad", en escritorio con la barra lateral).</div></div></li>
+      <li class="help-item"><span class="help-icon">🗂️</span><div><div class="help-title">Categorías</div><div class="help-desc">Toca el encabezado de cada bloque para desplegarlo o plegarlo.</div></div></li>
+      <li class="help-item"><span class="help-icon">⚡</span><div><div class="help-title">Respuesta rápida / completa</div><div class="help-desc">Cada ficha se abre mostrando la respuesta rápida por defecto; toca "Ver respuesta completa" si necesitas el desarrollo entero.</div></div></li>
+      <li class="help-item"><span class="help-icon">💡</span><div><div class="help-title">Consejo de captación</div><div class="help-desc">Dentro de cada ficha, un consejo práctico sobre cómo plantear la respuesta en la conversación; está plegado por defecto, toca para desplegarlo.</div></div></li>
+      <li class="help-item"><span class="help-icon">⛶</span><div><div class="help-title">Modo lectura</div><div class="help-desc">Abre una ficha a pantalla completa, ideal para leerla tranquilo antes de hablar con alguien.</div></div></li>
+      <li class="help-item"><span class="help-icon">☆</span><div><div class="help-title">Favoritos</div><div class="help-desc">Marca las fichas que más uses para tenerlas siempre a mano.</div></div></li>
+      <li class="help-item"><span class="help-icon">🎯</span><div><div class="help-title">Modo ensayo</div><div class="help-desc">Practica sin ver la respuesta y comprueba tu progreso entre partidas.</div></div></li>
+      <li class="help-item"><span class="help-icon">➕</span><div><div class="help-title">Añadir / Modificar</div><div class="help-desc">Propón una objeción nueva o un cambio sobre una ficha existente; se manda por email a formación.</div></div></li>
+      <li class="help-item"><span class="help-icon">☀️</span><div><div class="help-title">Tema</div><div class="help-desc">Cambia entre claro y oscuro.</div></div></li>
+    </ul>
+  </div>
 </div>
 
 <div id="toast" role="status" aria-live="polite"></div>
