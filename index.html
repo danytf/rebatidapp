@@ -150,11 +150,21 @@ body.light::before{
 .ibtn:active{transform:translateY(0) scale(.94)}
 .ibtn--labeled{flex-direction:column;gap:2px;width:auto;min-width:44px;height:auto;min-height:44px;padding:.3rem .55rem;font-size:var(--t-md)}
 .ibtn--labeled .ibtn-lbl{font-size:.58rem;font-weight:700;letter-spacing:.03em;line-height:1;color:var(--ink-3);transition:color .18s;white-space:nowrap}
-@media(max-width:480px){
-  .ibtn--labeled{padding:.3rem .4rem}
-  .ibtn--labeled .ibtn-lbl{font-size:.52rem;letter-spacing:.01em}
-  .hdr-actions{gap:.15rem!important;padding:.3rem .3rem!important}
+.hdr-actions{position:relative}
+.hdr-menu{
+  display:none;flex-direction:column;gap:.15rem;
+  position:absolute;top:calc(100% + .4rem);right:0;
+  min-width:170px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-lg);box-shadow:var(--sh-3);padding:.4rem;z-index:150;
 }
+.hdr-menu.open{display:flex}
+.hdr-menu .ibtn--labeled{
+  flex-direction:row;width:100%;justify-content:flex-start;gap:.65rem;
+  min-height:auto;padding:.6rem .7rem;background:transparent;border:none;border-radius:var(--r-md);
+}
+.hdr-menu .ibtn--labeled .ibtn-lbl{font-size:var(--t-sm);font-weight:600;letter-spacing:0}
+.hdr-menu .ibtn--labeled:hover{background:var(--surface-hi)}
+#hdr-menu-btn[aria-expanded="true"]{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft)}
 .ibtn--labeled:hover .ibtn-lbl{color:var(--brand)}
 
 /* ============================================
@@ -657,11 +667,14 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
       <div class="sub">Banco de Objeciones Wesser</div>
       <div class="credit">Departamento de Formación</div>
     </div>
-    <div class="hdr-actions" style="display:flex;align-items:center;gap:.35rem;background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:.3rem .4rem">
-      <button class="ibtn ibtn--labeled" id="thbtn" aria-label="Cambiar tema claro/oscuro" aria-pressed="true"><span id="thbtn-icon">☀️</span><span class="ibtn-lbl">Tema</span></button>
-      <button class="ibtn ibtn--labeled" id="ensayobtn" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
-      <button class="ibtn ibtn--labeled" id="fab-nueva" aria-label="Añadir rebatida">➕<span class="ibtn-lbl">Añadir</span></button>
-      <button class="ibtn ibtn--labeled" id="fab-modificar" aria-label="Sugerir cambio en una ficha">✏️<span class="ibtn-lbl">Modificar</span></button>
+    <div class="hdr-actions">
+      <button class="ibtn" id="hdr-menu-btn" aria-label="Más opciones" aria-haspopup="true" aria-expanded="false" aria-controls="hdr-menu">⋮</button>
+      <div class="hdr-menu" id="hdr-menu" role="menu">
+        <button class="ibtn ibtn--labeled" id="thbtn" role="menuitem" aria-label="Cambiar tema claro/oscuro" aria-pressed="true"><span id="thbtn-icon">☀️</span><span class="ibtn-lbl">Tema</span></button>
+        <button class="ibtn ibtn--labeled" id="ensayobtn" role="menuitem" aria-label="Modo ensayo">🎯<span class="ibtn-lbl">Ensayo</span></button>
+        <button class="ibtn ibtn--labeled" id="fab-nueva" role="menuitem" aria-label="Añadir rebatida">➕<span class="ibtn-lbl">Añadir</span></button>
+        <button class="ibtn ibtn--labeled" id="fab-modificar" role="menuitem" aria-label="Sugerir cambio en una ficha">✏️<span class="ibtn-lbl">Modificar</span></button>
+      </div>
     </div>
   </div>
 </div>
@@ -5596,6 +5609,28 @@ window.addEventListener('DOMContentLoaded', function() {
   el('sc-exit-btn').addEventListener('click', closeSugerirCambio);
   el('sc-send-btn').addEventListener('click', enviarSugerenciaCambio);
   el('lc-exit-btn').addEventListener('click', closeLectura);
+
+  // Menú desplegable de la cabecera (Tema / Ensayo / Añadir / Modificar)
+  var hdrMenuBtn = el('hdr-menu-btn');
+  var hdrMenu    = el('hdr-menu');
+  function closeHdrMenu() {
+    hdrMenu.classList.remove('open');
+    hdrMenuBtn.setAttribute('aria-expanded', 'false');
+  }
+  hdrMenuBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var open = hdrMenu.classList.toggle('open');
+    hdrMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  hdrMenu.querySelectorAll('button').forEach(function(btn) {
+    btn.addEventListener('click', closeHdrMenu);
+  });
+  document.addEventListener('click', function(e) {
+    if (hdrMenu.classList.contains('open') && !hdrMenu.contains(e.target) && e.target !== hdrMenuBtn) closeHdrMenu();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && hdrMenu.classList.contains('open')) closeHdrMenu();
+  });
 
   // Toggle panel de ONGs (móvil)
   var _otb = document.getElementById('ong-toggle-btn');
