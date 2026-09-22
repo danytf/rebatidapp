@@ -317,7 +317,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ans-tbtn:hover{border-color:var(--ink-3);color:var(--ink-2)}
 .ans-tbtn.active{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft)}
 
-.ans-label{display:none}
+.ans-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.3rem;display:block}
 .ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em;white-space:pre-line}
 .ans-txt.ans-short{
   font-size:var(--t-lg);font-weight:600;color:var(--ink);
@@ -4886,9 +4886,16 @@ function buildCardHtml(obj) {
           + '<button class="ans-tbtn" data-mode="full"  data-id="' + obj.id + '" aria-pressed="false">📖 Completa</button>'
           + '</div>';
   }
-  html += '<div class="ans-label">💬 Respuesta argumentada</div>';
+  html += '<div class="ans-block ans-block-short">';
+  html += '<div class="ans-label">' + (hasShort ? '⚡ Respuesta rápida' : '💬 Respuesta') + '</div>';
   html += '<div class="ans-txt ans-short">' + esc(hasShort ? obj.short : obj.a) + '</div>';
-  if (hasShort) { html += '<div class="ans-txt ans-full" style="display:none">' + esc(obj.a) + '</div>'; }
+  html += '</div>';
+  if (hasShort) {
+    html += '<div class="ans-block ans-block-full" style="display:none">';
+    html += '<div class="ans-label">📖 Respuesta completa</div>';
+    html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>';
+    html += '</div>';
+  }
   if (obj.tip)  { html += '<details class="ans-tip"><summary class="ans-tip-lbl">💡 Consejo de captación</summary><div class="ans-tip-txt">' + esc(obj.tip) + '</div></details>'; }
   if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
     html += '<div class="ans-terr">';
@@ -4954,10 +4961,10 @@ function render(rebuildFilters) {
       });
       this.classList.add('active');
       this.setAttribute('aria-pressed', 'true');
-      var shortEl = wrap.querySelector('.ans-short');
-      var fullEl  = wrap.querySelector('.ans-full');
-      if (mode === 'short') { shortEl.style.display = ''; if (fullEl) fullEl.style.display = 'none'; }
-      else                  { shortEl.style.display = 'none'; if (fullEl) fullEl.style.display = ''; }
+      var shortBlock = wrap.querySelector('.ans-block-short');
+      var fullBlock  = wrap.querySelector('.ans-block-full');
+      if (mode === 'short') { shortBlock.style.display = ''; if (fullBlock) fullBlock.style.display = 'none'; }
+      else                  { shortBlock.style.display = 'none'; if (fullBlock) fullBlock.style.display = ''; }
     });
   });
 
