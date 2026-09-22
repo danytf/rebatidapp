@@ -304,18 +304,14 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 @keyframes expand{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 .ans-wrap{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
-.ans-toggle{display:flex;gap:var(--s-2)}
-.ans-tbtn{
-  /* min-height para poder pulsarlos con el pulgar en la calle: con el relleno
-     solo se quedaban en 27px de alto */
-  display:inline-flex;align-items:center;justify-content:center;gap:.2rem;min-height:40px;
-  background:var(--surface-2);border:1.5px solid var(--line-2);color:var(--ink-3);
-  border-radius:var(--r-sm);padding:.32rem .9rem;
-  font-size:var(--t-xs);font-weight:700;cursor:pointer;font-family:inherit;
-  letter-spacing:.01em;transition:all .16s var(--ease);
+.ans-link-toggle{
+  /* min-height para poder pulsarlo con el pulgar en la calle */
+  align-self:flex-start;display:inline-flex;align-items:center;gap:.3rem;min-height:44px;
+  background:none;border:none;color:var(--brand);font-weight:700;font-size:var(--t-sm);
+  padding:.4rem 0;cursor:pointer;font-family:inherit;letter-spacing:-.005em;
 }
-.ans-tbtn:hover{border-color:var(--ink-3);color:var(--ink-2)}
-.ans-tbtn.active{border-color:var(--brand-line);color:var(--brand);background:var(--brand-soft)}
+.ans-link-toggle:hover{text-decoration:underline}
+.ans-link-arr{font-size:var(--t-xs)}
 
 .ans-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.3rem;display:block}
 .ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em;white-space:pre-line}
@@ -4880,12 +4876,6 @@ function buildCardHtml(obj) {
   // Cuerpo — respuesta y consejo (ocultos hasta expandir)
   html += '<div class="ocard-body" id="ob-' + obj.id + '">';
   html += '<div class="ans-wrap">';
-  if (hasShort) {
-    html += '<div class="ans-toggle">'
-          + '<button class="ans-tbtn active" data-mode="short" data-id="' + obj.id + '" aria-pressed="true">⚡ Rápida</button>'
-          + '<button class="ans-tbtn" data-mode="full"  data-id="' + obj.id + '" aria-pressed="false">📖 Completa</button>'
-          + '</div>';
-  }
   html += '<div class="ans-block ans-block-short">';
   html += '<div class="ans-label">' + (hasShort ? '⚡ Respuesta rápida' : '💬 Respuesta') + '</div>';
   html += '<div class="ans-txt ans-short">' + esc(hasShort ? obj.short : obj.a) + '</div>';
@@ -4895,6 +4885,7 @@ function buildCardHtml(obj) {
     html += '<div class="ans-label">📖 Respuesta completa</div>';
     html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>';
     html += '</div>';
+    html += '<button class="ans-link-toggle" data-id="' + obj.id + '" aria-expanded="false">Ver respuesta completa <span class="ans-link-arr">→</span></button>';
   }
   if (obj.tip)  { html += '<details class="ans-tip"><summary class="ans-tip-lbl">💡 Consejo de captación</summary><div class="ans-tip-txt">' + esc(obj.tip) + '</div></details>'; }
   if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
@@ -4949,22 +4940,25 @@ function render(rebuildFilters) {
   }
 
   // Toggle respuesta rápida / completa
-  zone.querySelectorAll('.ans-tbtn').forEach(function(btn) {
+  zone.querySelectorAll('.ans-link-toggle').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      var mode = this.getAttribute('data-mode');
-      var id   = this.getAttribute('data-id');
-      var wrap = el('oc-' + id).querySelector('.ans-wrap');
-      wrap.querySelectorAll('.ans-tbtn').forEach(function(b) {
-        b.classList.remove('active');
-        b.setAttribute('aria-pressed', 'false');
-      });
-      this.classList.add('active');
-      this.setAttribute('aria-pressed', 'true');
+      var id         = this.getAttribute('data-id');
+      var wrap       = el('oc-' + id).querySelector('.ans-wrap');
       var shortBlock = wrap.querySelector('.ans-block-short');
       var fullBlock  = wrap.querySelector('.ans-block-full');
-      if (mode === 'short') { shortBlock.style.display = ''; if (fullBlock) fullBlock.style.display = 'none'; }
-      else                  { shortBlock.style.display = 'none'; if (fullBlock) fullBlock.style.display = ''; }
+      var showingFull = fullBlock.style.display !== 'none';
+      if (showingFull) {
+        fullBlock.style.display = 'none';
+        shortBlock.style.display = '';
+        this.innerHTML = 'Ver respuesta completa <span class="ans-link-arr">→</span>';
+        this.setAttribute('aria-expanded', 'false');
+      } else {
+        shortBlock.style.display = 'none';
+        fullBlock.style.display = '';
+        this.innerHTML = 'Ver respuesta rápida <span class="ans-link-arr">↑</span>';
+        this.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 
