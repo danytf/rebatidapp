@@ -304,16 +304,17 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 @keyframes expand{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
 .ans-wrap{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
+.ans-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.15rem}
 .ans-link-toggle{
   /* min-height para poder pulsarlo con el pulgar en la calle */
-  align-self:flex-start;display:inline-flex;align-items:center;gap:.3rem;min-height:44px;
+  display:inline-flex;align-items:center;gap:.3rem;min-height:44px;flex-shrink:0;
   background:none;border:none;color:var(--ink-3);font-weight:600;font-size:var(--t-xs);
   padding:.4rem 0;cursor:pointer;font-family:inherit;letter-spacing:-.005em;
 }
 .ans-link-toggle:hover{color:var(--ink-2);text-decoration:underline}
 .ans-link-arr{font-size:var(--t-xs)}
 
-.ans-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:.15rem;display:block}
+.ans-label{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);margin-bottom:0;display:block}
 .ans-txt{font-size:var(--t-base);color:var(--ink-2);line-height:1.75;letter-spacing:-.006em;white-space:pre-line}
 .ans-txt.ans-short{
   font-size:var(--t-xl);font-weight:700;color:var(--ink);
@@ -4887,15 +4888,18 @@ function buildCardHtml(obj) {
   html += '<div class="ocard-body" id="ob-' + obj.id + '">';
   html += '<div class="ans-wrap">';
   html += '<div class="ans-block ans-block-short">';
-  html += '<div class="ans-label">' + (hasShort ? '⚡ Respuesta rápida' : '💬 Respuesta') + '</div>';
+  html += '<div class="ans-head"><div class="ans-label">' + (hasShort ? '⚡ Respuesta rápida' : '💬 Respuesta') + '</div>';
+  if (hasShort) { html += '<button class="ans-link-toggle" data-id="' + obj.id + '" data-target="full">Ver completa <span class="ans-link-arr">→</span></button>'; }
+  html += '</div>';
   html += '<div class="ans-txt ans-short">' + esc(hasShort ? obj.short : obj.a) + '</div>';
   html += '</div>';
   if (hasShort) {
     html += '<div class="ans-block ans-block-full" style="display:none">';
-    html += '<div class="ans-label">📖 Respuesta completa</div>';
+    html += '<div class="ans-head"><div class="ans-label">📖 Respuesta completa</div>';
+    html += '<button class="ans-link-toggle" data-id="' + obj.id + '" data-target="short">Ver rápida <span class="ans-link-arr">↑</span></button>';
+    html += '</div>';
     html += '<div class="ans-txt ans-full">' + esc(obj.a) + '</div>';
     html += '</div>';
-    html += '<button class="ans-link-toggle" data-id="' + obj.id + '" aria-expanded="false">Ver respuesta completa <span class="ans-link-arr">→</span></button>';
   }
   if (obj.tip)  { html += '<details class="ans-tip"><summary class="ans-tip-lbl">💡 Consejo de captación</summary><div class="ans-tip-txt">' + esc(obj.tip) + '</div></details>'; }
   if (obj.chuletaTerritorial && obj.chuletaTerritorial.length) {
@@ -4954,21 +4958,12 @@ function render(rebuildFilters) {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
       var id         = this.getAttribute('data-id');
+      var target     = this.getAttribute('data-target');
       var wrap       = el('oc-' + id).querySelector('.ans-wrap');
       var shortBlock = wrap.querySelector('.ans-block-short');
       var fullBlock  = wrap.querySelector('.ans-block-full');
-      var showingFull = fullBlock.style.display !== 'none';
-      if (showingFull) {
-        fullBlock.style.display = 'none';
-        shortBlock.style.display = '';
-        this.innerHTML = 'Ver respuesta completa <span class="ans-link-arr">→</span>';
-        this.setAttribute('aria-expanded', 'false');
-      } else {
-        shortBlock.style.display = 'none';
-        fullBlock.style.display = '';
-        this.innerHTML = 'Ver respuesta rápida <span class="ans-link-arr">↑</span>';
-        this.setAttribute('aria-expanded', 'true');
-      }
+      if (target === 'full') { shortBlock.style.display = 'none'; fullBlock.style.display = ''; }
+      else                   { fullBlock.style.display = 'none'; shortBlock.style.display = ''; }
     });
   });
 
