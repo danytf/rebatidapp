@@ -303,7 +303,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ocard.open .ocard-body{display:block;animation:expand .26s var(--ease-out)}
 @keyframes expand{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
-.ans-wrap{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
+.ans-wrap{padding:var(--s-4);display:flex;flex-direction:column;gap:var(--s-4)}
 .ans-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.15rem}
 .ans-link-toggle{
   /* min-height para poder pulsarlo con el pulgar en la calle */
@@ -322,7 +322,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   background:var(--brand-soft);
   border-left:3px solid var(--brand);
   border-radius:0 var(--r-sm) var(--r-sm) 0;
-  padding:var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  padding:var(--s-4) var(--s-4) var(--s-4) var(--s-5);
 }
 
 .ans-tip{
@@ -330,16 +330,16 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   background:var(--brand-soft);
   border:1px solid var(--brand-line);
   border-radius:var(--r-md);
-  padding:.7rem .85rem .7rem 1rem;
-  font-size:var(--t-sm);color:var(--ink);line-height:1.65;
+  padding:var(--s-4) var(--s-4) var(--s-4) var(--s-5);
+  font-size:var(--t-base);color:var(--ink);line-height:1.75;
 }
 .ans-tip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);border-radius:3px 0 0 3px}
 .ans-tip-lbl{font-size:var(--t-2xs);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--brand);display:flex;align-items:center;gap:.25rem;cursor:pointer;list-style:none}
 .ans-tip-lbl::-webkit-details-marker{display:none}
 .ans-tip-lbl::before{content:'▸';display:inline-block;font-size:var(--t-xs)}
-.ans-tip[open] .ans-tip-lbl{margin-bottom:.25rem}
+.ans-tip[open] .ans-tip-lbl{margin-bottom:.5rem}
 .ans-tip[open] .ans-tip-lbl::before{content:'▾'}
-.ans-tip-txt{line-height:1.65;white-space:pre-line}
+.ans-tip-txt{line-height:1.75;white-space:pre-line}
 
 .ans-terr{
   position:relative;
@@ -707,7 +707,7 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 <div class="rzone" id="results" aria-live="polite"></div>
 </div></div>
 
-<!-- VARS: última revisión 2025 — verificar fuentes y actualizar semestralmente -->
+<!-- VARS: Última revisión de datos: septiembre 2026 -->
 <script type="application/json" id="obj-vars">
 {
   "{{aecc_personas}}": "177.577",
