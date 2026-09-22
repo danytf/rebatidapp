@@ -590,6 +590,12 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 
 /* === AYUDA === */
 #ayuda{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
+.help-intro{background:var(--brand-soft);border:1px solid var(--brand-line);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-5);max-width:640px}
+.help-intro-title{font-weight:800;color:var(--ink);margin-bottom:.4rem;font-size:var(--t-md)}
+.help-intro-flow{color:var(--ink-2);font-size:var(--t-sm);line-height:1.7}
+.help-intro-arr{color:var(--brand);font-weight:700;margin:0 .1rem}
+.help-group-title{font-size:var(--t-2xs);font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);margin:var(--s-5) 0 var(--s-3)}
+.help-group-title:first-of-type{margin-top:0}
 .help-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s-4);max-width:640px}
 .help-item{display:flex;gap:.85rem;align-items:flex-start}
 .help-icon{font-size:1.3rem;line-height:1.4;flex-shrink:0;width:1.6rem;text-align:center}
@@ -5789,16 +5795,24 @@ window.addEventListener('DOMContentLoaded', function() {
     <button class="ibtn fc-exit" id="ayuda-exit-btn" aria-label="Cerrar">✕ Cerrar</button>
   </div>
   <div class="nr-body">
+    <div class="help-intro">
+      <div class="help-intro-title">Cómo usar RebatidApp en 10 segundos</div>
+      <div class="help-intro-flow">Busca la objeción <span class="help-intro-arr">→</span> abre la ficha <span class="help-intro-arr">→</span> usa la respuesta rápida <span class="help-intro-arr">→</span> amplía si lo necesitas</div>
+    </div>
+    <div class="help-group-title">Uso básico</div>
     <ul class="help-list">
       <li class="help-item"><span class="help-icon">🔍</span><div><div class="help-title">Buscador</div><div class="help-desc">Busca por palabra clave en preguntas y respuestas.</div></div></li>
       <li class="help-item"><span class="help-icon">🏢</span><div><div class="help-title">Entidad</div><div class="help-desc">Filtra las fichas por ONG (en el móvil con el botón "Entidad", en escritorio con la barra lateral).</div></div></li>
       <li class="help-item"><span class="help-icon">🗂️</span><div><div class="help-title">Categorías</div><div class="help-desc">Toca el encabezado de cada bloque para desplegarlo o plegarlo.</div></div></li>
-      <li class="help-item"><span class="help-icon">⚡</span><div><div class="help-title">Respuesta rápida / completa</div><div class="help-desc">Cada ficha se abre mostrando la respuesta rápida por defecto; toca "Ver respuesta completa" si necesitas el desarrollo entero.</div></div></li>
-      <li class="help-item"><span class="help-icon">💡</span><div><div class="help-title">Consejo de captación</div><div class="help-desc">Dentro de cada ficha, un consejo práctico sobre cómo plantear la respuesta en la conversación; está plegado por defecto, toca para desplegarlo.</div></div></li>
-      <li class="help-item"><span class="help-icon">⛶</span><div><div class="help-title">Modo lectura</div><div class="help-desc">Abre una ficha a pantalla completa, ideal para leerla tranquilo antes de hablar con alguien.</div></div></li>
-      <li class="help-item"><span class="help-icon">☆</span><div><div class="help-title">Favoritos</div><div class="help-desc">Marca las fichas que más uses para tenerlas siempre a mano.</div></div></li>
-      <li class="help-item"><span class="help-icon">🎯</span><div><div class="help-title">Modo ensayo</div><div class="help-desc">Practica sin ver la respuesta y comprueba tu progreso entre partidas.</div></div></li>
-      <li class="help-item"><span class="help-icon">➕</span><div><div class="help-title">Añadir / Modificar</div><div class="help-desc">Propón una objeción nueva o un cambio sobre una ficha existente; se manda por email a formación.</div></div></li>
+      <li class="help-item"><span class="help-icon">⚡</span><div><div class="help-title">Respuesta rápida / completa</div><div class="help-desc">Se abre en rápida por defecto; toca "Ver completa" si necesitas el desarrollo entero.</div></div></li>
+      <li class="help-item"><span class="help-icon">💡</span><div><div class="help-title">Consejo de captación</div><div class="help-desc">Plegado por defecto, con el enfoque para plantear la respuesta en la conversación.</div></div></li>
+    </ul>
+    <div class="help-group-title">Funciones adicionales</div>
+    <ul class="help-list">
+      <li class="help-item"><span class="help-icon">⛶</span><div><div class="help-title">Modo lectura</div><div class="help-desc">Pantalla completa para leer una ficha tranquilo.</div></div></li>
+      <li class="help-item"><span class="help-icon">☆</span><div><div class="help-title">Favoritos</div><div class="help-desc">Guarda las fichas que más uses.</div></div></li>
+      <li class="help-item"><span class="help-icon">🎯</span><div><div class="help-title">Modo ensayo</div><div class="help-desc">Practica sin ver la respuesta y sigue tu progreso.</div></div></li>
+      <li class="help-item"><span class="help-icon">➕</span><div><div class="help-title">Añadir / Modificar</div><div class="help-desc">Propón una objeción nueva o un cambio, por email a formación.</div></div></li>
       <li class="help-item"><span class="help-icon">☀️</span><div><div class="help-title">Tema</div><div class="help-desc">Cambia entre claro y oscuro.</div></div></li>
     </ul>
   </div>
