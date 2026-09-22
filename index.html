@@ -4682,7 +4682,7 @@ function buildDiffDots(diff) {
   for (var i = 1; i <= 3; i++) {
     dots += '<span class="diff-dot' + (i <= diff ? ' on-' + diff : '') + '" aria-hidden="true"></span>';
   }
-  return '<div class="diff-dots" role="img" aria-label="Dificultad: ' + label + '">' + dots + '</div>';
+  return '<div class="diff-dots" role="img" aria-label="Dificultad: ' + label + '" title="Dificultad: ' + label + '">' + dots + '</div>';
 }
 
 // ============================================================
@@ -5796,7 +5796,7 @@ window.addEventListener('DOMContentLoaded', function() {
   </div>
   <div class="nr-body">
     <div class="help-intro">
-      <div class="help-intro-title">Cómo usar RebatidApp en 10 segundos</div>
+      <div class="help-intro-title">Cómo usar la aplicación en 10 segundos</div>
       <div class="help-intro-flow">Busca la objeción <span class="help-intro-arr">→</span> abre la ficha <span class="help-intro-arr">→</span> usa la respuesta rápida <span class="help-intro-arr">→</span> amplía si lo necesitas</div>
     </div>
     <div class="help-group-title">Uso básico</div>
