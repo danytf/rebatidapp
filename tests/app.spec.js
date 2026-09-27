@@ -123,15 +123,12 @@ test.describe('Filtros', () => {
 
 // 10 ────────────────────────────────────────────────────────────────────────
 test.describe('Favoritos', () => {
+  // En móvil y tablet vertical, dentro del panel "Entidad"; desde 960 px, en la barra lateral
   const filtroFavoritos = page => esEscritorio(page)
-    ? page.locator('#ongFilt .ctag-fav, #rbSidebar [data-fav]').first()
+    ? page.locator('#rbSidebar .rb-sb-btn[data-fav]')
     : page.locator('#ongFilt .ctag-fav');
 
   test('marcar, persistir al recargar, filtrar y desmarcar', async ({ page }) => {
-    // FALLO CONOCIDO: a partir de 960 px el botón "⭐ Favoritos" está dentro de
-    // los filtros de móvil, que se ocultan, y la barra lateral no lo incluye.
-    // Cuando se arregle, esta prueba avisará de que ya pasa: quitar esta línea.
-    test.fail(esEscritorio(page), 'Fallo conocido: sin filtro de Favoritos en pantallas de 960 px o más');
     await page.locator('.cat-section-hdr').first().click();
     const tarjeta = page.locator('#results .ocard').first();
     const id = (await tarjeta.getAttribute('id')).slice(3);
@@ -139,6 +136,8 @@ test.describe('Favoritos', () => {
     await estrella.click();
     await expect(estrella).toHaveAttribute('aria-pressed', 'true');
     await expect(tarjeta).not.toHaveClass(/open/); // marcar no despliega la tarjeta
+    // el contador del filtro de Favoritos se actualiza al momento
+    await expect(filtroFavoritos(page)).toContainText('Favoritos (1)');
 
     await page.reload();
     await expect(page.locator(`#oc-${id} .ocard-fav`)).toHaveAttribute('aria-pressed', 'true');
@@ -149,6 +148,7 @@ test.describe('Favoritos', () => {
     const filtro = filtroFavoritos(page);
     await expect(filtro, 'el filtro de Favoritos debe estar accesible en este tamaño').toBeVisible();
     await filtro.click();
+    await expect(filtroFavoritos(page)).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('#results .ocard')).toHaveCount(1);
     await expect(page.locator('#results-status')).toHaveText('1 favorito');
 
@@ -375,9 +375,6 @@ test.describe('Responsive', () => {
   });
 
   test('los controles principales tienen un área táctil de al menos 44 px', async ({ page }) => {
-    // FALLO CONOCIDO: las cabeceras de sección miden 40 px de alto. Cuando se
-    // arregle, esta prueba avisará de que ya pasa: quitar esta línea.
-    test.fail(true, 'Fallo conocido: las cabeceras de sección miden 40 px de alto');
     await page.locator('.cat-section-hdr').first().click();
     const medidas = await page.evaluate(() => {
       const sel = ['#hdr-menu-btn', '#results .ocard-fav', '#results .ocard-read', '#sclr-btn', '.cat-section-hdr'];

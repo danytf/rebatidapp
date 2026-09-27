@@ -704,6 +704,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
   .ibtn:not(.ibtn--labeled)::before{content:"";position:absolute;inset:-2px}
 }
 
+/* Cabeceras de sección: miden 40 px; tienen 8 px libres debajo (abiertas) o 16 px
+   entre secciones (plegadas), así que reciben 2 px invisibles arriba y abajo. */
+.cat-section-hdr{position:relative}
+.cat-section-hdr::before{content:"";position:absolute;inset:-2px 0}
+
 /* Opciones del menú: separadas solo 2 px, así que suben a 44 px de alto. */
 .hdr-menu .ibtn--labeled{min-height:44px}
 
@@ -5117,14 +5122,21 @@ function renderOngFilter(){
 function renderSidebar(){
   var sb=document.getElementById('rbSidebar');
   if(!sb)return;
-  var h='';
+  // Favoritos va primero, igual que en los filtros de móvil: a partir de 960 px
+  // esos filtros se ocultan y esta barra es la única forma de llegar a ellos.
+  var fc=favCount();
+  var h='<button class="rb-sb-btn'+(favOnly?' rb-sb-active':'')+'" data-fav="1" style="--sb-color:#e51a1a" aria-pressed="'+(favOnly?'true':'false')+'">⭐ Favoritos'+(fc?' ('+fc+')':'')+'</button>';
   ONGS.forEach(function(ong){
     var sel=ong.id===currentOng&&!favOnly;
     var emoji=ONG_EMOJI[ong.id]||'';
     h+='<button class="rb-sb-btn'+(sel?' rb-sb-active':'')+'" data-oid="'+ong.id+'" style="--sb-color:'+ong.color+'" aria-pressed="'+(sel?'true':'false')+'">'+(emoji?emoji+' ':'')+ong.label+'</button>';
   });
   sb.innerHTML=h;
-  sb.querySelectorAll('.rb-sb-btn').forEach(function(btn){
+  sb.querySelector('[data-fav]').addEventListener('click',function(){
+    favOnly=!favOnly;
+    render();restaurarFocoFiltro('#rbSidebar .rb-sb-btn[data-fav]');window.scrollTo({top:0,behavior:'smooth'});
+  });
+  sb.querySelectorAll('.rb-sb-btn[data-oid]').forEach(function(btn){
     btn.addEventListener('click',function(){
       currentOng=this.getAttribute('data-oid');
       favOnly=false;
@@ -5382,7 +5394,7 @@ function render(rebuildFilters) {
       this.textContent = on ? '★' : '☆';
       this.setAttribute('aria-pressed', on ? 'true' : 'false');
       this.setAttribute('aria-label', (on ? 'Quitar de favoritos' : 'Añadir a favoritos') + ': ' + el('oc-' + id).querySelector('.ocard-q').textContent);
-      renderOngFilter(); // actualiza el contador del botón Favoritos
+      renderOngFilter(); renderSidebar(); // actualiza el contador del botón Favoritos
       if (favOnly && !on) { // anima la salida de la tarjeta desfavoritada
         var card = el('oc-' + id);
         if (card) { card.style.transition = 'opacity .2s'; card.style.opacity = '0'; setTimeout(render, 200); }
@@ -5876,7 +5888,7 @@ function renderLectura(obj) {
     this.textContent = on ? '★' : '☆';
     this.setAttribute('aria-pressed', on ? 'true' : 'false');
     this.setAttribute('aria-label', on ? 'Quitar de favoritos' : 'Añadir a favoritos');
-    renderOngFilter();
+    renderOngFilter(); renderSidebar();
   });
 
   // Chuleta territorial: selector de comunidad (mismo comportamiento que en la tarjeta)
