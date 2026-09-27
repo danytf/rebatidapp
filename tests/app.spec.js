@@ -160,6 +160,20 @@ test.describe('Favoritos', () => {
   });
 });
 
+test.describe('Favoritos guardados de fichas que ya no existen', () => {
+  test('no cuentan en el contador ni rompen la app', async ({ page }) => {
+    await page.evaluate(() => localStorage.setItem('wob_favs', JSON.stringify({ ficha_borrada_123: true })));
+    await page.reload();
+    await expect(page.locator('#results .statsbar')).toBeVisible();
+    const filtro = esEscritorio(page) ? page.locator('#rbSidebar .rb-sb-btn[data-fav]') : page.locator('#ongFilt .ctag-fav');
+    await expect(filtro).toHaveText('⭐ Favoritos'); // sin "(1)"
+    // al marcar una ficha real, el contador pasa a 1
+    await page.locator('.cat-section-hdr').first().click();
+    await page.locator('#results .ocard-fav').first().click();
+    await expect(filtro).toHaveText('⭐ Favoritos (1)');
+  });
+});
+
 // 11 ────────────────────────────────────────────────────────────────────────
 test.describe('Estado de lectura', () => {
   test('una tarjeta abierta y cerrada queda marcada como visitada (solo en la sesión)', async ({ page }) => {

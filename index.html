@@ -5017,8 +5017,11 @@ function saveFavs() {
   try { localStorage.setItem('wob_favs', JSON.stringify(favs)); }
   catch(e) { showToast('⚠️ No se pudo guardar el favorito: almacenamiento lleno'); }
 }
+// Cuenta solo favoritos de fichas que existen: si se borra una ficha que alguien
+// tenía marcada, su id sigue en localStorage y el contador no debe incluirla
+// (el filtro de Favoritos tampoco la muestra).
 function favCount() {
-  return Object.keys(favs).filter(function(k) { return favs[k]; }).length;
+  return DATA.filter(function(obj) { return !!favs[obj.id]; }).length;
 }
 function toggleFav(id) {
   favs[id] = !favs[id];
