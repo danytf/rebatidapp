@@ -683,8 +683,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .ong-toggle-wrap{display:none}
 @media(max-width:959px){
   .ong-toggle-wrap{display:flex;gap:var(--s-2);padding:var(--s-2) var(--s-4) 0;max-width:var(--max-w);margin:0 auto}
-  #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;transition:max-height .28s var(--ease-out),padding .2s var(--ease)}
-  #ongFilt.ong-open{max-height:400px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:visible;overflow-y:auto}
+  /* Cerrado, el panel mide 0 pero sus botones seguían recibiendo foco con Tab.
+     visibility los saca del orden de tabulación; se aplica al terminar la
+     animación de cierre para que esta se vea igual. */
+  #ongFilt{max-height:0;overflow:hidden;padding-top:0;padding-bottom:0;visibility:hidden;transition:max-height .28s var(--ease-out),padding .2s var(--ease),visibility 0s linear .28s}
+  #ongFilt.ong-open{max-height:400px;padding-top:var(--s-2);padding-bottom:var(--s-2);overflow-x:visible;overflow-y:auto;visibility:visible;transition-delay:0s}
 }
 .ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
@@ -5005,6 +5008,18 @@ function clearSearch() {
   el('qinput').focus();
 }
 
+// Los botones de filtro se vuelven a crear al repintar, así que el que tenía el
+// foco desaparece y el foco saltaría al principio de la página. Se devuelve al
+// botón equivalente; si está oculto (panel de ONG cerrado en móvil), al botón
+// "Entidad" que lo abre.
+function restaurarFocoFiltro(selector) {
+  var btn = document.querySelector(selector);
+  var enPanelCerrado = btn && btn.closest('#ongFilt') && !el('ongFilt').classList.contains('ong-open');
+  if (btn && btn.offsetParent !== null && !enPanelCerrado) { btn.focus({preventScroll: true}); return; }
+  var toggle = el('ong-toggle-btn');
+  if (toggle && toggle.offsetParent !== null) toggle.focus({preventScroll: true});
+}
+
 function renderOngFilter(){
   var activeOngs = {};
   var ongCounts  = {};
@@ -5048,6 +5063,7 @@ function renderOngFilter(){
     var _otb = document.getElementById('ong-toggle-btn');
     if (_otb) _otb.setAttribute('aria-expanded', 'false');
     render();
+    restaurarFocoFiltro('#ongFilt .ctag-fav');
     window.scrollTo({top: 0, behavior: 'smooth'});
   });
 
@@ -5060,6 +5076,7 @@ function renderOngFilter(){
       var _otb = document.getElementById('ong-toggle-btn');
       if (_otb) _otb.setAttribute('aria-expanded', 'false');
       render();
+      restaurarFocoFiltro('#ongFilt .ctag[data-oid="' + currentOng + '"]');
       window.scrollTo({top: 0, behavior: 'smooth'});
     });
   });
@@ -5081,7 +5098,7 @@ function renderSidebar(){
       currentOng=this.getAttribute('data-oid');
       favOnly=false;
       try{sessionStorage.setItem('wob_ong',currentOng);}catch(e){}
-      render();window.scrollTo({top:0,behavior:'smooth'});
+      render();restaurarFocoFiltro('#rbSidebar .rb-sb-btn[data-oid="'+currentOng+'"]');window.scrollTo({top:0,behavior:'smooth'});
     });
   });
 }
@@ -5221,20 +5238,52 @@ function buildCardHtml(obj, nivel) {
   return html;
 }
 
+// ------------------------------------------------------------
+//  Anuncio de resultados para lectores de pantalla
+// ------------------------------------------------------------
+// El listado se repinta entero con cada búsqueda o filtro: si fuera una región
+// viva, el lector de pantalla leería todas las fichas cada vez. Por eso solo se
+// anuncia un resumen, en #results-status (role="status"), y con tres cuidados:
+//  - no se anuncia nada al abrir la app, solo cuando la persona cambia algo;
+//  - se espera a que deje de teclear, para no anunciar cada pausa de la búsqueda;
+//  - no se repite un mensaje idéntico (p. ej. al repintar por girar la tablet).
+var anuncioActivo  = false;
+var anuncioTimer   = null;
+var ultimoAnuncio  = '';
+
+function mensajeResultados(n) {
+  var cuantas = n + (n !== 1 ? ' objeciones' : ' objeción');
+  var busqueda = currentQ.trim() ? ' para «' + currentQ.trim() + '»' : '';
+  if (favOnly) {
+    if (!n) return currentQ.trim() ? 'Ningún favorito' + busqueda : 'Aún no tienes favoritos';
+    return n + (n !== 1 ? ' favoritos' : ' favorito') + busqueda;
+  }
+  var ong = ONGS.find(function(o) { return o.id === currentOng; });
+  var ambito = currentOng === 'all' ? ' en todas las entidades' : ' de ' + (ong ? ong.label : currentOng);
+  if (!n) return 'Sin resultados' + busqueda + ambito;
+  return cuantas + busqueda + ambito;
+}
+
+function anunciarResultados(n) {
+  var estado = el('results-status');
+  if (!estado) return;
+  var msg = mensajeResultados(n);
+  if (!anuncioActivo) { ultimoAnuncio = msg; return; } // primer pintado: silencio
+  clearTimeout(anuncioTimer);
+  anuncioTimer = setTimeout(function() {
+    if (msg === ultimoAnuncio) return;
+    ultimoAnuncio = msg;
+    estado.textContent = msg;
+  }, 600);
+}
+
 function render(rebuildFilters) {
   if (rebuildFilters !== false) { renderOngFilter(); renderSidebar(); }
 
   var filtered = filterData();
   var zone     = el('results');
 
-  // El listado se repinta entero en cada búsqueda: si fuera una región viva, el
-  // lector de pantalla lo leería completo con cada tecla. Solo se anuncia el
-  // recuento, en una región aparte que existe desde el principio.
-  var estado = el('results-status');
-  if (estado) {
-    var n = filtered.length;
-    estado.textContent = n ? n + (n !== 1 ? ' objeciones' : ' objeción') : 'Sin resultados';
-  }
+  anunciarResultados(filtered.length);
 
   if (!filtered.length) {
     zone.innerHTML = favOnly && !currentQ
@@ -5983,6 +6032,7 @@ window.addEventListener('DOMContentLoaded', function() {
   });
 
   render(); // primer render al cargar
+  anuncioActivo = true; // a partir de aquí, los cambios de resultados se anuncian
 });
 })();
 </script>
