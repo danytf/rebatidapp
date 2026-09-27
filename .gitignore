@@ -5,3 +5,7 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# Resultados de las pruebas de Playwright (se regeneran en cada ejecución)
+test-results/
+playwright-report/
