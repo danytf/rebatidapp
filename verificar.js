@@ -154,9 +154,8 @@ fichas.forEach(d => {
 //    frase se queda coja sin que nadie lo note.
 // ---------------------------------------------------------------------------
 // Variables que se conservan a propósito aunque ninguna ficha las use
-const RESERVADAS = {
-  '{{wwf_firmas_crimen}}': 'idea guardada para una futura ficha de crimen ambiental'
-};
+// (formato: '{{nombre}}': 'motivo')
+const RESERVADAS = {};
 const usadas = new Set();
 fichas.forEach(d => textos(d).forEach(([c, t]) => {
   [...t.matchAll(/\{\{([^}]+)\}\}/g)].forEach(m => usadas.add('{{' + m[1] + '}}'));
