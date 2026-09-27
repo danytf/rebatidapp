@@ -691,6 +691,37 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 }
 .ong-arrow{display:inline-block;transition:transform .22s var(--ease-out);margin-left:.25rem}
 #ong-toggle-btn[aria-expanded="true"] .ong-arrow{transform:rotate(180deg)}
+
+/* ---- Áreas táctiles (mínimo ~44×44 px) ----
+   Donde hay espacio libre alrededor, el área se amplía con un pseudo-elemento
+   invisible y el control se ve igual. Donde los controles están pegados, se sube
+   un poco su altura mínima para no solapar áreas vecinas. */
+
+/* Menú ⋮ y botones de cerrar/salir: a 375 px o menos miden 40×40; se ven igual
+   y reciben 2 px invisibles por lado. */
+@media(max-width:375px){
+  .ibtn:not(.ibtn--labeled){position:relative}
+  .ibtn:not(.ibtn--labeled)::before{content:"";position:absolute;inset:-2px}
+}
+
+/* Opciones del menú: separadas solo 2 px, así que suben a 44 px de alto. */
+.hdr-menu .ibtn--labeled{min-height:44px}
+
+/* "Consejo de captación": el texto mide ~20 px; el área crece dentro del
+   propio recuadro del consejo. Abierto, abajo solo se amplía hasta el texto. */
+.ans-tip-lbl{position:relative}
+.ans-tip-lbl::after{content:"";position:absolute;inset:-12px -16px -12px}
+.ans-tip[open] .ans-tip-lbl::after{bottom:-4px}
+
+/* Barra lateral (escritorio y tablet horizontal): separados 4 px; +1 px de
+   alto y 2 px invisibles arriba y abajo, sin invadir al vecino. */
+.rb-sb-btn{position:relative;min-height:40px}
+.rb-sb-btn::before{content:"";position:absolute;inset:-2px 0}
+
+/* Entidades del formulario "Añadir": separadas 8 px; pasan de 28 a 36 px de
+   alto y reciben 4 px invisibles por lado. */
+.nr-pill{position:relative;min-height:36px}
+.nr-pill::before{content:"";position:absolute;inset:-4px}
 </style>
 </head>
 <body class="light">
