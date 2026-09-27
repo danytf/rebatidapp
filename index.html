@@ -103,7 +103,9 @@ body{
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(max-width:375px){
-  .ibtn:not(.ibtn--labeled){width:40px;height:40px}
+  /* Solo los botones de icono (⋮). Los de texto ("✕ Salir", "✕ Cerrar",
+     "✕ Cancelar") llevan .fc-exit: con 40 px de ancho el texto se partía letra a letra. */
+  .ibtn:not(.ibtn--labeled):not(.fc-exit){width:40px;height:40px}
   .hdr-logo .credit{display:none}
 }
 
@@ -511,8 +513,11 @@ body.light .ctag-sel{border-color:var(--brand);color:var(--brand);background:var
 .cat-section-arr{margin-left:auto;color:var(--ink-2);font-size:1rem;transition:transform .22s var(--ease-out)}
 .cat-section-hdr:hover .cat-section-arr{color:var(--ink)}
 .cat-section.collapsed .cat-section-arr{transform:rotate(-90deg)}
-.cat-section-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s var(--ease-out)}
-.cat-section.collapsed .cat-section-body{grid-template-rows:0fr}
+.cat-section-body{display:grid;grid-template-rows:1fr;transition:grid-template-rows .25s var(--ease-out),visibility 0s linear 0s}
+/* Plegada, la sección mide 0 pero sus tarjetas seguían recibiendo el foco con Tab
+   (más de 1.300 botones invisibles). visibility las saca del orden de tabulación;
+   al plegar se aplica cuando acaba la animación, al desplegar al instante. */
+.cat-section.collapsed .cat-section-body{grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .25s var(--ease-out),visibility 0s linear .25s}
 /* El relleno superior no lo recorta overflow:hidden: sin esto una sección
    cerrada seguía ocupando 8px y dejaba un hueco suelto entre cabeceras */
 .cat-section.collapsed .cat-section-inner{padding-top:0}
