@@ -56,7 +56,6 @@ function catalogo(nombre) {
   });
   return out;
 }
-const CATS = catalogo('CATS');
 const ONGS = catalogo('ONGS');
 
 // Todos los textos de una ficha, incluida la chuleta territorial de wwf14,
@@ -140,13 +139,21 @@ fichas.forEach(d => {
 });
 
 // ---------------------------------------------------------------------------
-// 3. Categorías. El label y el color de cada ficha tienen que salir del array
-//    CATS del código, o la sección se pinta con otro nombre o color.
+// 3. Categorías. La app pinta cada sección con el tono --cat-<cat> y el icono
+//    i-cat-<cat> del código, y con el catLabel de sus fichas: si falta el tono o
+//    el icono la sección sale sin color o sin icono, y si dos fichas de la misma
+//    categoría traen un catLabel distinto el nombre depende de cuál va primero.
 // ---------------------------------------------------------------------------
+const catVista = {};
 fichas.forEach(d => {
-  if (!CATS[d.cat]) return fallo(`${d.id}: la categoría "${d.cat}" no existe en CATS`);
-  if (d.catLabel !== CATS[d.cat].label) fallo(`${d.id}: catLabel no coincide con CATS`);
-  if (d.catColor !== CATS[d.cat].color) fallo(`${d.id}: catColor no coincide con CATS`);
+  if (!catVista[d.cat]) {
+    catVista[d.cat] = d;
+    if (!html.includes('--cat-' + d.cat + ':')) fallo(`${d.id}: la categoría "${d.cat}" no tiene tono --cat-${d.cat} en el CSS`);
+    if (!html.includes('id="i-cat-' + d.cat + '"')) fallo(`${d.id}: la categoría "${d.cat}" no tiene icono i-cat-${d.cat}`);
+    return;
+  }
+  if (d.catLabel !== catVista[d.cat].catLabel) fallo(`${d.id}: catLabel no coincide con el de ${catVista[d.cat].id}`);
+  if (d.catColor !== catVista[d.cat].catColor) fallo(`${d.id}: catColor no coincide con el de ${catVista[d.cat].id}`);
 });
 
 // ---------------------------------------------------------------------------

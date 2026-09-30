@@ -1,7 +1,7 @@
 // Pruebas funcionales de RebatidApp. Cada prueba corre en 4 tamaños de pantalla
 // (ver playwright.config.js). Los números esperados se calculan a partir de los
 // datos del propio HTML, así que las pruebas no se rompen al añadir fichas.
-const { test, expect, esEscritorio, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, abrirMenu } = require('./utils');
+const { test, expect, esEscritorio, esMovil, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, botonAccion, abrirAccion } = require('./utils');
 
 test.beforeEach(async ({ page }) => { await abrirApp(page); });
 
@@ -10,7 +10,7 @@ test.describe('Carga', () => {
   test('carga sin errores y muestra todas las fichas', async ({ page }) => {
     const d = await datos(page);
     expect(await recuento(page)).toBe(d.length);
-    await expect(page.locator('h1')).toHaveText('Banco de Objeciones Wesser');
+    await expect(page.locator('h1')).toHaveText('Banco de objeciones');
     await expect(page.locator('#results .ocard')).toHaveCount(d.length);
     // el fixture erroresJS comprueba al final que no hubo errores de JavaScript
   });
@@ -90,18 +90,18 @@ test.describe('Filtros', () => {
   });
 
   test('por frecuencia', async () => {
-    test.skip(true, 'La app no tiene filtro por frecuencia: la frecuencia solo se muestra como icono (🔥 ⭐ 📌) en cada tarjeta.');
+    test.skip(true, 'La app no tiene filtro por frecuencia: la frecuencia solo se muestra con barras y texto en cada tarjeta.');
   });
 
   test('por dificultad (disponible en el Modo ensayo)', async ({ page }) => {
     // La vista principal no filtra por dificultad; el Modo ensayo sí.
     const d = await datos(page);
-    await abrirMenu(page, '#ensayobtn');
+    await abrirAccion(page, '#ensayobtn');
     await page.click('#ensayo [data-cfg-ong="AECC"]');
     for (const [v, nombre] of [[1, 'Fácil'], [2, 'Media'], [3, 'Difícil']]) {
       await page.click(`#ensayo [data-cfg-diff="${v}"]`);
       const esperado = d.filter(f => f.ongs.includes('AECC') && f.diff === v).length;
-      await expect(page.locator('#ensayo .fc-cfg-count')).toContainText(esperado ? `${esperado} cartas` : 'Sin cartas', { useInnerText: true });
+      await expect(page.locator('#ensayo .fc-cfg-count')).toContainText(esperado ? new RegExp(`^\\s*${esperado} cartas? en esta sesión`) : 'No hay cartas', { useInnerText: true });
       await expect(page.locator(`#ensayo [data-cfg-diff="${v}"]`)).toHaveAttribute('aria-pressed', 'true');
       test.info().annotations.push({ type: 'dificultad', description: `AECC ${nombre}: ${esperado}` });
     }
@@ -122,11 +122,19 @@ test.describe('Filtros', () => {
 });
 
 // 10 ────────────────────────────────────────────────────────────────────────
+// Favoritos está en la barra inferior en móvil, en la fila de filtros en tablet
+// vertical y en la barra lateral desde 960 px
+const selFavoritos = page => esEscritorio(page) ? '#rbSidebar .rb-sb-btn[data-fav]'
+  : esMovil(page) ? '#bnav [data-nav="fav"]' : '#ongFilt .ctag-fav';
+// Contador dentro de ese botón (no existe o está oculto si no hay favoritos)
+const contadorFavoritos = page => page.locator(selFavoritos(page) + ' ' + (esMovil(page) ? '.bnav-count' : '.ctag-count'));
+// La barra inferior marca la vista activa con aria-current; los filtros, con aria-pressed
+const expectFavoritosActivo = page => esMovil(page)
+  ? expect(page.locator(selFavoritos(page))).toHaveAttribute('aria-current', 'page')
+  : expect(page.locator(selFavoritos(page))).toHaveAttribute('aria-pressed', 'true');
+
 test.describe('Favoritos', () => {
-  // En móvil y tablet vertical, dentro del panel "Entidad"; desde 960 px, en la barra lateral
-  const filtroFavoritos = page => esEscritorio(page)
-    ? page.locator('#rbSidebar .rb-sb-btn[data-fav]')
-    : page.locator('#ongFilt .ctag-fav');
+  const filtroFavoritos = page => page.locator(selFavoritos(page));
 
   test('marcar, persistir al recargar, filtrar y desmarcar', async ({ page }) => {
     await page.locator('.cat-section-hdr').first().click();
@@ -137,18 +145,17 @@ test.describe('Favoritos', () => {
     await expect(estrella).toHaveAttribute('aria-pressed', 'true');
     await expect(tarjeta).not.toHaveClass(/open/); // marcar no despliega la tarjeta
     // el contador del filtro de Favoritos se actualiza al momento
-    await expect(filtroFavoritos(page)).toContainText('Favoritos (1)');
+    await expect(contadorFavoritos(page)).toHaveText('1');
 
     await page.reload();
     await expect(page.locator(`#oc-${id} .ocard-fav`)).toHaveAttribute('aria-pressed', 'true');
     expect(await page.evaluate(() => JSON.parse(localStorage.getItem('wob_favs') || '{}'))).toHaveProperty(id);
 
     // Filtro de favoritos
-    if (!esEscritorio(page)) await page.click('#ong-toggle-btn');
     const filtro = filtroFavoritos(page);
     await expect(filtro, 'el filtro de Favoritos debe estar accesible en este tamaño').toBeVisible();
     await filtro.click();
-    await expect(filtroFavoritos(page)).toHaveAttribute('aria-pressed', 'true');
+    await expectFavoritosActivo(page);
     await expect(page.locator('#results .ocard')).toHaveCount(1);
     await expect(page.locator('#results-status')).toHaveText('1 favorito');
 
@@ -165,12 +172,12 @@ test.describe('Favoritos guardados de fichas que ya no existen', () => {
     await page.evaluate(() => localStorage.setItem('wob_favs', JSON.stringify({ ficha_borrada_123: true })));
     await page.reload();
     await expect(page.locator('#results .statsbar')).toBeVisible();
-    const filtro = esEscritorio(page) ? page.locator('#rbSidebar .rb-sb-btn[data-fav]') : page.locator('#ongFilt .ctag-fav');
-    await expect(filtro).toHaveText('⭐ Favoritos'); // sin "(1)"
+    await expect(page.locator(selFavoritos(page))).toContainText('Favoritos');
+    await expect(contadorFavoritos(page)).toBeHidden(); // sin contador
     // al marcar una ficha real, el contador pasa a 1
     await page.locator('.cat-section-hdr').first().click();
     await page.locator('#results .ocard-fav').first().click();
-    await expect(filtro).toHaveText('⭐ Favoritos (1)');
+    await expect(contadorFavoritos(page)).toHaveText('1');
   });
 });
 
@@ -195,6 +202,7 @@ test.describe('Estado de lectura', () => {
     await page.locator('.cat-section-hdr').first().click();
     const tarjeta = page.locator('#results .ocard').first();
     const q = (await tarjeta.locator('.ocard-toggle').textContent()).trim();
+    await tarjeta.locator('.ocard-toggle').click(); // el botón de lectura está dentro de la ficha abierta
     await tarjeta.locator('.ocard-read').click();
     await expect(page.locator('#lectura')).toBeVisible();
     await expect(page.locator('#lectura')).toContainText(q);
@@ -207,13 +215,14 @@ test.describe('Estado de lectura', () => {
 test.describe('Tema', () => {
   test('cambia entre claro y oscuro y se recuerda al recargar', async ({ page }) => {
     await expect(page.locator('body')).toHaveClass(/light/);
-    await abrirMenu(page, '#thbtn');
+    await abrirAccion(page, '#thbtn');
     await expect(page.locator('body')).not.toHaveClass(/light/);
-    await expect(page.locator('#thbtn')).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.locator('#thbtn')).toHaveAttribute('aria-pressed', 'true'); // modo oscuro activo
     await page.reload();
     await expect(page.locator('body')).not.toHaveClass(/light/);
-    await abrirMenu(page, '#thbtn');
+    await abrirAccion(page, '#thbtn');
     await expect(page.locator('body')).toHaveClass(/light/);
+    await expect(page.locator('#thbtn')).toHaveAttribute('aria-pressed', 'false');
     await page.reload();
     await expect(page.locator('body')).toHaveClass(/light/);
   });
@@ -223,9 +232,12 @@ test.describe('Tema', () => {
 test.describe('Modo ensayo', () => {
   test('configurar, recorrer las cartas, ver el resumen y repetir las falladas', async ({ page }) => {
     const d = await datos(page);
-    await abrirMenu(page, '#ensayobtn');
+    await abrirAccion(page, '#ensayobtn');
     await expect(page.locator('#ensayo')).toBeVisible();
-    await expect(page.locator('#cfg-start-btn')).toBeDisabled(); // sin entidades elegidas
+    // sin entidades elegidas se practica con todas
+    await expect(page.locator('#ensayo [data-cfg-ong="all"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#ensayo .fc-cfg-count')).toContainText(new RegExp(`^\\s*${d.length} cartas`), { useInnerText: true });
+    await expect(page.locator('#cfg-start-btn')).toBeEnabled();
 
     await page.click('#ensayo [data-cfg-ong="FEC"]');
     await page.click('#ensayo [data-cfg-diff="3"]');
@@ -250,7 +262,7 @@ test.describe('Modo ensayo', () => {
   });
 
   test('atajos de teclado: Espacio muestra la respuesta', async ({ page }) => {
-    await abrirMenu(page, '#ensayobtn');
+    await abrirAccion(page, '#ensayobtn');
     await page.click('#ensayo [data-cfg-ong="AI"]');
     await page.click('#cfg-start-btn');
     await expect(page.locator('#fc-show')).toBeVisible();
@@ -263,12 +275,12 @@ test.describe('Modo ensayo', () => {
 // 14 ────────────────────────────────────────────────────────────────────────
 test.describe('Ventanas', () => {
   test('Añadir rebatida: valida los campos y se cancela', async ({ page }) => {
-    await abrirMenu(page, '#fab-nueva');
+    await abrirAccion(page, '#fab-nueva');
     await expect(page.locator('#nueva-rebatida')).toBeVisible();
     await page.click('#nr-send-btn');
     await expect(page.locator('#nr-error')).toBeVisible();
-    await page.locator('#nr-ong-pills .nr-pill').first().click();
-    await expect(page.locator('#nr-ong-pills .nr-pill').first()).toHaveClass(/sel/);
+    await page.locator('#nr-ong-pills .pill').first().click();
+    await expect(page.locator('#nr-ong-pills .pill').first()).toHaveClass(/sel/);
     await page.fill('#nr-pregunta', 'Objeción de prueba');
     await page.click('#nr-exit-btn');
     await expect(page.locator('#nueva-rebatida')).toBeHidden();
@@ -276,11 +288,11 @@ test.describe('Ventanas', () => {
 
   test('Sugerir cambio: al elegir entidad aparece el selector de fichas', async ({ page }) => {
     const d = await datos(page);
-    await abrirMenu(page, '#fab-modificar');
+    await abrirAccion(page, '#fab-modificar');
     await expect(page.locator('#sugerir-cambio')).toBeVisible();
     await page.click('#sc-send-btn');
     await expect(page.locator('#sc-error')).toBeVisible();
-    await page.click('#sc-ong-pills .nr-pill:has-text("WWF")');
+    await page.click('#sc-ong-pills .pill:has-text("WWF")');
     const opciones = page.locator('#sc-ficha-select option:not([value=""])');
     await expect(opciones).toHaveCount(d.filter(f => f.ongs.includes('WWF')).length);
     await page.selectOption('#sc-ficha-select', { index: 1 });
@@ -290,7 +302,7 @@ test.describe('Ventanas', () => {
   });
 
   test('Ayuda se abre y se cierra', async ({ page }) => {
-    await abrirMenu(page, '#fab-ayuda');
+    await abrirAccion(page, '#fab-ayuda');
     await expect(page.locator('#ayuda')).toBeVisible();
     await page.click('#ayuda-exit-btn');
     await expect(page.locator('#ayuda')).toBeHidden();
@@ -299,21 +311,17 @@ test.describe('Ventanas', () => {
 
 // 15 ────────────────────────────────────────────────────────────────────────
 test.describe('Escape', () => {
-  test('cierra el menú y cada ventana, y devuelve el foco', async ({ page }) => {
-    await page.click('#hdr-menu-btn');
-    await expect(page.locator('#hdr-menu')).toHaveClass(/open/);
-    await page.keyboard.press('Escape');
-    await expect(page.locator('#hdr-menu')).not.toHaveClass(/open/);
-    await expect(page.locator('#hdr-menu-btn')).toBeFocused();
-
+  test('cierra cada ventana y devuelve el foco', async ({ page }) => {
     for (const [boton, ventana] of [['#ensayobtn', '#ensayo'], ['#fab-nueva', '#nueva-rebatida'], ['#fab-modificar', '#sugerir-cambio'], ['#fab-ayuda', '#ayuda']]) {
-      await abrirMenu(page, boton);
+      await abrirAccion(page, boton);
       await expect(page.locator(ventana)).toBeVisible();
       await page.keyboard.press('Escape');
       await expect(page.locator(ventana), `Escape en ${ventana}`).toBeHidden();
+      await expect(page.locator(botonAccion(page, boton)), `foco tras cerrar ${ventana}`).toBeFocused();
     }
 
     await page.locator('.cat-section-hdr').first().click();
+    await page.locator('#results .ocard-toggle').first().click();
     await page.locator('#results .ocard-read').first().click();
     await expect(page.locator('#lectura')).toBeVisible();
     await page.keyboard.press('Escape');
@@ -343,7 +351,6 @@ test.describe('Teclado', () => {
     await page.keyboard.press('Enter');
     await expect(pregunta).toHaveAttribute('aria-expanded', 'true');
 
-    await page.keyboard.press('Tab'); // lectura
     await page.keyboard.press('Tab'); // favorito
     const fav = page.locator('#results .ocard-fav').first();
     await expect(fav).toBeFocused();
@@ -357,13 +364,9 @@ test.describe('Teclado', () => {
       await page.keyboard.press('Enter');
       await expect(page.locator('#rbSidebar .rb-sb-btn[data-oid="FJC"]')).toBeFocused();
     } else {
-      await page.locator('#ong-toggle-btn').focus();
+      await page.locator('#ongFilt .ctag[data-oid="FJC"]').focus();
       await page.keyboard.press('Enter');
-      await page.keyboard.press('Shift+Tab'); // el panel se abre encima del botón
-      const activo = await page.evaluate(() => !!document.activeElement.closest('#ongFilt'));
-      expect(activo).toBe(true);
-      await page.keyboard.press('Enter');
-      await expect(page.locator('#ong-toggle-btn')).toBeFocused();
+      await expect(page.locator('#ongFilt .ctag[data-oid="FJC"]')).toBeFocused();
     }
   });
 });
@@ -375,24 +378,34 @@ test.describe('Responsive', () => {
     expect(await sinScrollH()).toBe(true);
     if (esEscritorio(page)) {
       await expect(page.locator('#rbSidebar')).toBeVisible();
-      await expect(page.locator('#ong-toggle-btn')).toBeHidden();
+      await expect(page.locator('#ongFilt')).toBeHidden();
     } else {
       await expect(page.locator('#rbSidebar')).toBeHidden();
-      await expect(page.locator('#ong-toggle-btn')).toBeVisible();
+      await expect(page.locator('#ongFilt')).toBeVisible();
+    }
+    // Hasta 600 px las acciones van en la barra inferior; por encima, en la cabecera
+    if (esMovil(page)) {
+      await expect(page.locator('#bnav')).toBeVisible();
+      await expect(page.locator('#ensayobtn')).toBeHidden();
+    } else {
+      await expect(page.locator('#bnav')).toBeHidden();
+      await expect(page.locator('#ensayobtn')).toBeVisible();
     }
     // Con una tarjeta y la ayuda abiertas tampoco debe haber scroll horizontal
     await page.locator('.cat-section-hdr').first().click();
     await page.locator('#results .ocard-toggle').first().click();
     expect(await sinScrollH()).toBe(true);
-    await abrirMenu(page, '#fab-ayuda');
+    await abrirAccion(page, '#fab-ayuda');
     expect(await sinScrollH()).toBe(true);
   });
 
   test('los controles principales tienen un área táctil de al menos 44 px', async ({ page }) => {
     await page.locator('.cat-section-hdr').first().click();
+    await page.locator('#results .ocard-toggle').first().click(); // el botón de lectura está dentro de la ficha
     const medidas = await page.evaluate(() => {
-      const sel = ['#hdr-menu-btn', '#results .ocard-fav', '#results .ocard-read', '#sclr-btn', '.cat-section-hdr'];
-      if (window.innerWidth >= 960) sel.push('#rbSidebar .rb-sb-btn'); else sel.push('#ong-toggle-btn');
+      const sel = ['#thbtn', '#fab-ayuda', '#results .ocard-fav', '#results .ocard-read', '#sclr-btn', '.cat-section-hdr'];
+      if (window.innerWidth >= 960) sel.push('#rbSidebar .rb-sb-btn'); else sel.push('#ongFilt .ctag[data-oid]');
+      if (window.innerWidth <= 600) sel.push('#bnav .bnav-btn'); else sel.push('#ensayobtn');
       return sel.map(s => {
         const e = document.querySelector(s); if (!e) return { s, w: 0, h: 0 };
         const r = e.getBoundingClientRect(); let w = r.width, h = r.height;

@@ -6,8 +6,10 @@ const { pathToFileURL } = require('url');
 const URL_APP = pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 
 // A partir de 960 px la app muestra la barra lateral de entidades; por debajo,
-// el botón "Entidad" que despliega los filtros.
+// la fila deslizable de filtros. Hasta 600 px las acciones de la cabecera
+// (Ensayo, Añadir, Modificar) y Favoritos pasan a la barra inferior.
 const esEscritorio = page => page.viewportSize().width >= 960;
+const esMovil = page => page.viewportSize().width <= 600;
 
 // Misma normalización que usa la app al buscar (minúsculas y sin tildes),
 // escrita aquí aparte para que la prueba no dependa del código que prueba.
@@ -56,17 +58,17 @@ async function buscar(page, texto) {
 }
 
 async function elegirEntidad(page, id) {
-  if (esEscritorio(page)) {
-    await page.click(`#rbSidebar .rb-sb-btn[data-oid="${id}"]`);
-  } else {
-    await page.click('#ong-toggle-btn');
-    await page.click(`#ongFilt .ctag[data-oid="${id}"]`);
-  }
+  await page.click(esEscritorio(page) ? `#rbSidebar .rb-sb-btn[data-oid="${id}"]` : `#ongFilt .ctag[data-oid="${id}"]`);
 }
 
-async function abrirMenu(page, boton) {
-  await page.click('#hdr-menu-btn');
-  await page.click(boton);
+// Pulsa una acción de la cabecera; en móvil Ensayo, Añadir y Modificar solo
+// están en la barra inferior.
+const EN_BARRA_INFERIOR = { '#ensayobtn': 'ensayo', '#fab-nueva': 'nueva', '#fab-modificar': 'modificar' };
+function botonAccion(page, boton) {
+  return esMovil(page) && EN_BARRA_INFERIOR[boton] ? `#bnav [data-nav="${EN_BARRA_INFERIOR[boton]}"]` : boton;
+}
+async function abrirAccion(page, boton) {
+  await page.click(botonAccion(page, boton));
 }
 
-module.exports = { test, expect, URL_APP, esEscritorio, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, abrirMenu };
+module.exports = { test, expect, URL_APP, esEscritorio, esMovil, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, botonAccion, abrirAccion };
