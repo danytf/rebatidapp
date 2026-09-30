@@ -1,7 +1,7 @@
 // Pruebas funcionales de RebatidApp. Cada prueba corre en 4 tamaños de pantalla
 // (ver playwright.config.js). Los números esperados se calculan a partir de los
 // datos del propio HTML, así que las pruebas no se rompen al añadir fichas.
-const { test, expect, esEscritorio, esMovil, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, botonAccion, abrirAccion } = require('./utils');
+const { test, expect, URL_APP, esEscritorio, esMovil, normalizar, abrirApp, datos, recuento, buscar, elegirEntidad, botonAccion, abrirAccion } = require('./utils');
 
 test.beforeEach(async ({ page }) => { await abrirApp(page); });
 
@@ -403,7 +403,7 @@ test.describe('Responsive', () => {
     await page.locator('.cat-section-hdr').first().click();
     await page.locator('#results .ocard-toggle').first().click(); // el botón de lectura está dentro de la ficha
     const medidas = await page.evaluate(() => {
-      const sel = ['#thbtn', '#fab-ayuda', '#results .ocard-fav', '#results .ocard-read', '#sclr-btn', '.cat-section-hdr'];
+      const sel = ['#thbtn', '#fab-ayuda', '#results .ocard-fav', '#results .ocard-read', '#results .ocard-share', '#sclr-btn', '.cat-section-hdr'];
       if (window.innerWidth >= 960) sel.push('#rbSidebar .rb-sb-btn'); else sel.push('#ongFilt .ctag[data-oid]');
       if (window.innerWidth <= 600) sel.push('#bnav .bnav-btn'); else sel.push('#ensayobtn');
       return sel.map(s => {
@@ -423,5 +423,213 @@ test.describe('Responsive', () => {
       if (m.s === '#sclr-btn' && m.w === 0) continue; // solo aparece con texto en el buscador
       expect(Math.min(m.w, m.h), `${m.s} mide ${m.w}×${m.h}`).toBeGreaterThanOrEqual(44);
     }
+  });
+});
+
+// 18 ────────────────────────────────────────────────────────────────────────
+// Enlace directo a una ficha: index.html#<id> abre esa ficha.
+test.describe('Enlace directo', () => {
+  // Carga nueva de la página con ese hash (pasar por about:blank evita que el
+  // navegador lo trate como un simple cambio de hash sobre la página ya abierta)
+  async function entrar(page, hash) {
+    await page.goto('about:blank');
+    await page.goto(URL_APP + '#' + hash);
+    await expect(page.locator('#results .statsbar')).toBeVisible();
+  }
+
+  // La ficha está abierta, colocada justo bajo la cabecera y el buscador fijos,
+  // y la página no tiene desplazamiento horizontal
+  async function expectFichaLocalizada(page, id) {
+    const ficha = page.locator(`#oc-${id}`);
+    await expect(ficha).toHaveClass(/open/);
+    await expect(ficha.locator('.ocard-toggle')).toHaveAttribute('aria-expanded', 'true');
+    await expect(ficha.locator('.ans-short')).toBeVisible();
+    await expect.poll(() => page.evaluate(i => {
+      const top = document.getElementById('oc-' + i).getBoundingClientRect().top;
+      const fijo = document.querySelector('.sbar').getBoundingClientRect().bottom;
+      return top >= fijo - 1 && top <= fijo + 24;
+    }, id), `la ficha ${id} queda a la vista bajo la cabecera`).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+
+  async function expectAppNormal(page) {
+    const d = await datos(page);
+    expect(await recuento(page)).toBe(d.length);
+    await expect(page.locator('#results .ocard.open')).toHaveCount(0);
+    await expect(page.locator('#results .cat-section:not(.collapsed)')).toHaveCount(0);
+    await expect(page.locator('#results .empty')).toHaveCount(0);
+    expect(await page.evaluate(() => window.pageYOffset)).toBe(0);
+  }
+
+  test('hash válido: abre la ficha y su sección', async ({ page }) => {
+    await entrar(page, 'gen_iban');
+    await expectFichaLocalizada(page, 'gen_iban');
+    expect(await page.evaluate(() => window.pageYOffset)).toBeGreaterThan(0);
+    await expect(page.locator('.cat-section:has(#oc-gen_iban)')).not.toHaveClass(/collapsed/);
+    // no se toca el foco ni se abren otras fichas
+    expect(await page.evaluate(() => document.activeElement === document.body)).toBe(true);
+    await expect(page.locator('#results .ocard.open')).toHaveCount(1);
+  });
+
+  test('ficha de una categoría plegada: solo se despliega esa sección', async ({ page }) => {
+    const d = await datos(page);
+    const ultimaCat = [...new Set(d.map(f => f.cat))].pop(); // la sección más alejada del principio
+    const ficha = d.find(f => f.cat === ultimaCat);
+    await entrar(page, ficha.id);
+    await expectFichaLocalizada(page, ficha.id);
+    await expect(page.locator('#results .cat-section:not(.collapsed)')).toHaveCount(1);
+    await expect(page.locator(`#results .cat-section[data-cat="${ficha.cat}"] .cat-section-hdr`)).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('un filtro guardado o activo que oculta la ficha no impide encontrarla', async ({ page }) => {
+    const d = await datos(page);
+    // Entidad guardada de la sesión anterior que no incluye la ficha
+    await page.evaluate(() => sessionStorage.setItem('wob_ong', 'WWF'));
+    await entrar(page, 'gen_iban');
+    await expectFichaLocalizada(page, 'gen_iban');
+    expect(await recuento(page)).toBe(d.length);
+
+    // Favoritos (sin esa ficha) y una búsqueda que no la contiene
+    await page.click(esEscritorio(page) ? '#rbSidebar .rb-sb-btn[data-fav]' : esMovil(page) ? '#bnav [data-nav="fav"]' : '#ongFilt .ctag-fav');
+    await expect(page.locator('#results .empty-t')).toHaveText('Aún no tienes favoritos');
+    await page.evaluate(() => { location.hash = 'wwf14'; });
+    await expectFichaLocalizada(page, 'wwf14');
+
+    await elegirEntidad(page, 'AECC');
+    await buscar(page, 'zzqxw no existe');
+    await expect(page.locator('#results .empty-t')).toHaveText('Sin resultados');
+    await page.evaluate(() => { location.hash = 'gen_iban'; });
+    await expectFichaLocalizada(page, 'gen_iban');
+    await expect(page.locator('#qinput')).toHaveValue('');
+  });
+
+  test('una búsqueda o entidad que ya muestra la ficha se conserva', async ({ page }) => {
+    const d = await datos(page);
+    await elegirEntidad(page, 'WWF');
+    await page.evaluate(() => { location.hash = 'wwf14'; });
+    await expectFichaLocalizada(page, 'wwf14');
+    expect(await recuento(page)).toBe(d.filter(f => f.ongs.includes('WWF')).length);
+  });
+
+  test('hash inexistente, con otras mayúsculas o mal codificado: la app se comporta como siempre', async ({ page }) => {
+    for (const hash of ['ficha_que_no_existe', 'GEN_IBAN', '%E0%A4%A', '<img src=x onerror=alert(1)>']) {
+      await entrar(page, hash);
+      await expectAppNormal(page);
+    }
+    // y sigue funcionando
+    await buscar(page, 'IBAN');
+    expect(await recuento(page)).toBeGreaterThan(0);
+  });
+
+  test('hash vacío: comportamiento normal', async ({ page }) => {
+    await entrar(page, '');
+    await expectAppNormal(page);
+  });
+
+  test('hash codificado: se decodifica antes de comparar', async ({ page }) => {
+    await entrar(page, '%67en_iban');
+    await expectFichaLocalizada(page, 'gen_iban');
+  });
+
+  test('cambio de hash y botón Atrás: se localiza y se resalta la ficha de cada hash', async ({ page }) => {
+    await entrar(page, 'gen_iban');
+    await expectFichaLocalizada(page, 'gen_iban');
+    // con el foco dentro de la lista, pasa a la pregunta de la nueva ficha
+    await page.locator('#oc-gen_iban .ocard-toggle').focus();
+    // el resaltado se comprueba en el mismo instante del cambio, porque dura poco
+    const resaltada = await page.evaluate(() => new Promise(ok => {
+      window.addEventListener('hashchange', () => ok(document.getElementById('oc-wwf14').classList.contains('enlazada')), { once: true });
+      location.hash = 'wwf14';
+    }));
+    expect(resaltada).toBe(true);
+    await expectFichaLocalizada(page, 'wwf14');
+    await expect(page.locator('#oc-wwf14')).not.toHaveClass(/enlazada/, { timeout: 4000 }); // es pasajero
+    await expect(page.locator('#oc-wwf14')).toHaveClass(/open/);
+    await expect(page.locator('#oc-wwf14 .ocard-toggle')).toBeFocused();
+    await page.goBack();
+    await expectFichaLocalizada(page, 'gen_iban');
+  });
+
+  // Compartir: el botón de la ficha entrega el enlace directo. En pantallas
+  // táctiles abre el menú de compartir del sistema; en escritorio copia el enlace.
+  // Las dos salidas se sustituyen por dobles para ver qué recibe cada una.
+  async function espiarCompartir(page) {
+    await page.evaluate(() => {
+      window.__compartido = null; window.__copiado = null;
+      navigator.share = d => { window.__compartido = d; return Promise.resolve(); };
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: t => { window.__copiado = t; return Promise.resolve(); } } });
+    });
+  }
+  const tactil = page => page.evaluate(() => window.matchMedia('(pointer:coarse)').matches);
+
+  async function expectEnlaceEntregado(page, id, q) {
+    const enlace = URL_APP + '#' + id;
+    if (await tactil(page)) {
+      await expect.poll(() => page.evaluate(() => window.__compartido)).toEqual({ title: 'Banco de objeciones', text: q, url: enlace });
+      expect(await page.evaluate(() => window.__copiado)).toBeNull();
+    } else {
+      await expect.poll(() => page.evaluate(() => window.__copiado)).toBe(enlace);
+      await expect(page.locator('#toast')).toHaveText('Enlace copiado');
+      await expect(page.locator('#toast')).toHaveClass(/show/);
+    }
+  }
+
+  test('compartir desde la ficha entrega su enlace directo, y ese enlace la abre', async ({ page }) => {
+    const d = await datos(page);
+    await espiarCompartir(page);
+    await page.locator('.cat-section-hdr').first().click();
+    const tarjeta = page.locator('#results .ocard').first();
+    const id = (await tarjeta.getAttribute('id')).slice(3);
+    await tarjeta.locator('.ocard-toggle').click();
+    await tarjeta.locator('.ocard-share').click();
+    await expectEnlaceEntregado(page, id, d.find(f => f.id === id).q);
+    // compartir no cierra la ficha ni cambia la dirección de la página
+    await expect(tarjeta).toHaveClass(/open/);
+    expect(page.url()).toBe(URL_APP);
+
+    await entrar(page, id);
+    await expectFichaLocalizada(page, id);
+  });
+
+  test('compartir desde el modo lectura', async ({ page }) => {
+    const d = await datos(page);
+    await espiarCompartir(page);
+    await page.locator('.cat-section-hdr').first().click();
+    const tarjeta = page.locator('#results .ocard').first();
+    const id = (await tarjeta.getAttribute('id')).slice(3);
+    await tarjeta.locator('.ocard-toggle').click();
+    await tarjeta.locator('.ocard-read').click();
+    await page.click('#lectura .lc-share');
+    await expectEnlaceEntregado(page, id, d.find(f => f.id === id).q);
+    await expect(page.locator('#lectura')).toBeVisible();
+  });
+
+  test('sin portapapeles moderno ni menú de compartir, el enlace se copia igualmente', async ({ page }) => {
+    await page.evaluate(() => {
+      navigator.share = undefined;
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined });
+      const original = document.execCommand.bind(document);
+      document.execCommand = function(orden) {
+        if (orden === 'copy') { window.__copiado = document.activeElement.value; return true; }
+        return original.apply(null, arguments);
+      };
+    });
+    await page.locator('.cat-section-hdr').first().click();
+    const tarjeta = page.locator('#results .ocard').first();
+    const id = (await tarjeta.getAttribute('id')).slice(3);
+    await tarjeta.locator('.ocard-toggle').click();
+    await tarjeta.locator('.ocard-share').click();
+    await expect.poll(() => page.evaluate(() => window.__copiado)).toBe(URL_APP + '#' + id);
+    await expect(page.locator('#toast')).toHaveText('Enlace copiado');
+    await expect(tarjeta.locator('.ocard-share')).toBeFocused(); // el foco vuelve al botón
+  });
+
+  test('al recargar se vuelve a la misma ficha', async ({ page }) => {
+    await entrar(page, 'gen_iban');
+    await expectFichaLocalizada(page, 'gen_iban');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.reload();
+    await expect(page.locator('#results .statsbar')).toBeVisible();
+    await expectFichaLocalizada(page, 'gen_iban');
   });
 });

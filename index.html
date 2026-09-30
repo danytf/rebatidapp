@@ -338,6 +338,8 @@ button,input,select,textarea{font-family:inherit}
 .cat-section-inner .ocard{border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}
 .cat-section-inner .ocard:hover{background:var(--surface-2)}
 .cat-section-inner .ocard.open{background:var(--surface);box-shadow:none}
+/* Ficha a la que se ha llegado por un enlace directo (#id): tinte breve */
+.ocard.enlazada,.cat-section-inner .ocard.enlazada.open{background:var(--brand-soft)}
 
 .ocard-head{display:flex;align-items:flex-start;gap:var(--s-2);padding:var(--s-4) var(--s-2) var(--s-4) var(--s-5);cursor:pointer;user-select:none}
 /* La pregunta es el botón que despliega la ficha; el foco se pinta sobre toda la cabecera */
@@ -374,13 +376,13 @@ button,input,select,textarea{font-family:inherit}
 .ong-tag{display:inline-flex;align-items:center;gap:5px;font-weight:600;color:var(--ink-2)}
 
 .ocard-actions{display:flex;align-items:center;flex-shrink:0}
-.ocard-fav,.lc-fav{
+.ocard-fav,.lc-fav,.lc-share{
   background:transparent;border:none;color:var(--ink-4);cursor:pointer;
   width:44px;height:44px;border-radius:12px;
   display:inline-flex;align-items:center;justify-content:center;
   transition:color .15s var(--ease),background .15s var(--ease);
 }
-.ocard-fav:hover,.lc-fav:hover{background:var(--surface-hi);color:var(--ink-2)}
+.ocard-fav:hover,.lc-fav:hover,.lc-share:hover{background:var(--surface-hi);color:var(--ink-2)}
 .ocard-fav.on,.lc-fav.on{color:var(--brand)}
 .ocard-fav.on .ic,.lc-fav.on .ic{fill:currentColor}
 .ocard-arr{display:flex;align-items:center;justify-content:center;width:32px;height:44px;color:var(--ink-3);transition:transform .25s var(--ease-out),color .2s}
@@ -400,10 +402,11 @@ button,input,select,textarea{font-family:inherit}
 .ans-seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(28,31,33,.1),0 1px 4px rgba(28,31,33,.06)}
 .ans-seg button .ic{width:16px;height:16px}
 .ans-seg-solo{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-brand);font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);min-height:38px}
-.ocard-read{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 var(--s-3);border-radius:10px;border:0;background:transparent;
+.ocard-tools{display:inline-flex;align-items:center;margin-left:auto}
+.ocard-read,.ocard-share{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 var(--s-3);border-radius:10px;border:0;background:transparent;
   color:var(--ink-3);font-size:var(--t-sm);font-weight:600;cursor:pointer;transition:background .15s,color .15s}
-.ocard-read:hover{background:var(--surface-hi);color:var(--ink)}
-.ocard-read .ic{width:17px;height:17px}
+.ocard-read:hover,.ocard-share:hover{background:var(--surface-hi);color:var(--ink)}
+.ocard-read .ic,.ocard-share .ic{width:17px;height:17px}
 
 /* La frase para decir: protagonista de la ficha */
 .ans-short{
@@ -632,7 +635,7 @@ select.nr-textarea{resize:none;min-height:48px;padding:0 var(--s-3)}
    ============================================ */
 .lc-body{max-width:720px}
 .lc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-3);margin-bottom:var(--s-4);font-size:var(--t-sm);color:var(--ink-3)}
-.lc-meta .lc-fav{margin-left:auto}
+.lc-meta .lc-share{margin-left:auto;color:var(--ink-3)}
 .lc-q{font-size:var(--t-3xl);font-weight:700;color:var(--ink);line-height:1.25;letter-spacing:-.02em;margin-bottom:var(--s-6)}
 .lc-txt{font-size:19px;line-height:1.75;color:var(--ink);margin-bottom:var(--s-6);white-space:pre-line}
 .lc-body .ans-box{margin-bottom:var(--s-3)}
@@ -679,8 +682,10 @@ select.nr-textarea{resize:none;min-height:48px;padding:0 var(--s-3)}
   .ans-wrap{padding:0 var(--s-4) var(--s-4)}
   .ans-short{font-size:18px;padding:var(--s-4) var(--s-4) var(--s-4) 44px}
   .ans-short::before{left:12px;font-size:44px}
-  .ocard-read .lbl{display:none}
-  .ocard-read{width:44px;justify-content:center;padding:0}
+  .ocard-read .lbl,.ocard-share .lbl{display:none}
+  .ocard-read,.ocard-share{width:44px;justify-content:center;padding:0}
+  /* Rápida/Completa sin icono, para que quepan al lado Compartir y Pantalla completa */
+  .ans-seg button .ic{display:none}
   .fc-body{padding:var(--s-5) var(--s-4) 0}
   .fc-q{font-size:22px}
   .nr-body{padding:var(--s-5) var(--s-4) var(--s-10)}
@@ -705,6 +710,7 @@ select.nr-textarea{resize:none;min-height:48px;padding:0 var(--s-3)}
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
   <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3.5M8 7.5l4-4 4 4"/><path d="M7 11H6a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1"/></symbol>
   <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></symbol>
   <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></symbol>
@@ -4942,6 +4948,7 @@ var openCards    = {};  // { id: true } — tarjetas actualmente desplegadas
 var visitedCards = {};  // { id: true } — tarjetas que se han abierto alguna vez
 var secAbiertas  = {};  // { categoria: true } — secciones que el captador ha abierto a mano
 var favOnly    = false;
+var searchTimer;            // espera de la búsqueda mientras se teclea
 var favs       = {};
 try { favs = JSON.parse(localStorage.getItem('wob_favs') || '{}'); } catch(e) { favs = {}; }
 
@@ -5252,7 +5259,10 @@ function buildCardHtml(obj, nivel) {
   } else {
     html += '<span class="ans-seg-solo">' + ic('msg', 'ic-sm') + 'Respuesta</span>';
   }
+  html += '<span class="ocard-tools">';
+  html += '<button class="ocard-share" data-shareid="' + obj.id + '" aria-label="Compartir el enlace a esta ficha: ' + esc(obj.q) + '">' + ic('share') + '<span class="lbl">Compartir</span></button>';
   html += '<button class="ocard-read" data-readid="' + obj.id + '" aria-label="Leer a pantalla completa: ' + esc(obj.q) + '">' + ic('expand') + '<span class="lbl">Pantalla completa</span></button>';
+  html += '</span>';
   html += '</div>';
   html += '<div class="ans-txt ans-short ans-block-short">' + esc(hasShort ? obj.short : obj.a) + '</div>';
   if (hasShort) html += '<div class="ans-txt ans-full ans-block-full" hidden>' + esc(obj.a) + '</div>';
@@ -5406,6 +5416,14 @@ function render(rebuildFilters) {
     });
   });
 
+  // Compartir el enlace a la ficha
+  zone.querySelectorAll('.ocard-share').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      compartirFicha(this.getAttribute('data-shareid'));
+    });
+  });
+
   // Leer a pantalla completa
   zone.querySelectorAll('.ocard-read').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
@@ -5446,6 +5464,111 @@ function render(rebuildFilters) {
     // sube hasta aquí; favorito y lectura cortan la propagación.
     head.addEventListener('click', toggleCard);
   });
+}
+
+// ============================================================
+//  ENLACE DIRECTO A UNA FICHA (#id)
+// ============================================================
+
+// La ficha cuyo id coincide exactamente con el hash de la URL, o null. El hash
+// es texto que viene de fuera: solo se compara con los ids del banco y a partir
+// de ahí se trabaja con la ficha encontrada, nunca con el texto recibido.
+function fichaDelHash() {
+  var id = location.hash.slice(1);
+  if (!id) return null;
+  try { id = decodeURIComponent(id); } catch(e) { return null; }
+  for (var i = 0; i < DATA.length; i++) { if (DATA[i].id === id) return DATA[i]; }
+  return null;
+}
+
+// Coloca la ficha justo debajo de la cabecera y el buscador, que son fijos
+function desplazarAFicha(card) {
+  var fijo = el('qinput').closest('.sbar').getBoundingClientRect().bottom;
+  window.scrollTo(0, Math.max(0, Math.round(card.getBoundingClientRect().top + window.pageYOffset - fijo - 8)));
+}
+
+var enlazadaTimer = null;
+
+// Abre la ficha del hash: quita solo los filtros que la ocultan, despliega su
+// sección, la abre, la lleva a la vista y la tiñe un momento. Devuelve false si
+// el hash no corresponde a ninguna ficha (la app sigue como si no hubiera hash).
+function abrirFichaEnlazada() {
+  var obj = fichaDelHash();
+  if (!obj) return false;
+
+  if (favOnly && !favs[obj.id]) favOnly = false;
+  if (!favOnly && currentOng !== 'all' && obj.ongs.indexOf(currentOng) === -1) currentOng = 'all';
+  clearTimeout(searchTimer);
+  currentQ = el('qinput').value;
+  if (currentQ.trim() && obj._buscar.indexOf(normalizar(currentQ.trim())) === -1) {
+    currentQ = '';
+    el('qinput').value = '';
+  }
+  secAbiertas[obj.cat] = true;
+  openCards[obj.id]    = true;
+
+  // El repintado borra el control que tuviera el foco dentro de la lista: solo
+  // en ese caso se pasa a la pregunta de la ficha enlazada
+  var focoEnLista = el('results').contains(document.activeElement);
+  render();
+
+  var card = el('oc-' + obj.id);
+  if (!card) return true;
+  desplazarAFicha(card);
+  if (focoEnLista) card.querySelector('.ocard-toggle').focus({preventScroll: true});
+  card.classList.add('enlazada');
+  clearTimeout(enlazadaTimer);
+  enlazadaTimer = setTimeout(function() {
+    var c = el('oc-' + obj.id);
+    if (c) c.classList.remove('enlazada');
+  }, 1600);
+  return true;
+}
+
+// ============================================================
+//  COMPARTIR UNA FICHA
+// ============================================================
+
+// Enlace directo a una ficha, sobre la dirección desde la que está abierta la app
+function enlaceFicha(id) {
+  return location.href.split('#')[0] + '#' + encodeURIComponent(id);
+}
+
+function copiarEnlace(url) {
+  var hecho = function() { showToast('Enlace copiado'); };
+  // Navegadores sin portapapeles moderno o sin permiso: copia desde un campo oculto
+  var aLaAntigua = function() {
+    var previo = document.activeElement;
+    var campo = document.createElement('textarea');
+    campo.value = url;
+    campo.setAttribute('readonly', '');
+    campo.className = 'sr-only';
+    document.body.appendChild(campo);
+    campo.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(campo);
+    if (previo && previo.focus) previo.focus({preventScroll: true});
+    showToast(ok ? 'Enlace copiado' : 'No se pudo copiar el enlace');
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(hecho, aLaAntigua);
+  else aLaAntigua();
+}
+
+// En móvil y tablet abre el menú de compartir del sistema con la pregunta y el
+// enlace; en escritorio, o si el navegador no tiene ese menú, copia el enlace.
+// Solo viaja el enlace, no la respuesta: quien lo abre ve siempre la ficha actual.
+function compartirFicha(id) {
+  var obj = DATA.find(function(o) { return o.id === id; });
+  if (!obj) return;
+  var url = enlaceFicha(obj.id);
+  if (navigator.share && window.matchMedia('(pointer:coarse)').matches) {
+    navigator.share({title: 'Banco de objeciones', text: obj.q, url: url}).catch(function(e) {
+      if (!e || e.name !== 'AbortError') copiarEnlace(url); // AbortError: el captador cerró el menú
+    });
+  } else {
+    copiarEnlace(url);
+  }
 }
 
 // ============================================================
@@ -5904,6 +6027,7 @@ function renderLectura(obj) {
   html += '<span class="ocard-badge">' + esc(obj.catLabel) + '</span>';
   html += buildFreq(obj.freq || 1);
   html += buildOngTags(obj);
+  html += '<button class="lc-share" data-shareid="' + obj.id + '" aria-label="Compartir el enlace a esta ficha">' + ic('share') + '</button>';
   html += '<button class="lc-fav' + (isFav ? ' on' : '') + '" data-favid="' + obj.id + '"'
         + ' aria-label="' + (isFav ? 'Quitar de favoritos' : 'Añadir a favoritos') + '"'
         + ' aria-pressed="' + (isFav ? 'true' : 'false') + '">' + ic('star') + '</button>';
@@ -5914,6 +6038,9 @@ function renderLectura(obj) {
   html += buildTerrHtml(obj, true);
   el('lc-inner').innerHTML = html;
 
+  el('lc-inner').querySelector('.lc-share').addEventListener('click', function() {
+    compartirFicha(this.getAttribute('data-shareid'));
+  });
   el('lc-inner').querySelector('.lc-fav').addEventListener('click', function() {
     var id = this.getAttribute('data-favid');
     toggleFav(id);
@@ -6005,7 +6132,6 @@ window.addEventListener('DOMContentLoaded', function() {
   } catch(e) {}
 
   // Búsqueda con debounce — no reconstruye los filtros ONG/cat en cada tecla
-  var searchTimer;
   el('qinput').addEventListener('input', function() {
     var v = this.value;
     clearTimeout(searchTimer);
@@ -6079,7 +6205,28 @@ window.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  render(); // primer render al cargar
+  // Primer render al cargar. Con un enlace directo (#id) se abre esa ficha; al
+  // terminar de cargar fuentes e imágenes la página puede moverse, así que se
+  // recoloca si el captador todavía no ha desplazado la pantalla.
+  // Al recargar, el navegador devolvería la pantalla a donde estaba antes y
+  // taparía la ficha enlazada: con un enlace directo no se restaura esa posición.
+  if (abrirFichaEnlazada()) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    var tocado = false;
+    var marcarTocado = function() { tocado = true; };
+    ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function(ev) {
+      window.addEventListener(ev, marcarTocado, {once: true, passive: true});
+    });
+    var recolocar = function() {
+      var obj = fichaDelHash(), card = obj && el('oc-' + obj.id);
+      if (card && !tocado) desplazarAFicha(card);
+    };
+    window.addEventListener('load', recolocar);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(recolocar);
+  } else {
+    render();
+  }
+  window.addEventListener('hashchange', abrirFichaEnlazada);
   anuncioActivo = true; // a partir de aquí, los cambios de resultados se anuncian
 });
 })();
@@ -6205,6 +6352,7 @@ window.addEventListener('DOMContentLoaded', function() {
     <h3 class="help-group-title">Funciones adicionales</h3>
     <ul class="help-list">
       <li class="help-item"><span class="tile tile-sm"><svg class="ic" aria-hidden="true"><use href="#i-expand"/></svg></span><div><div class="help-title">Pantalla completa</div><div class="help-desc">Abre una ficha a pantalla completa para leerla tranquilo.</div></div></li>
+      <li class="help-item"><span class="tile tile-sm"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg></span><div><div class="help-title">Compartir</div><div class="help-desc">Envía a un compañero el enlace directo a una ficha.</div></div></li>
       <li class="help-item"><span class="tile tile-sm"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg></span><div><div class="help-title">Favoritos</div><div class="help-desc">Guarda las fichas que más uses con la estrella.</div></div></li>
       <li class="help-item"><span class="tile tile-sm"><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg></span><div><div class="help-title">Modo ensayo</div><div class="help-desc">Practica sin ver la respuesta y sigue tu progreso.</div></div></li>
       <li class="help-item"><span class="tile tile-sm"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></span><div><div class="help-title">Añadir / Modificar</div><div class="help-desc">Propón una objeción nueva o un cambio, por email a formación.</div></div></li>
