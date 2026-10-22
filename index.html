@@ -5837,7 +5837,7 @@ function renderEnsayoConfig() {
   html += '<div class="fc-quick-wrap">';
   html += '<button class="fc-quick" data-quick="reto"><span class="tile" style="--tone:var(--brand)">' + ic('bolt') + '</span>'
         + '<span class="fc-quick-txt"><strong>' + (retoHecho() ? 'Reto de hoy hecho' : 'Reto del día') + '</strong>'
-        + '<span>' + (retoHecho() ? ensayoReto.ok + ' de ' + RETO_FICHAS + ' sabidas · volver a intentarlo' : RETO_FICHAS + ' fichas, las mismas para todo el equipo') + '</span></span>'
+        + '<span>' + (retoHecho() ? ensayoReto.ok + ' de ' + RETO_FICHAS + ' sabidas · volver a intentarlo' : RETO_FICHAS + ' fichas nuevas cada día') + '</span></span>'
         + ic('arrow') + '</button>';
   if (pend > 0) {
     html += '<button class="fc-quick" data-quick="repaso"><span class="tile" style="--tone:var(--warn)">' + ic('refresh') + '</span>'
