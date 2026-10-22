@@ -261,6 +261,65 @@ test.describe('Modo ensayo', () => {
     await expect(page.locator('#ensayo')).toBeHidden();
   });
 
+  test('el progreso se recuerda: las falladas quedan pendientes y las dominadas suben el nivel', async ({ page }) => {
+    await abrirAccion(page, '#ensayobtn');
+    await expect(page.locator('#ensayo [data-quick="repaso"]')).toHaveCount(0); // sin historial no hay pendientes
+    await page.click('#ensayo [data-cfg-ong="FEC"]');
+    await page.click('#ensayo [data-cfg-diff="3"]');
+    await page.click('#cfg-start-btn');
+    await page.click('#fc-show');
+    await page.click('#ensayo .fc-eval-btn[data-ev="bad"]'); // una fallada
+    // el resto, sabidas
+    while (await page.locator('#fc-show').count()) {
+      await page.click('#fc-show');
+      await page.click('#ensayo .fc-eval-btn[data-ev="ok"]');
+    }
+    await expect(page.locator('#ensayo .fc-end-title')).toHaveText('Sesión completada');
+    const prog = await page.evaluate(() => JSON.parse(localStorage.getItem('wob_prog')));
+    const cajones = Object.values(prog).map(p => p.box);
+    expect(cajones.filter(b => b === 0)).toHaveLength(1);
+    expect(cajones.filter(b => b === 1).length).toBeGreaterThan(0);
+
+    await page.click('#fc-restart');
+    await expect(page.locator('#ensayo [data-quick="repaso"]')).toContainText('Repasar mis pendientes');
+    // volver a abrir la app: el progreso sigue ahí
+    await page.reload();
+    await abrirAccion(page, '#ensayobtn');
+    await expect(page.locator('#ensayo [data-quick="repaso"]')).toBeVisible();
+    await page.click('#ensayo [data-quick="repaso"]');
+    const total = Object.values(prog).filter(p => p.box < 2).length;
+    await expect(page.locator('#ensayo .fc-counter')).toHaveText(`1 de ${total}`);
+  });
+
+  test('reto del día: 5 fichas fijas para la fecha y se marca como hecho al terminarlo', async ({ page }) => {
+    await abrirAccion(page, '#ensayobtn');
+    await expect(page.locator('#ensayo [data-quick="reto"]')).toContainText('Reto del día');
+    const recorrer = async () => {
+      const vistas = [];
+      for (let i = 0; i < 5; i++) {
+        vistas.push(await page.locator('#ensayo .fc-q').textContent());
+        await page.click('#fc-show');
+        await page.click('#ensayo .fc-eval-btn[data-ev="ok"]');
+      }
+      return vistas.sort();
+    };
+    await page.click('#ensayo [data-quick="reto"]');
+    await expect(page.locator('#ensayo .fc-counter')).toHaveText('1 de 5');
+    const primera = await recorrer();
+    await expect(page.locator('#ensayo .fc-end-title')).toHaveText('Reto del día completado');
+    await page.click('#fc-restart');
+    await expect(page.locator('#ensayo [data-quick="reto"]')).toContainText('Reto de hoy hecho');
+    await page.click('#ensayo [data-quick="reto"]');
+    expect(await recorrer()).toEqual(primera); // mismas fichas el mismo día
+  });
+
+  test('«Mi progreso» muestra el nivel y las filas por tipo y por entidad', async ({ page }) => {
+    await abrirAccion(page, '#ensayobtn');
+    await expect(page.locator('#ensayo .fc-prog summary')).toContainText('Nivel 1 · Semilla');
+    await page.click('#ensayo .fc-prog summary');
+    await expect(page.locator('#ensayo .prog-row')).toHaveCount(6 + 8);
+  });
+
   test('atajos de teclado: Espacio muestra la respuesta', async ({ page }) => {
     await abrirAccion(page, '#ensayobtn');
     await page.click('#ensayo [data-cfg-ong="AI"]');

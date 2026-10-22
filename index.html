@@ -584,6 +584,43 @@ button,input,select,textarea{font-family:inherit}
 .fc-eval-btn .ic{width:24px;height:24px;stroke-width:2}
 .fc-bad{--ev:var(--bad)}.fc-mid{--ev:var(--warn)}.fc-ok{--ev:var(--ok)}
 
+/* Reto del día, pendientes y progreso */
+.fc-quick-wrap{display:flex;flex-direction:column;gap:var(--s-3);margin-bottom:var(--s-5)}
+.fc-quick{display:flex;align-items:center;gap:var(--s-3);width:100%;min-height:72px;padding:var(--s-3) var(--s-4);text-align:left;
+  font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-2);cursor:pointer;
+  transition:background .12s,transform .15s var(--ease-out)}
+.fc-quick:hover{background:var(--surface-2)}
+.fc-quick:active{transform:scale(.985)}
+.fc-quick > .ic{width:20px;height:20px;color:var(--ink-3);flex-shrink:0}
+.fc-quick-txt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.fc-quick-txt strong{font-family:var(--font-brand);font-size:var(--t-md);font-weight:700;color:var(--ink)}
+.fc-quick-txt span{font-size:var(--t-sm);color:var(--ink-2);line-height:1.4}
+.fc-prog{margin-top:var(--s-4);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--sh-2)}
+.fc-prog > summary{display:flex;align-items:center;gap:var(--s-3);min-height:72px;padding:var(--s-3) var(--s-4);cursor:pointer;list-style:none}
+.fc-prog > summary::-webkit-details-marker{display:none}
+.fc-prog-chev{width:20px;height:20px;color:var(--ink-3);flex-shrink:0;transition:transform .2s var(--ease)}
+.fc-prog[open] .fc-prog-chev{transform:rotate(180deg)}
+.fc-prog-body{padding:0 var(--s-4) var(--s-5);display:flex;flex-direction:column;gap:var(--s-3)}
+.fc-prog-hint{font-size:var(--t-sm);color:var(--ink-3);line-height:1.5}
+.fc-prog-resumen{font-size:var(--t-sm);color:var(--ink-2);line-height:1.6}
+.fc-prog-resumen strong{color:var(--ink)}
+.fc-prog .sec-label{margin:var(--s-3) 0 0}
+.prog-bar{display:block;height:6px;background:var(--surface-hi);border-radius:var(--r-pill);overflow:hidden}
+.prog-bar i{display:block;height:100%;background:var(--brand-solid);border-radius:var(--r-pill)}
+.prog-bar-lg{height:8px}
+.prog-list{display:flex;flex-direction:column}
+.prog-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 3.2rem 24px;align-items:center;gap:var(--s-3);min-height:44px;border-top:1px solid var(--line);font-size:var(--t-sm)}
+.prog-list .prog-row:first-child{border-top:0}
+.prog-name{display:flex;align-items:center;gap:var(--s-2);color:var(--ink);font-weight:600;min-width:0}
+.prog-name .ic{width:18px;height:18px;color:var(--ink-3);flex-shrink:0}
+.prog-n{color:var(--ink-3);text-align:right;font-variant-numeric:tabular-nums}
+.prog-medal{display:flex;justify-content:center}
+.medal .ic{width:20px;height:20px}
+.medal-bronce{color:#B0703A}.medal-plata{color:var(--ink-3)}.medal-oro{color:var(--warn)}
+.fc-end-nivel{display:inline-flex;align-items:center;gap:var(--s-2);margin:calc(var(--s-3) * -1) 0 var(--s-5);padding:var(--s-2) var(--s-4);border-radius:var(--r-pill);
+  background:var(--brand-soft);color:var(--brand-ink);font-size:var(--t-sm);font-weight:700}
+.fc-end-nivel .ic{width:18px;height:18px}
+
 /* Final de sesión */
 .fc-end{text-align:center;padding:var(--s-4) 0 var(--s-8);display:flex;flex-direction:column;align-items:center}
 .fc-end .tile-lg{margin-bottom:var(--s-4)}
@@ -5591,6 +5628,98 @@ function shuffleArr(arr) {
   return a;
 }
 
+// --- Progreso del captador (se guarda en este dispositivo) ---
+// Cada ficha tiene un cajón de 0 a 3: «La sabía» sube uno, «La dudaba» lo deja
+// como está y «No la sabía» lo devuelve a 0. Con cajón 2 o más la ficha está
+// dominada (dos aciertos seguidos); si se ha visto y no llega, queda pendiente.
+var DOMINADA   = 2;
+var ensayoProg = {};    // { idFicha: {ok, mid, bad, box} }
+var ensayoReto = null;  // { d: 'AAAA-MM-DD', ok: n } del último reto del día hecho
+try { ensayoProg = JSON.parse(localStorage.getItem('wob_prog') || '{}') || {}; } catch(e) { ensayoProg = {}; }
+try { ensayoReto = JSON.parse(localStorage.getItem('wob_reto') || 'null'); } catch(e) { ensayoReto = null; }
+
+var ensayoModo     = 'libre';  // libre | reto | repaso
+var ensayoNivelIni = 0;        // nivel al empezar la sesión, para avisar si se sube
+var ensayoProgAbierto = false; // el bloque «Mi progreso» se repinta con la configuración
+
+var NIVELES = [
+  {n: 0,   t: 'Semilla'},
+  {n: 10,  t: 'Brote'},
+  {n: 25,  t: 'Pie en la calle'},
+  {n: 50,  t: 'Voz de la causa'},
+  {n: 80,  t: 'Escucha activa'},
+  {n: 120, t: 'Puente de confianza'},
+  {n: 160, t: 'Referente'},
+  {n: 200, t: 'Embajador/a'}
+];
+var RETO_FICHAS = 5;
+var MEDALLAS = {bronce: 'Bronce', plata: 'Plata', oro: 'Oro'};
+
+function guardarProg() { try { localStorage.setItem('wob_prog', JSON.stringify(ensayoProg)); } catch(e) {} }
+
+function registrarFicha(id, ev) {
+  var p = ensayoProg[id] || (ensayoProg[id] = {ok: 0, mid: 0, bad: 0, box: 0});
+  p[ev]++;
+  if (ev === 'ok') p.box = Math.min(p.box + 1, 3);
+  else if (ev === 'bad') p.box = 0;
+  guardarProg();
+}
+
+function ensayoPendientes() {
+  return DATA.filter(function(obj) { var p = ensayoProg[obj.id]; return p && p.box < DOMINADA; });
+}
+
+function nivelActual() {
+  var dom = DATA.filter(function(obj) { var p = ensayoProg[obj.id]; return p && p.box >= DOMINADA; }).length;
+  var i = 0;
+  NIVELES.forEach(function(nv, k) { if (dom >= nv.n) i = k; });
+  return {i: i, dom: dom, nv: NIVELES[i], sig: NIVELES[i + 1] || null};
+}
+
+// Resumen de un grupo de fichas (un tipo de objeción o una entidad)
+function resumenGrupo(fichas) {
+  var dom = 0, ok = 0, resp = 0;
+  fichas.forEach(function(obj) {
+    var p = ensayoProg[obj.id];
+    if (!p) return;
+    if (p.box >= DOMINADA) dom++;
+    ok += p.ok; resp += p.ok + p.mid + p.bad;
+  });
+  var ratio = fichas.length ? dom / fichas.length : 0;
+  return {
+    tot: fichas.length, dom: dom, resp: resp,
+    pct: Math.round(ratio * 100),
+    acierto: resp ? Math.round(ok / resp * 100) : 0,
+    medalla: ratio >= 1 ? 'oro' : ratio >= 0.8 ? 'plata' : ratio >= 0.6 ? 'bronce' : ''
+  };
+}
+
+function claveHoy() {
+  var d = new Date();
+  return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+}
+function retoHecho() { return !!ensayoReto && ensayoReto.d === claveHoy(); }
+
+// Las mismas fichas para todo el equipo el mismo día: se barajan con una
+// semilla sacada de la fecha, no con Math.random
+function retoDelDia() {
+  var clave = claveHoy(), h = 0, i;
+  for (i = 0; i < clave.length; i++) h = (h * 31 + clave.charCodeAt(i)) >>> 0;
+  function azar() {
+    h = (h + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(h ^ (h >>> 15), h | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  var ids = DATA.map(function(obj) { return obj.id; }).sort();
+  for (i = ids.length - 1; i > 0; i--) {
+    var j = Math.floor(azar() * (i + 1));
+    var t = ids[i]; ids[i] = ids[j]; ids[j] = t;
+  }
+  var elegidas = ids.slice(0, RETO_FICHAS);
+  return DATA.filter(function(obj) { return elegidas.indexOf(obj.id) !== -1; });
+}
+
 // Estado de configuración del Ensayo (persiste entre sesiones dentro de la misma página)
 var ensayoCfgOngs = {};  // { ongId: true/false }
 var ensayoCfgDiff = 0;   // 0=todas 1=fácil 2=media 3=difícil
@@ -5628,13 +5757,70 @@ function showEnsayoConfig() {
   trapFocus(dlg, exitEnsayo);
 }
 
-function launchEnsayo(pool) {
+function launchEnsayo(pool, modo) {
   if (!pool.length) return;
+  ensayoModo     = modo || 'libre';
+  ensayoNivelIni = nivelActual().i;
   ensayoCards = shuffleArr(pool);
   ensayoIdx   = 0;
   ensayoShown = false;
   ensayoRes   = {ok: 0, mid: 0, bad: 0, badCards: []};
   renderEnsayo();
+}
+
+function filaProgreso(icono, etiqueta, g) {
+  return '<div class="prog-row"><span class="prog-name">' + icono + esc(etiqueta) + '</span>'
+       + '<span class="prog-bar" aria-hidden="true"><i style="width:' + g.pct + '%"></i></span>'
+       + '<span class="prog-n"><span class="sr-only">Dominadas: </span>' + g.dom + '/' + g.tot + '</span>'
+       + '<span class="prog-medal">' + (g.medalla
+           ? '<span class="medal medal-' + g.medalla + '" role="img" aria-label="Medalla de ' + MEDALLAS[g.medalla].toLowerCase() + '">' + ic('trophy') + '</span>'
+           : '') + '</span></div>';
+}
+
+// «Mi progreso»: nivel, medallas y puntos fuertes y débiles, desplegable para
+// no alargar la pantalla de configuración
+function renderProgreso() {
+  var n = nivelActual();
+  var tipos = [];
+  DATA.forEach(function(obj) {
+    if (!tipos.some(function(t) { return t.cat === obj.cat; })) tipos.push({cat: obj.cat, label: obj.catLabel});
+  });
+  tipos.forEach(function(t) { t.g = resumenGrupo(DATA.filter(function(obj) { return obj.cat === t.cat; })); });
+
+  var sub = n.sig ? 'Te faltan ' + (n.sig.n - n.dom) + ' fichas dominadas para «' + n.sig.t + '»'
+                  : 'Has llegado al nivel máximo';
+  var html = '<details class="fc-prog"' + (ensayoProgAbierto ? ' open' : '') + '>';
+  html += '<summary><span class="tile" style="--tone:var(--brand)">' + ic('trophy') + '</span>'
+        + '<span class="fc-quick-txt"><strong>Nivel ' + (n.i + 1) + ' · ' + esc(n.nv.t) + '</strong>'
+        + '<span>' + n.dom + ' de ' + DATA.length + ' fichas dominadas</span></span>' + ic('chev', 'fc-prog-chev') + '</summary>';
+  html += '<div class="fc-prog-body">';
+  html += '<p class="fc-prog-hint">' + sub + '. Una ficha está dominada cuando la sabes dos veces seguidas.</p>';
+  if (n.sig) {
+    var desde = n.nv.n, avance = Math.round((n.dom - desde) / (n.sig.n - desde) * 100);
+    html += '<div class="prog-bar prog-bar-lg" role="progressbar" aria-label="Avance al siguiente nivel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + avance + '"><i style="width:' + avance + '%"></i></div>';
+  }
+
+  var contados = tipos.filter(function(t) { return t.g.resp >= 5; })
+                      .sort(function(a, b) { return b.g.acierto - a.g.acierto; });
+  if (contados.length >= 2 && contados[0].g.acierto !== contados[contados.length - 1].g.acierto) {
+    var fuerte = contados[0], debil = contados[contados.length - 1];
+    html += '<p class="fc-prog-resumen"><strong>Tu punto fuerte:</strong> ' + esc(fuerte.label) + ' (' + fuerte.g.acierto + ' % de aciertos).<br>'
+          + '<strong>A reforzar:</strong> ' + esc(debil.label) + ' (' + debil.g.acierto + ' % de aciertos).</p>';
+  }
+
+  html += '<div class="sec-label">Por tipo de objeción</div><div class="prog-list">';
+  tipos.forEach(function(t) { html += filaProgreso(ic('cat-' + t.cat), t.label, t.g); });
+  html += '</div>';
+
+  html += '<div class="sec-label">Por entidad</div><div class="prog-list">';
+  ONGS.filter(function(o) { return o.id !== 'all'; }).forEach(function(ong) {
+    var fichas = DATA.filter(function(obj) { return obj.ongs.indexOf(ong.id) !== -1; });
+    if (fichas.length) html += filaProgreso(ongDot(ong), ong.label, resumenGrupo(fichas));
+  });
+  html += '</div>';
+  html += '<p class="fc-prog-hint">Medallas: bronce 60 %, plata 80 %, oro 100 % de fichas dominadas. Tu progreso se guarda solo en este dispositivo.</p>';
+  html += '</div></details>';
+  return html;
 }
 
 function renderEnsayoConfig() {
@@ -5646,6 +5832,20 @@ function renderEnsayoConfig() {
   var html = '<div class="fc-cfg">';
   html += '<h2 class="fc-cfg-title">Elige qué practicar</h2>';
   html += '<p class="fc-cfg-sub">Verás la objeción, piensas tu respuesta y luego la comparas. Al final, repasa solo las que fallaste.</p>';
+
+  var pend = ensayoPendientes().length;
+  html += '<div class="fc-quick-wrap">';
+  html += '<button class="fc-quick" data-quick="reto"><span class="tile" style="--tone:var(--brand)">' + ic('bolt') + '</span>'
+        + '<span class="fc-quick-txt"><strong>' + (retoHecho() ? 'Reto de hoy hecho' : 'Reto del día') + '</strong>'
+        + '<span>' + (retoHecho() ? ensayoReto.ok + ' de ' + RETO_FICHAS + ' sabidas · volver a intentarlo' : RETO_FICHAS + ' fichas, las mismas para todo el equipo') + '</span></span>'
+        + ic('arrow') + '</button>';
+  if (pend > 0) {
+    html += '<button class="fc-quick" data-quick="repaso"><span class="tile" style="--tone:var(--warn)">' + ic('refresh') + '</span>'
+          + '<span class="fc-quick-txt"><strong>Repasar mis pendientes</strong>'
+          + '<span>' + pend + (pend !== 1 ? ' fichas por reforzar' : ' ficha por reforzar') + '</span></span>'
+          + ic('arrow') + '</button>';
+  }
+  html += '</div>';
 
   html += '<div class="fc-cfg-card">';
   html += '<div role="group" aria-labelledby="cfg-ong-lbl"><div class="sec-label" id="cfg-ong-lbl">Entidades</div><div class="pills" id="cfg-ong-pills">';
@@ -5672,6 +5872,8 @@ function renderEnsayoConfig() {
             : '<span>No hay cartas con esta combinación. Prueba otra dificultad o más entidades.</span>')
         + '</div>';
 
+  html += renderProgreso();
+
   html += '<div class="fc-cfg-actions">';
   html += '<button class="btn btn-primary" id="cfg-start-btn"' + (pool.length === 0 ? ' disabled' : '') + '>Empezar' + ic('arrow') + '</button>';
   if (fc > 0) { html += '<button class="btn btn-tinted" id="cfg-fav-btn">' + ic('star', 'ic-star') + 'Solo mis favoritos (' + fc + ')</button>'; }
@@ -5697,6 +5899,16 @@ function renderEnsayoConfig() {
       restaurarFocoFiltro('#fc-inner [data-cfg-diff="' + ensayoCfgDiff + '"]');
     });
   });
+
+  el('fc-inner').querySelectorAll('[data-quick]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      if (this.getAttribute('data-quick') === 'reto') launchEnsayo(retoDelDia(), 'reto');
+      else launchEnsayo(ensayoPendientes(), 'repaso');
+    });
+  });
+
+  var detProg = el('fc-inner').querySelector('.fc-prog');
+  if (detProg) detProg.addEventListener('toggle', function() { ensayoProgAbierto = this.open; });
 
   var favBtn   = el('fc-inner').querySelector('#cfg-fav-btn');
   var startBtn = el('cfg-start-btn');
@@ -5762,6 +5974,7 @@ function renderEnsayo() {
       btn.addEventListener('click', function() {
         var ev = this.getAttribute('data-ev');
         ensayoRes[ev]++;
+        registrarFicha(ensayoCards[ensayoIdx].id, ev);
         if (ev === 'bad') ensayoRes.badCards.push(ensayoCards[ensayoIdx]);
         ensayoIdx++;
         ensayoShown = false;
@@ -5774,7 +5987,11 @@ function renderEnsayo() {
 function saveEnsayoSession() {
   if (!ensayoCards.length) return;
   var pct = Math.round(ensayoRes.ok / ensayoCards.length * 100);
-  ensayoStats.unshift({ ts: Date.now(), total: ensayoCards.length, ok: ensayoRes.ok, mid: ensayoRes.mid, bad: ensayoRes.bad, pct: pct });
+  ensayoStats.unshift({ ts: Date.now(), total: ensayoCards.length, ok: ensayoRes.ok, mid: ensayoRes.mid, bad: ensayoRes.bad, pct: pct, modo: ensayoModo });
+  if (ensayoModo === 'reto' && !retoHecho()) {
+    ensayoReto = { d: claveHoy(), ok: ensayoRes.ok };
+    try { localStorage.setItem('wob_reto', JSON.stringify(ensayoReto)); } catch(e) {}
+  }
   if (ensayoStats.length > 20) ensayoStats.length = 20;
   try { localStorage.setItem('wob_stats', JSON.stringify(ensayoStats)); } catch(e) {}
 }
@@ -5795,8 +6012,12 @@ function renderEnsayoEnd() {
 
   var html = '<div class="fc-end">';
   html += '<span class="tile tile-lg" style="--tone:' + fin.t + '">' + ic(fin.i) + '</span>';
-  html += '<h2 class="fc-end-title">Sesión completada</h2>';
+  html += '<h2 class="fc-end-title">' + (ensayoModo === 'reto' ? 'Reto del día completado' : 'Sesión completada') + '</h2>';
   html += '<p class="fc-end-sub">' + ensayoCards.length + (ensayoCards.length !== 1 ? ' cartas' : ' carta') + ' · ' + pct + '% resueltas</p>';
+  var nivel = nivelActual();
+  if (nivel.i > ensayoNivelIni) {
+    html += '<p class="fc-end-nivel">' + ic('trophy') + 'Subes a nivel ' + (nivel.i + 1) + ': ' + esc(nivel.nv.t) + '</p>';
+  }
   html += '<div class="fc-end-stats">';
   html += '<div class="fc-stat fc-stat-ok"><div class="fc-stat-n">'  + ensayoRes.ok  + '</div><div class="fc-stat-l">Sabías</div></div>';
   html += '<div class="fc-stat fc-stat-mid"><div class="fc-stat-n">' + ensayoRes.mid + '</div><div class="fc-stat-l">Dudabas</div></div>';
@@ -5815,7 +6036,7 @@ function renderEnsayoEnd() {
       var cls = s.pct >= 80 ? 'h-ok' : s.pct >= 50 ? 'h-mid' : 'h-bad';
       html += '<div class="fc-history-row">';
       html += '<span class="fc-history-date">' + fmtSessionDate(s.ts) + '</span>';
-      html += '<span class="fc-history-meta">' + s.total + ' cartas</span>';
+      html += '<span class="fc-history-meta">' + (s.modo === 'reto' ? 'Reto · ' : s.modo === 'repaso' ? 'Repaso · ' : '') + s.total + ' cartas</span>';
       html += '<span class="fc-history-pct ' + cls + '">' + s.pct + '%</span>';
       html += '</div>';
     });
@@ -5828,6 +6049,7 @@ function renderEnsayoEnd() {
 
   if (ensayoRes.bad > 0) {
     el('fc-retry').addEventListener('click', function() {
+      ensayoModo  = 'repaso';
       ensayoCards = shuffleArr(ensayoRes.badCards);
       ensayoIdx   = 0;
       ensayoShown = false;
